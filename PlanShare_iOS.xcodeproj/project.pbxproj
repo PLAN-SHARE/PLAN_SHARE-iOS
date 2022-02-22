@@ -7,21 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0974BBF019053470B6B89499 /* Pods_PlanShare_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */; };
 		780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796B627C27C6F00C0BF12 /* AppDelegate.swift */; };
 		780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796B827C27C6F00C0BF12 /* SceneDelegate.swift */; };
-		780796BB27C27C6F00C0BF12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796BA27C27C6F00C0BF12 /* ViewController.swift */; };
+		780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796BA27C27C6F00C0BF12 /* MainController.swift */; };
 		780796C027C27C7200C0BF12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 780796BF27C27C7200C0BF12 /* Assets.xcassets */; };
 		780796C327C27C7200C0BF12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */; };
+		780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CA27C27EE500C0BF12 /* FollowingCell.swift */; };
+		780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CC27C37FA500C0BF12 /* CalendarView.swift */; };
+		780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D027C3839000C0BF12 /* CategoryCell.swift */; };
+		780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D227C3861000C0BF12 /* ScheduleCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A25DAC6AF29AE718976B25B /* Pods-PlanShare_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanShare_iOS.release.xcconfig"; path = "Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		780796B327C27C6F00C0BF12 /* PlanShare_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlanShare_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		780796B627C27C6F00C0BF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		780796B827C27C6F00C0BF12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		780796BA27C27C6F00C0BF12 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		780796BA27C27C6F00C0BF12 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		780796BF27C27C7200C0BF12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		780796C227C27C7200C0BF12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		780796C427C27C7200C0BF12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		780796CA27C27EE500C0BF12 /* FollowingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingCell.swift; sourceTree = "<group>"; };
+		780796CC27C37FA500C0BF12 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		780796D027C3839000C0BF12 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		780796D227C3861000C0BF12 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanShare_iOS.debug.xcconfig"; path = "Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +41,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0974BBF019053470B6B89499 /* Pods_PlanShare_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3ED08C2EA7EA51BF460923EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		780796AA27C27C6F00C0BF12 = {
 			isa = PBXGroup;
 			children = (
 				780796B527C27C6F00C0BF12 /* PlanShare_iOS */,
 				780796B427C27C6F00C0BF12 /* Products */,
+				DD9FC2BFD24A623A2144A588 /* Pods */,
+				3ED08C2EA7EA51BF460923EE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +79,41 @@
 			children = (
 				780796B627C27C6F00C0BF12 /* AppDelegate.swift */,
 				780796B827C27C6F00C0BF12 /* SceneDelegate.swift */,
-				780796BA27C27C6F00C0BF12 /* ViewController.swift */,
+				780796CE27C381C700C0BF12 /* View */,
+				780796CF27C381CB00C0BF12 /* Controller */,
 				780796BF27C27C7200C0BF12 /* Assets.xcassets */,
 				780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */,
 				780796C427C27C7200C0BF12 /* Info.plist */,
 			);
 			path = PlanShare_iOS;
+			sourceTree = "<group>";
+		};
+		780796CE27C381C700C0BF12 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				780796CC27C37FA500C0BF12 /* CalendarView.swift */,
+				780796D027C3839000C0BF12 /* CategoryCell.swift */,
+				780796D227C3861000C0BF12 /* ScheduleCell.swift */,
+				780796CA27C27EE500C0BF12 /* FollowingCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		780796CF27C381CB00C0BF12 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				780796BA27C27C6F00C0BF12 /* MainController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DD9FC2BFD24A623A2144A588 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */,
+				0A25DAC6AF29AE718976B25B /* Pods-PlanShare_iOS.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +123,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 780796C727C27C7200C0BF12 /* Build configuration list for PBXNativeTarget "PlanShare_iOS" */;
 			buildPhases = (
+				A464ECBE362DC28362124BDA /* [CP] Check Pods Manifest.lock */,
 				780796AF27C27C6F00C0BF12 /* Sources */,
 				780796B027C27C6F00C0BF12 /* Frameworks */,
 				780796B127C27C6F00C0BF12 /* Resources */,
+				FF545EC61EDC03AFC488184E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -129,12 +183,58 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A464ECBE362DC28362124BDA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlanShare_iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF545EC61EDC03AFC488184E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		780796AF27C27C6F00C0BF12 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				780796BB27C27C6F00C0BF12 /* ViewController.swift in Sources */,
+				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
+				780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */,
+				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
+				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
+				780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */,
 				780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */,
 				780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */,
 			);
@@ -272,6 +372,7 @@
 		};
 		780796C827C27C7200C0BF12 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -299,6 +400,7 @@
 		};
 		780796C927C27C7200C0BF12 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A25DAC6AF29AE718976B25B /* Pods-PlanShare_iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
