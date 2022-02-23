@@ -17,6 +17,9 @@
 		780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CC27C37FA500C0BF12 /* CalendarView.swift */; };
 		780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D027C3839000C0BF12 /* CategoryCell.swift */; };
 		780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D227C3861000C0BF12 /* ScheduleCell.swift */; };
+		7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */; };
+		7897BBD827C5407A003CE1F2 /* SetScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */; };
+		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		780796CC27C37FA500C0BF12 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		780796D027C3839000C0BF12 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		780796D227C3861000C0BF12 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCategoryController.swift; sourceTree = "<group>"; };
+		7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetScheduleController.swift; sourceTree = "<group>"; };
+		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanShare_iOS.debug.xcconfig"; path = "Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +90,7 @@
 				780796BF27C27C7200C0BF12 /* Assets.xcassets */,
 				780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */,
 				780796C427C27C7200C0BF12 /* Info.plist */,
+				7897BBD927C5F6AF003CE1F2 /* Extensions.swift */,
 			);
 			path = PlanShare_iOS;
 			sourceTree = "<group>";
@@ -103,6 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				780796BA27C27C6F00C0BF12 /* MainController.swift */,
+				7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */,
+				7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -233,8 +242,11 @@
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
 				780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */,
 				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
+				7897BBD827C5407A003CE1F2 /* SetScheduleController.swift in Sources */,
 				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
+				7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */,
 				780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */,
+				7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */,
 				780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */,
 				780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */,
 			);
