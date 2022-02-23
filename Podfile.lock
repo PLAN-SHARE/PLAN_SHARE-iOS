@@ -1,24 +1,32 @@
 PODS:
   - FSCalendar (2.8.2)
+  - IGColorPicker (0.4.3):
+    - M13Checkbox
+  - M13Checkbox (3.4.0)
   - SnapKit (5.0.1)
   - Then (2.7.0)
 
 DEPENDENCIES:
   - FSCalendar
+  - IGColorPicker
   - SnapKit (~> 5.0.0)
   - Then
 
 SPEC REPOS:
   trunk:
     - FSCalendar
+    - IGColorPicker
+    - M13Checkbox
     - SnapKit
     - Then
 
 SPEC CHECKSUMS:
   FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
+  IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
+  M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 48524b9f409d1b4a85251ded8e0218c18d9d6183
+PODFILE CHECKSUM: 5bbb58b6050e3310665171a2c62fc6af75ae77fa
 
 COCOAPODS: 1.10.2
