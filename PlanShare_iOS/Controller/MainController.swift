@@ -37,7 +37,7 @@ class MainController: UIViewController {
     
     private var addGoalButton = UIButton().then {
         $0.setImage(UIImage(systemName: "folder.badge.plus"), for: .normal)
-        $0.layer.cornerRadius = 60/2
+        $0.layer.cornerRadius = 50/2
         $0.layer.masksToBounds = true
         $0.layer.borderColor = UIColor.darkGray.cgColor
         $0.backgroundColor = .white
@@ -45,18 +45,20 @@ class MainController: UIViewController {
         $0.tintColor = .darkGray
         $0.contentMode = .scaleToFill
         $0.isHidden = true
+        $0.addTarget(self, action: #selector(addGoal), for: .touchUpInside)
     }
     
     private var addScheduleButton = UIButton().then {
         $0.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         $0.tintColor = .darkGray
         $0.contentMode = .scaleToFill
-        $0.layer.cornerRadius = 60/2
+        $0.layer.cornerRadius = 50/2
         $0.layer.masksToBounds = true
         $0.layer.borderColor = UIColor.darkGray.cgColor
         $0.layer.borderWidth = 1.5
         $0.backgroundColor = .white
         $0.isHidden = true
+        $0.addTarget(self, action: #selector(addSchedule), for: .touchUpInside)
     }
     
     private let floatingButton = UIButton().then {
@@ -64,7 +66,7 @@ class MainController: UIViewController {
         $0.backgroundColor = .black
         $0.tintColor = .white
         $0.contentMode = .scaleToFill
-        $0.layer.cornerRadius = 60/2
+        $0.layer.cornerRadius = 50/2
         $0.layer.shadowColor = UIColor.black.cgColor
         $0.layer.shadowOpacity = 1.0
         $0.layer.shadowOffset = CGSize.zero
@@ -107,7 +109,7 @@ class MainController: UIViewController {
         floatingButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-30)
             make.right.equalToSuperview().offset(-30)
-            make.width.height.equalTo(60)
+            make.width.height.equalTo(50)
         }
         
         AddButtons.append(addGoalButton)
@@ -123,8 +125,8 @@ class MainController: UIViewController {
         buttonStack.snp.makeConstraints { make in
             make.bottom.equalTo(floatingButton.snp.top).offset(-10)
             make.centerX.equalTo(floatingButton.snp.centerX)
-            make.width.equalTo(60)
-            make.height.equalTo(130)
+            make.width.equalTo(50)
+            make.height.equalTo(110)
         }
     }
     
@@ -191,6 +193,26 @@ class MainController: UIViewController {
         isFloating.toggle()
     }
     
+    @objc func addGoal(){
+        AddButtons.reversed().forEach { button in
+            UIView.animate(withDuration: 0.1) {
+                button.isHidden = true
+                self.view.layoutIfNeeded()
+            }
+        }
+        let vc = SetCategoryController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func addSchedule(){
+        AddButtons.reversed().forEach { button in
+            UIView.animate(withDuration: 0.1) {
+                button.isHidden = true
+                self.view.layoutIfNeeded()
+            }
+        }
+        let vc = SetScheduleController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension MainController : UICollectionViewDelegate,UICollectionViewDataSource {
