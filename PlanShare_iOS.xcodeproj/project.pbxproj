@@ -15,8 +15,13 @@
 		780796C327C27C7200C0BF12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */; };
 		780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CA27C27EE500C0BF12 /* FollowingCell.swift */; };
 		780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CC27C37FA500C0BF12 /* CalendarView.swift */; };
-		780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D027C3839000C0BF12 /* CategoryCell.swift */; };
+		780796D127C3839000C0BF12 /* CategoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D027C3839000C0BF12 /* CategoryHeader.swift */; };
 		780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796D227C3861000C0BF12 /* ScheduleCell.swift */; };
+		7822317A27CA8C7200FB5826 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822317927CA8C7100FB5826 /* LoginController.swift */; };
+		7822318327CE16E700FB5826 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822318227CE16E700FB5826 /* AuthService.swift */; };
+		7822318F27D1CE1A00FB5826 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822318E27D1CE1A00FB5826 /* Schedule.swift */; };
+		7822319127D1CE2E00FB5826 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822319027D1CE2E00FB5826 /* Category.swift */; };
+		7822319427D1D83800FB5826 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822319327D1D83800FB5826 /* User.swift */; };
 		7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */; };
 		7897BBD827C5407A003CE1F2 /* SetScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */; };
 		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
@@ -33,8 +38,13 @@
 		780796C427C27C7200C0BF12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		780796CA27C27EE500C0BF12 /* FollowingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingCell.swift; sourceTree = "<group>"; };
 		780796CC27C37FA500C0BF12 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		780796D027C3839000C0BF12 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		780796D027C3839000C0BF12 /* CategoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeader.swift; sourceTree = "<group>"; };
 		780796D227C3861000C0BF12 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		7822317927CA8C7100FB5826 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		7822318227CE16E700FB5826 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		7822318E27D1CE1A00FB5826 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		7822319027D1CE2E00FB5826 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		7822319327D1D83800FB5826 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCategoryController.swift; sourceTree = "<group>"; };
 		7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetScheduleController.swift; sourceTree = "<group>"; };
 		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -83,10 +93,13 @@
 		780796B527C27C6F00C0BF12 /* PlanShare_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				7822319527D23E8B00FB5826 /* ViewModel */,
 				780796B627C27C6F00C0BF12 /* AppDelegate.swift */,
 				780796B827C27C6F00C0BF12 /* SceneDelegate.swift */,
+				7822318B27D0843C00FB5826 /* Model */,
 				780796CE27C381C700C0BF12 /* View */,
 				780796CF27C381CB00C0BF12 /* Controller */,
+				7822318027CE145200FB5826 /* Services */,
 				780796BF27C27C7200C0BF12 /* Assets.xcassets */,
 				780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */,
 				780796C427C27C7200C0BF12 /* Info.plist */,
@@ -99,7 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				780796CC27C37FA500C0BF12 /* CalendarView.swift */,
-				780796D027C3839000C0BF12 /* CategoryCell.swift */,
+				780796D027C3839000C0BF12 /* CategoryHeader.swift */,
 				780796D227C3861000C0BF12 /* ScheduleCell.swift */,
 				780796CA27C27EE500C0BF12 /* FollowingCell.swift */,
 			);
@@ -109,11 +122,45 @@
 		780796CF27C381CB00C0BF12 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7822317F27CE144900FB5826 /* Authentication */,
 				780796BA27C27C6F00C0BF12 /* MainController.swift */,
 				7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */,
 				7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		7822317F27CE144900FB5826 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				7822317927CA8C7100FB5826 /* LoginController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		7822318027CE145200FB5826 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7822318227CE16E700FB5826 /* AuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7822318B27D0843C00FB5826 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7822319327D1D83800FB5826 /* User.swift */,
+				7822318E27D1CE1A00FB5826 /* Schedule.swift */,
+				7822319027D1CE2E00FB5826 /* Category.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7822319527D23E8B00FB5826 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		DD9FC2BFD24A623A2144A588 /* Pods */ = {
@@ -239,16 +286,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7822317A27CA8C7200FB5826 /* LoginController.swift in Sources */,
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
-				780796D127C3839000C0BF12 /* CategoryCell.swift in Sources */,
+				780796D127C3839000C0BF12 /* CategoryHeader.swift in Sources */,
+				7822318327CE16E700FB5826 /* AuthService.swift in Sources */,
 				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
 				7897BBD827C5407A003CE1F2 /* SetScheduleController.swift in Sources */,
 				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
 				7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */,
+				7822319427D1D83800FB5826 /* User.swift in Sources */,
 				780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */,
 				7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */,
 				780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */,
+				7822318F27D1CE1A00FB5826 /* Schedule.swift in Sources */,
 				780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */,
+				7822319127D1CE2E00FB5826 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
