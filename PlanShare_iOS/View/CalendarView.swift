@@ -9,11 +9,13 @@ import UIKit
 import FSCalendar
 
 protocol CalendarViewDelegate: class {
-    func updateCalendarScope(height:CGFloat)
+    func updateCalendarScope()
 }
-class CalendarView: UIView {
+class CalendarView: UICollectionReusableView {
 
     //MARK: - Properties
+    static let reuseIdentifier = "CalendarView"
+    
     weak var delegate: CalendarViewDelegate?
     
     private var calendar = FSCalendar()
@@ -51,6 +53,7 @@ class CalendarView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configureCalendar()
         
         backgroundColor = .white
@@ -145,7 +148,7 @@ extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
         }
         
         self.layoutIfNeeded()
-        delegate?.updateCalendarScope(height: bounds.height + 40)
+        delegate?.updateCalendarScope()
     }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         dateTitleLabel.text = converToString(from: calendar.currentPage)
