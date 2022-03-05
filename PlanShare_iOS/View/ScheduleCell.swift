@@ -11,7 +11,13 @@ class ScheduleCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ScheduleCell"
     
-    private let scheduleLabel = UILabel().then {
+    var title : String = "" {
+        didSet {
+            scheduleLabel.text = self.title
+        }
+    }
+    
+    private var scheduleLabel = UILabel().then {
         $0.text = "프로젝트 기획서 마감"
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .darkGray
@@ -28,6 +34,7 @@ class ScheduleCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = .white
+        
         addSubview(scheduleLabel)
         scheduleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

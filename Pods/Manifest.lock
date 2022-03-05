@@ -1,32 +1,59 @@
 PODS:
+  - Alamofire (5.4.3)
   - FSCalendar (2.8.2)
   - IGColorPicker (0.4.3):
     - M13Checkbox
+  - KakaoSDKAuth (2.8.4):
+    - KakaoSDKCommon (= 2.8.4)
+  - KakaoSDKCommon (2.8.4):
+    - KakaoSDKCommon/Common (= 2.8.4)
+    - KakaoSDKCommon/Network (= 2.8.4)
+  - KakaoSDKCommon/Common (2.8.4)
+  - KakaoSDKCommon/Network (2.8.4):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.8.4)
+  - KakaoSDKUser (2.8.4):
+    - KakaoSDKAuth (= 2.8.4)
   - M13Checkbox (3.4.0)
   - SnapKit (5.0.1)
+  - SwiftKeychainWrapper (4.0.1)
   - Then (2.7.0)
 
 DEPENDENCIES:
   - FSCalendar
   - IGColorPicker
+  - KakaoSDKAuth
+  - KakaoSDKCommon
+  - KakaoSDKUser
   - SnapKit (~> 5.0.0)
+  - SwiftKeychainWrapper
   - Then
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - FSCalendar
     - IGColorPicker
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKUser
     - M13Checkbox
     - SnapKit
+    - SwiftKeychainWrapper
     - Then
 
 SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
   IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
+  KakaoSDKAuth: b9b693995f98b1821ccd22b39d383e1dede5ca45
+  KakaoSDKCommon: 33c9902ee9ce13e9d1cac3549896406229836ff5
+  KakaoSDKUser: d878977e0ba6b365cfeac3b6319cdf4231713bea
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 5bbb58b6050e3310665171a2c62fc6af75ae77fa
+PODFILE CHECKSUM: 63202251503ceaefab13930b9d859abb9d5fcbc4
 
 COCOAPODS: 1.10.2

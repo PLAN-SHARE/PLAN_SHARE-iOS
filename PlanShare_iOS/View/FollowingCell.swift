@@ -39,15 +39,18 @@ class FollowingCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.cornerRadius = frame.height / 2
+        contentView.layer.cornerRadius = 40 / 2
     }
     
     private func setupView() {
-        backgroundColor = .lightGray
+        backgroundColor = .white
         
         contentView.addSubview(titleLabel)
+        contentView.backgroundColor = .lightGray
+//        contentView.layer.borderColor = UIColor.black.cgColor
+//        contentView.layer.borderWidth = 2
         titleLabel.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview().inset(10)
+            make.edges.equalToSuperview().inset(5)
         }
     }
     

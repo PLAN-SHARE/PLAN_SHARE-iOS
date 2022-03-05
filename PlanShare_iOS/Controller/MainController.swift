@@ -7,17 +7,54 @@
 
 import UIKit
 import FSCalendar
+import KakaoSDKUser
+
+enum Item: Hashable {
+    case Following(String)
+    case Schdule(Schedule)
+    
+    
+    var hashValue: Int {
+        switch self {
+        case .Following(let value) :
+            return value.hashValue
+        case .Schdule(let value) :
+            return value.hashValue
+        }
+    }
+    
+    static func == (lhs: Item, rhs: Item) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
 
 class MainController: UIViewController {
     
     //MARK: - Properties
-    private var followingCollectionView : UICollectionView!
-    private var scheduleCollectionView : UICollectionView!
+    private var collectionView : UICollectionView!
+    private var dataSource : UICollectionViewDiffableDataSource<Int,Item>!
     
-    private var calendarView = CalendarView(frame: .zero)
+    private var calendarIsMonth : Bool = true {
+        didSet {
+            collectionView.collectionViewLayout = generateLayout(state: self.calendarIsMonth)
+        }
+        
+    }
+    private var categories : [Category] = [Category(title: "프로젝트", icon: nil, textColor: .black,
+                                                    schedules: [
+                                                        Schedule(startTime: "2022년 1월 10일", endTime: "2022년 1월 11일", text: "과제", isAlarm: false)
+                                                    ],scope: .full),
+                                           Category(title: "과제", icon: nil, textColor: .black,
+                                                    schedules: [
+                                                        Schedule(startTime: "2022년 1월 11일", endTime: "2022년 1월 12일", text: "프로젝트", isAlarm: false)
+                                                    ],scope: .full),
+                                           Category(title: "학교", icon: nil, textColor: .black,
+                                                    schedules: [
+                                                        Schedule(startTime: "2022년 1월 13일", endTime: "2022년 1월 14일", text: "학교", isAlarm: false)
+                                                    ],scope: .full)
+    ]
     
-    private var following = ["박도윤","창묵","호성","희중","가나","다라","하하하","+"]
-    
+    var following = ["박도윤","창묵","호성","희중","가나","다라","하하하","+"]
     private var isFloating : Bool = false
     
     private lazy var AddButtons = [UIButton]()
@@ -79,32 +116,23 @@ class MainController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("DEBUG : main view loaded")
+        configureCollectionView()
+        configureDataSource()
         
+        configureUI()
+    }
+    
+    
+    //MARK: - configure
+    
+    func configureUI(){
         configureNavigation()
-        calendarView.delegate = self
-        configureFollowingCollectionView()
-        configureSchduleCollectionView()
         view.backgroundColor = .white
         
-        view.addSubview(followingCollectionView)
-        followingCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(45)
-        }
-        view.addSubview(calendarView)
-        calendarView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(followingCollectionView.snp.bottom).offset(10)
-            make.height.equalTo(370)
-        }
-        view.addSubview(scheduleCollectionView)
-        scheduleCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(calendarView.snp.bottom).offset(20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
+        view.addSubview(collectionView)
+        collectionView.frame = view.bounds
+        
         view.addSubview(floatingButton)
         floatingButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-30)
@@ -130,35 +158,170 @@ class MainController: UIViewController {
         }
     }
     
-    
-    //MARK: - configure
     func configureNavigation() {
         let search = UIBarButtonItem(customView: searchButton)
         let notification = UIBarButtonItem(customView: notificationButton)
         navigationItem.rightBarButtonItems = [search,notification]
-        
     }
     
-    func configureFollowingCollectionView() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = .zero
-        flowLayout.minimumInteritemSpacing = 10
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.sectionInset = .init(top: 5, left: 10, bottom: 5, right: 10)
+    func configureCollectionView() {
         
-        followingCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(state:calendarIsMonth))
+        collectionView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         
-        followingCollectionView.delegate = self
-        followingCollectionView.dataSource = self
-        followingCollectionView.backgroundColor = .white
-        followingCollectionView.register(FollowingCell.self, forCellWithReuseIdentifier: FollowingCell.reuseIdentifier)
+        collectionView.backgroundColor = .white
+        collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: CategoryHeader.reuseIdentifier , withReuseIdentifier: CategoryHeader.reuseIdentifier)
+        collectionView.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.reuseIdentifier)
+        collectionView.register(FollowingCell.self, forCellWithReuseIdentifier: FollowingCell.reuseIdentifier)
+        collectionView.register(CalendarView.self, forSupplementaryViewOfKind: CalendarView.reuseIdentifier , withReuseIdentifier: CalendarView.reuseIdentifier)
+        collectionView.delegate = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
     }
-    func configureSchduleCollectionView() {
-        scheduleCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        scheduleCollectionView.delegate = self
-        scheduleCollectionView.dataSource = self
-        scheduleCollectionView.backgroundColor = .white
-        scheduleCollectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
+    
+    func generateLayout(state:Bool) -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
+                                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            return sectionIndex == 0 ? self?.generateFollowingLayout(isMonth: state) : self?.generateCategoryLayout()
+        }
+        return layout
+    }
+    
+    func generateFollowingLayout(isMonth:Bool) -> NSCollectionLayoutSection {
+        
+        let estimatedWidth: CGFloat = 55
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                              heightDimension: .fractionalHeight(1))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.edgeSpacing = .init(leading: .fixed(5), top: nil, trailing: .fixed(5), bottom: nil)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .estimated(estimatedWidth),
+            heightDimension: .absolute(40))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+
+        
+        let footerHeight = isMonth ? NSCollectionLayoutDimension.absolute(345) : NSCollectionLayoutDimension.absolute(130)
+        
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: footerHeight)
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [.init(layoutSize: footerSize, elementKind: CalendarView.reuseIdentifier, alignment: .bottom)]
+        section.orthogonalScrollingBehavior = .continuous
+        
+        return section
+    }
+    
+    func generateCategoryLayout() -> NSCollectionLayoutSection {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(40))
+        
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .estimated(40))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: CategoryHeader.reuseIdentifier, alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        return section
+    }
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource
+        <Int, Item>(collectionView: collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell? in
+            let section = indexPath.section
+            
+            if section == 0 {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingCell.reuseIdentifier, for: indexPath) as? FollowingCell else {
+                    return UICollectionViewCell()
+                }
+                let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: 35)
+                cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
+                cell.configure(name: self.following[indexPath.row])
+                cell.sizeToFit()
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScheduleCell.reuseIdentifier, for: indexPath) as? ScheduleCell else {
+                    return UICollectionViewCell()
+                }
+                print(item)
+                
+                switch item {
+                case .Schdule(let schedule) :
+                    cell.title = schedule.text
+                    break
+                    
+                case .Following(let name):
+                    print("ERror : \(name)")
+                    break
+                }
+                //                cell.title = item[indexPath.row].text
+                return cell
+            }
+        }
+        
+        dataSource.supplementaryViewProvider = { (
+            collectionView: UICollectionView,
+            kind: String,
+            indexPath: IndexPath) -> UICollectionReusableView? in
+            
+            switch kind {
+            case CalendarView.reuseIdentifier :
+                guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: CalendarView.reuseIdentifier,
+                    for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
+                
+                supplementaryView.delegate = self
+                return supplementaryView
+            case  CategoryHeader.reuseIdentifier :
+                guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: CategoryHeader.reuseIdentifier,
+                    for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
+                
+                supplementaryView.category = self.categories[indexPath.row]
+                return supplementaryView
+                
+            default : fatalError("Cannot create supplementary view")
+            }
+            
+        }
+        
+        let snapshot = snapshotForCurrentState()
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func snapshotForCurrentState() -> NSDiffableDataSourceSnapshot<Int, Item> {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Item>()
+        snapshot.appendSections([0])
+        
+        let followingList = following.map { Item.Following($0) }
+        snapshot.appendItems(followingList, toSection: 0)
+        
+        var cnt = 1
+        
+        for category in categories {
+            snapshot.appendSections([cnt])
+            let schdules = (category.schedules ?? []).map { Item.Schdule($0) }
+            snapshot.appendItems(schdules, toSection: cnt)
+            
+            
+            cnt += 1
+        }
+        return snapshot
     }
     
     //MARK: - selector
@@ -185,9 +348,9 @@ class MainController: UIViewController {
                 button.alpha = 0
                 
                 UIView.animate(withDuration: 0.1) {
-                     button.alpha = 1
-                     self?.view.layoutIfNeeded()
-                 }
+                    button.alpha = 1
+                    self?.view.layoutIfNeeded()
+                }
             }
         }
         isFloating.toggle()
@@ -215,49 +378,14 @@ class MainController: UIViewController {
     }
 }
 
-extension MainController : UICollectionViewDelegate,UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == followingCollectionView {
-            return following.count
-        } else {
-            return 3
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if collectionView == followingCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingCell.reuseIdentifier, for: indexPath) as! FollowingCell
-            cell.configure(name: following[indexPath.row])
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as! CategoryCell
-            return cell
-        }
-        
-    }
-}
-
-extension MainController : UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == followingCollectionView {
-            return FollowingCell.fittingSize(availableHeight: 35, name: following[indexPath.item])
-        } else {
-            return CGSize(width: view.frame.width, height: 200)
-        }
-        
-        
-    }
+extension MainController : UICollectionViewDelegate {
+//    collectionView
 }
 
 extension MainController : CalendarViewDelegate {
-    func updateCalendarScope(height:CGFloat) {
-        calendarView.snp.updateConstraints { make in
-            make.height.equalTo(height)
-        }
-        self.view.layoutIfNeeded()
+
+    func updateCalendarScope() {
+        calendarIsMonth.toggle()
     }
-    
     
 }
