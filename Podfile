@@ -1,12 +1,11 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '13.0'
 
 target 'PlanShare_iOS' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for PlanShare_iOS
-  pod 'FSCalendar'
+    pod 'FSCalendar'
   pod 'SnapKit', '~> 5.0.0'
   pod 'Then'
   pod 'IGColorPicker'
@@ -14,4 +13,6 @@ target 'PlanShare_iOS' do
   pod 'KakaoSDKAuth'  # 사용자 인증
   pod 'KakaoSDKUser'  # 카카오 로그인, 사용자 관리
   pod 'SwiftKeychainWrapper'
+  pod 'RxSwift', '6.5.0'
+  pod 'RxCocoa', '6.5.0'
 end

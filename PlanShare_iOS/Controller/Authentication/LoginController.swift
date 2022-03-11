@@ -35,7 +35,7 @@ class LoginController: UIViewController {
     }
     
     @objc func didTapLogin(){
-
+        
         if UserApi.isKakaoTalkLoginAvailable() {
             loginWithApp()
         } else {
@@ -54,19 +54,11 @@ extension LoginController {
             }
             else {
                 print("loginWithKakaoTalk() success.")
-                
-                //do something
                 let accessToken = oauthToken?.accessToken
-                
                 AuthService.shared.login(request: accessToken!) { [weak self] result in
                     switch result {
-                    case .success(let token) :
-                        let saveSuccessful: Bool = KeychainWrapper.standard.set(token, forKey: "AccessToken")
-                        if saveSuccessful {
-                            let vc = UINavigationController(rootViewController: MainController())
-                            vc.modalPresentationStyle = .fullScreen
-                            self?.present(vc,animated: false)
-                        }
+                    case .success(let data) :
+                        self?.checkUser(jsonData: data)
                     case .failure(let error) :
                         print(error.localizedDescription)
                     }
@@ -81,24 +73,42 @@ extension LoginController {
                 print(error)
             }
             else {
-                print("loginWithKakaoAccount() success.")
-                
+                print("loginWithKakaoTalk() success.")
                 let accessToken = oauthToken?.accessToken
-                
                 AuthService.shared.login(request: accessToken!) { [weak self] result in
                     switch result {
-                    case .success(let token) :
-                        let saveSuccessful: Bool = KeychainWrapper.standard.set(token, forKey: "AccessToken")
-                        if saveSuccessful {
-                            let vc = UINavigationController(rootViewController: MainController())
-                            vc.modalPresentationStyle = .fullScreen
-                            self?.present(vc,animated: false)
-                        }
+                    case .success(let data) :
+                        self?.checkUser(jsonData: data)
                     case .failure(let error) :
                         print(error.localizedDescription)
                     }
                 }
             }
+        }
+    }
+    private func checkUser(jsonData:[String:Any]) {
+        
+        if let jwt = jsonData["jwt"] as? String {
+            print("DEBUG : 이미 등록된 회원입니다.")
+            KeychainWrapper.standard.set(jwt, forKey: "AccessToken")
+            let vc = MainController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc,animated:true)
+        } else {
+            guard let email = jsonData["email"] as? String, let id = jsonData["kakaoId"] as? Int else {
+                return
+            }
+            
+            
+            KeychainWrapper.standard.set(String(id), forKey: "ID")
+            KeychainWrapper.standard.set(email, forKey: "email")
+
+            print("DEBUG : 회원가입이 필요한 회원입니다.")
+            
+            // 닉네임 필요
+            let vc = RegisterController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc,animated:true)
         }
     }
 }
