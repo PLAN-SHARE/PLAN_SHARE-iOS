@@ -8,6 +8,7 @@
 import Foundation
 
 struct Schedule : Hashable {
+    var categoryID : Int
     var startTime : String
     var endTime : String
     var text : String

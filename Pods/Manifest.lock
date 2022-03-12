@@ -15,6 +15,12 @@ PODS:
   - KakaoSDKUser (2.8.4):
     - KakaoSDKAuth (= 2.8.4)
   - M13Checkbox (3.4.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - SnapKit (5.0.1)
   - SwiftKeychainWrapper (4.0.1)
   - Then (2.7.0)
@@ -25,6 +31,8 @@ DEPENDENCIES:
   - KakaoSDKAuth
   - KakaoSDKCommon
   - KakaoSDKUser
+  - RxCocoa (= 6.5.0)
+  - RxSwift (= 6.5.0)
   - SnapKit (~> 5.0.0)
   - SwiftKeychainWrapper
   - Then
@@ -38,6 +46,9 @@ SPEC REPOS:
     - KakaoSDKCommon
     - KakaoSDKUser
     - M13Checkbox
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SnapKit
     - SwiftKeychainWrapper
     - Then
@@ -50,10 +61,13 @@ SPEC CHECKSUMS:
   KakaoSDKCommon: 33c9902ee9ce13e9d1cac3549896406229836ff5
   KakaoSDKUser: d878977e0ba6b365cfeac3b6319cdf4231713bea
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 63202251503ceaefab13930b9d859abb9d5fcbc4
+PODFILE CHECKSUM: 6eab2d628086785eb0752425221943f3d9913a85
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2

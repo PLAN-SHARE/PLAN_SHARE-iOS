@@ -15,18 +15,9 @@ enum scope {
 }
 
 struct Category : Hashable {
-    
-    var hashValue: Int {
-        return title.hashValue &* 16777619
-    }
-    
-    static func == (lhs: Category, rhs: Category) -> Bool {
-        return lhs.title == rhs.title
-    }
-    
+    var id : Int
     var title : String
-    var icon : UIImage?
-    var textColor : UIColor? = .black
-    var schedules: [Schedule]?
+    var iconURL: String?
+    var textColor : String
     var scope : scope
 }

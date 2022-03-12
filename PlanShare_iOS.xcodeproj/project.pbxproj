@@ -25,6 +25,8 @@
 		7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD527C526C2003CE1F2 /* SetCategoryController.swift */; };
 		7897BBD827C5407A003CE1F2 /* SetScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */; };
 		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
+		E484EDB627DB4D6D00513BA7 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDB527DB4D6D00513BA7 /* RegisterController.swift */; };
+		E484EDB827DB4DDD00513BA7 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDB727DB4DDD00513BA7 /* ScheduleService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		7897BBD727C5407A003CE1F2 /* SetScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetScheduleController.swift; sourceTree = "<group>"; };
 		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E484EDB527DB4D6D00513BA7 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
+		E484EDB727DB4DDD00513BA7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
 		FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanShare_iOS.debug.xcconfig"; path = "Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,7 +97,6 @@
 		780796B527C27C6F00C0BF12 /* PlanShare_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				7822319527D23E8B00FB5826 /* ViewModel */,
 				780796B627C27C6F00C0BF12 /* AppDelegate.swift */,
 				780796B827C27C6F00C0BF12 /* SceneDelegate.swift */,
 				7822318B27D0843C00FB5826 /* Model */,
@@ -134,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				7822317927CA8C7100FB5826 /* LoginController.swift */,
+				E484EDB527DB4D6D00513BA7 /* RegisterController.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				7822318227CE16E700FB5826 /* AuthService.swift */,
+				E484EDB727DB4DDD00513BA7 /* ScheduleService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -154,13 +159,6 @@
 				7822319027D1CE2E00FB5826 /* Category.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		7822319527D23E8B00FB5826 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		DD9FC2BFD24A623A2144A588 /* Pods */ = {
@@ -298,6 +296,8 @@
 				780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */,
 				7897BBD627C526C2003CE1F2 /* SetCategoryController.swift in Sources */,
 				780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */,
+				E484EDB827DB4DDD00513BA7 /* ScheduleService.swift in Sources */,
+				E484EDB627DB4D6D00513BA7 /* RegisterController.swift in Sources */,
 				7822318F27D1CE1A00FB5826 /* Schedule.swift in Sources */,
 				780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */,
 				7822319127D1CE2E00FB5826 /* Category.swift in Sources */,
