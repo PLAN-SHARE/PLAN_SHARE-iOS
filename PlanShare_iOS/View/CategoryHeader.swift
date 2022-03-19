@@ -12,13 +12,12 @@ class CategoryHeader: UICollectionReusableView {
     //MARK: - Properties
     static let reuseIdentifier = "CategoryCell"
     
-    var category : Category? {
+    var categoryViewModel : CategoryViewModel? {
         didSet{
-            guard let category = category else {
+            guard let categoryViewModel = self.categoryViewModel else {
                 return
             }
-
-            configure(category: category)
+            configure(categoryViewModel: categoryViewModel)
         }
     }
     
@@ -52,8 +51,8 @@ class CategoryHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(category: Category){
-        categoryButton.setTitle(category.title, for: .normal)
+    private func configure(categoryViewModel: CategoryViewModel){
+        categoryButton.setTitle(categoryViewModel.title, for: .normal)
     }
 }
 
