@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (5.4.3)
+  - Differentiator (5.0.0)
   - FSCalendar (2.8.2)
   - IGColorPicker (0.4.3):
     - M13Checkbox
@@ -18,6 +19,10 @@ PODS:
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
+  - RxDataSources (5.0.0):
+    - Differentiator (~> 5.0)
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
@@ -32,6 +37,7 @@ DEPENDENCIES:
   - KakaoSDKCommon
   - KakaoSDKUser
   - RxCocoa (= 6.5.0)
+  - RxDataSources (~> 5.0)
   - RxSwift (= 6.5.0)
   - SnapKit (~> 5.0.0)
   - SwiftKeychainWrapper
@@ -40,6 +46,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - Differentiator
     - FSCalendar
     - IGColorPicker
     - KakaoSDKAuth
@@ -47,6 +54,7 @@ SPEC REPOS:
     - KakaoSDKUser
     - M13Checkbox
     - RxCocoa
+    - RxDataSources
     - RxRelay
     - RxSwift
     - SnapKit
@@ -55,6 +63,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
   IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
   KakaoSDKAuth: b9b693995f98b1821ccd22b39d383e1dede5ca45
@@ -62,12 +71,13 @@ SPEC CHECKSUMS:
   KakaoSDKUser: d878977e0ba6b365cfeac3b6319cdf4231713bea
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 6eab2d628086785eb0752425221943f3d9913a85
+PODFILE CHECKSUM: 236acea75ad02a2ac5895f43b36890b58435a7be
 
 COCOAPODS: 1.11.2
