@@ -47,10 +47,11 @@ class FollowingCell: UICollectionViewCell {
         
         contentView.addSubview(titleLabel)
         contentView.backgroundColor = .lightGray
-//        contentView.layer.borderColor = UIColor.black.cgColor
-//        contentView.layer.borderWidth = 2
-        titleLabel.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview().inset(5)
+        titleLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(3)
+            make.right.equalToSuperview().offset(-3)
+            make.top.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().offset(-3)
         }
     }
     

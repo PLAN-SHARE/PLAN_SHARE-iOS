@@ -91,15 +91,16 @@ extension LoginController {
         if let jwt = jsonData["jwt"] as? String {
             print("DEBUG : 이미 등록된 회원입니다.")
             KeychainWrapper.standard.set(jwt, forKey: "AccessToken")
-            let vc = MainController()
+            
+            let vc = MainController(viewModel: MainViewModel(categoryService: CategoryService()
+                                                             ,userService: UserService()))
             vc.modalPresentationStyle = .fullScreen
             self.present(vc,animated:true)
         } else {
             guard let email = jsonData["email"] as? String, let id = jsonData["kakaoId"] as? Int else {
                 return
             }
-            
-            
+
             KeychainWrapper.standard.set(String(id), forKey: "ID")
             KeychainWrapper.standard.set(email, forKey: "email")
 

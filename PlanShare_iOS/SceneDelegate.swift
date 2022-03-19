@@ -23,11 +23,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        if KeychainWrapper.standard.string(forKey: "AccessToken") != nil {
-            window?.rootViewController = UINavigationController(rootViewController: MainController())
-        }else {
-            window?.rootViewController = UINavigationController(rootViewController: LoginController())
-        }
+//        if KeychainWrapper.standard.string(forKey: "AccessToken") != nil {
+        window?.rootViewController = UINavigationController(rootViewController: MainController(viewModel: MainViewModel(categoryService: CategoryService()                                                            ,userService: UserService())))
+//)        }else {
+//            print("heelo")
+//            window?.rootViewController = UINavigationController(rootViewController: LoginController())
+//        }
         
         window?.makeKeyAndVisible()
     }

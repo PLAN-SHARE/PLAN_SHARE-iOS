@@ -8,16 +8,25 @@
 import Foundation
 import UIKit
 
-enum scope {
+enum scope : Codable {
     case privacy
-    case partial
     case full
 }
 
-struct Category : Hashable {
+struct Category : Hashable, Codable {
     var id : Int
     var title : String
     var iconURL: String?
     var textColor : String
     var scope : scope
+    var schdules:[Schedule]?
+}
+
+struct Schedule : Hashable,Codable {
+    var categoryID : Int
+    var startTime : String
+    var endTime : String
+    var text : String
+    var isAlarm : Bool
+    var currentUser: Bool
 }

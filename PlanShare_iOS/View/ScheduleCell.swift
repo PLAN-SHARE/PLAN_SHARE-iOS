@@ -11,9 +11,9 @@ class ScheduleCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ScheduleCell"
     
-    var title : String = "" {
-        didSet {
-            scheduleLabel.text = self.title
+    var schedule: Schedule? {
+        didSet{
+            configure(schedule: self.schedule!)
         }
     }
     
@@ -34,7 +34,6 @@ class ScheduleCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = .white
-        
         addSubview(scheduleLabel)
         scheduleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -63,6 +62,13 @@ class ScheduleCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Configure
+    func configure(schedule:Schedule) {
+        self.scheduleLabel.text = schedule.text
+        self.editButton.isHidden = !schedule.currentUser
+    }
+    
+    //MARK: - Selector
     @objc func handleEditButton() {
         print("DEBUG : Did tap EditButton")
     }
