@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct User{
-    let id : Int
+struct User : Codable {
+    let email : String
+    var nickname : String
     var categories : [Category]?
-    var isCurrentUser : Bool = true
+    var following: [User]?
 }
