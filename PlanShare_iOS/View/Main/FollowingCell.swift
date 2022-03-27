@@ -11,6 +11,7 @@ import Then
 
 class FollowingCell: UICollectionViewCell {
     
+    //MARK: - Properties
     static let reuseIdentifier = "FollowingCell"
     
     static func fittingSize(availableHeight: CGFloat, name: String?) -> CGSize {
@@ -27,14 +28,15 @@ class FollowingCell: UICollectionViewCell {
         $0.font = .boldSystemFont(ofSize: 16)
     }
     
+    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupView()
+        configureUI()
     }
     
     override func layoutSubviews() {
@@ -42,8 +44,9 @@ class FollowingCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 40 / 2
     }
     
-    private func setupView() {
-        backgroundColor = .white
+    //MARK: - Configure
+    private func configureUI() {
+        backgroundColor = .systemGroupedBackground
         
         contentView.addSubview(titleLabel)
         contentView.backgroundColor = .lightGray

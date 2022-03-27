@@ -39,16 +39,10 @@ class CalendarView: UICollectionReusableView {
         $0.text = ""
     }
     
-    private var convertCalendarScopeButton = UIButton().then {
+    private lazy var convertCalendarScopeButton = UIButton().then {
         $0.tintColor = .darkGray
         $0.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         $0.addTarget(self, action: #selector(didTapConvertCalendar), for: .touchUpInside)
-    }
-    
-    private var convertViewScheduleModeButton = UIButton().then {
-        $0.tintColor = .darkGray
-        $0.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
-        $0.addTarget(self, action: #selector(didTapConvertScheduleMode), for: .touchUpInside)
     }
     
     override init(frame: CGRect) {
@@ -56,32 +50,25 @@ class CalendarView: UICollectionReusableView {
         
         configureCalendar()
         
-        backgroundColor = .white
+        backgroundColor = .systemGroupedBackground
         
         addSubview(dateTitleLabel)
         dateTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(10)
             make.top.equalToSuperview().offset(20)
         }
         
         addSubview(convertCalendarScopeButton)
         convertCalendarScopeButton.snp.makeConstraints { make in
-            make.left.equalTo(dateTitleLabel.snp.right).offset(10)
+            make.left.equalTo(dateTitleLabel.snp.right).offset(5)
             make.centerY.equalTo(dateTitleLabel.snp.centerY)
-            make.width.height.equalTo(30)
-        }
-        
-        addSubview(convertViewScheduleModeButton)
-        convertViewScheduleModeButton.snp.makeConstraints { make in
-            make.centerY.equalTo(convertCalendarScopeButton)
-            make.right.equalToSuperview().offset(-15)
             make.width.height.equalTo(30)
         }
         
         addSubview(calendar)
         calendar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(dateTitleLabel.snp.bottom).offset(20)
+            make.top.equalTo(dateTitleLabel.snp.bottom).offset(10)
             make.height.equalTo(300)
         }
     }
@@ -106,7 +93,7 @@ class CalendarView: UICollectionReusableView {
         calendar.appearance.eventSelectionColor = .green
         
         calendar.appearance.titleTodayColor = .orange
-        
+        calendar.backgroundColor = .systemGroupedBackground
         calendar.appearance.todayColor = .clear
         calendar.appearance.todaySelectionColor = .none
         calendar.appearance.titleWeekendColor = .red
