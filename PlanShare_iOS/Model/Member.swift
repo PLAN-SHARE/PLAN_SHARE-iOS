@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct User : Codable {
+struct Member : Hashable,Codable {
+    let id : Int
     let email : String
-    var nickname : String
-    var categories : [Category]?
-    var following: [User]?
+    let kakaoId : Int
+    let nickName : String
 }
