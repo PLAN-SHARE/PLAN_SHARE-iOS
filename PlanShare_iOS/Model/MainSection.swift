@@ -9,7 +9,7 @@ import Foundation
 import Differentiator
 
 enum SectionItem {
-    case following(user: User)
+    case following(member: Member)
     case schedule(schedule: Schedule)
 }
 
@@ -18,7 +18,7 @@ enum SectionModel: SectionModelType {
     typealias item = SectionItem
     
     case FollowingModel(items: [SectionItem])
-    case ScheduleModel(header:CategoryViewModel,items:[SectionItem])
+    case ScheduleModel(header:Category,items:[SectionItem])
     
     var items:[SectionItem] {
         switch self {

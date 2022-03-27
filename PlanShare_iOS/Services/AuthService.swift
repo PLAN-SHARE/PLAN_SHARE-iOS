@@ -17,13 +17,13 @@ struct AuthService {
     //Login
     func login(request token: String,completion:@escaping(Result<[String:Any],Error>)->Void) {
         
-        let URL = "http://52.79.87.87:9090/user/login"
+        let url = "http://52.79.87.87:9090/user/login"
         
         let parameters = [
             "accessToken" : token
         ]
         
-        AF.request(URL,method: .get,parameters: parameters,
+        AF.request(url,method: .get,parameters: parameters,
                    encoding: URLEncoding.queryString).validate(statusCode: 200..<300).responseString { response in
             switch response.result {
                 
@@ -51,11 +51,14 @@ struct AuthService {
         }
     }
     
-    func getAuthorizationHeader(key: String) -> HTTPHeaders? {
-        guard let accessToken =  KeychainWrapper.standard.string(forKey: key) else {
+
+    func getAuthorizationHeader() -> HTTPHeaders? {
+        guard let accessToken =  KeychainWrapper.standard.string(forKey: "AccessToken") else {
             return nil }
-        return ["Authorization" : "bearer \(accessToken)"] as HTTPHeaders
+        
+        return ["Authorization" : "Bearer \(accessToken)"] as HTTPHeaders
     }
+    
     
     func register(nickName:String,completion:@escaping(Result<String,Error>)-> Void) {
         
@@ -66,9 +69,6 @@ struct AuthService {
         
         let url = "http://52.79.87.87:9090/user/signup"
         
-        //        var request = URLRequest(url: URL(string: url)!, method: .post)
-        //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //
         let parameters = [
             "email" : email,
             "kakaoId" : Int(id)!,
@@ -84,22 +84,7 @@ struct AuthService {
             }
         }
     }
-    
-    
-    //            completionHandler: { response in
-    //            print("DEBUG : \(response)")
-    //            switch response.result {
-    //            case .success(let data) :
-    //                guard let data = data else {
-    //                    return
-    //                }
-    //                print(data)
-    //                completion(.success("success"))
-    //            case .failure(let error) :
-    //                completion(.failure(error))
-    //            })
-    
-    
+
 }
 
 

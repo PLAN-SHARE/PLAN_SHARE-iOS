@@ -1,18 +1,17 @@
-//
-//  Schedule.swift
-//  PlanShare_iOS
-//
-//  Created by doyun on 2022/03/04.
-//
-//
-//import Foundation
-//
-//struct Schedule : Hashable {
-//    let id = UUID()
-//    var categoryID : Int
-//    var startTime : String
-//    var endTime : String
-//    var text : String
-//    var isAlarm : Bool
-//    var currentUser: Bool
-//}
+
+
+import Foundation
+
+struct ScheduleResponse: Hashable,Codable {
+    let categoryID : Int
+    let schedules:[Schedule]?
+}
+
+struct Schedule : Hashable,Codable {
+    
+    var startTime : Date
+    var endTime : Date
+    var text : String
+    var isAlarm : Bool
+    var isDone : Bool
+}

@@ -9,7 +9,7 @@ import UIKit
 
 class SearchController: UIViewController {
 
-
+    //MARK: - Properties
     private let tableView = UITableView().then {
         $0.backgroundColor = .white
     }
@@ -26,6 +26,7 @@ class SearchController: UIViewController {
         view.addSubview(tableView)
         tableView.frame = view.bounds
     }
+    
     func configureSearch(){
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false

@@ -92,8 +92,8 @@ extension LoginController {
             print("DEBUG : 이미 등록된 회원입니다.")
             KeychainWrapper.standard.set(jwt, forKey: "AccessToken")
             
-            let vc = MainController(viewModel: MainViewModel(categoryService: CategoryService()
-                                                             ,userService: UserService()))
+            let vc = UINavigationController(rootViewController:MainController(viewModel: MainViewModel(categoryService: CategoryService()
+                                                             ,userService: UserService())))
             vc.modalPresentationStyle = .fullScreen
             self.present(vc,animated:true)
         } else {

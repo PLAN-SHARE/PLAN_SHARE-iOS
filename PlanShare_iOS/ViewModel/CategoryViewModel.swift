@@ -10,20 +10,20 @@ class CategoryViewModel {
 
     private let category: Category
 
-    var imageUrl : String? {
-        return category.iconURL
+    var imageUrl : String {
+        return category.icon
     }
 
     var title : String? {
         return category.title
     }
 
-    var textColor : String? {
-        return category.textColor
+    var textColor : String {
+        return category.color.uppercased()
     }
 
-    var categoryScope: scope {
-        return category.scope
+    var categoryScope: Bool {
+        return category.visibility
     }
 
     init(category: Category) {

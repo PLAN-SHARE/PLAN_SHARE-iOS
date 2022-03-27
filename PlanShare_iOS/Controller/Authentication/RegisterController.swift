@@ -89,8 +89,7 @@ class RegisterController: UIViewController {
     }
     
     func nextVC(){
-        let vc = MainController(viewModel: MainViewModel(categoryService: CategoryService()
-                                                         ,userService: UserService()))
+        let vc = UINavigationController(rootViewController: MainController(viewModel: MainViewModel(categoryService: CategoryService()                                                            ,userService: UserService())))
         vc.modalPresentationStyle = .fullScreen
         present(vc,animated: true)
     }
