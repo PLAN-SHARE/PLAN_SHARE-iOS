@@ -8,25 +8,25 @@
 import Foundation
 import UIKit
 
-enum scope : Codable {
-    case privacy
-    case full
+struct CategoryResponse: Codable {
+    var categories : [CategoryModel]?
+}
+struct CategoryModel: Codable {
+    var color : String
+    var icon : String
+    var id : Int
+    var member: Member
+    var name : String
+    var visibility : Bool
+    
 }
 
-struct Category : Hashable, Codable {
+struct Category : Codable {
     var id : Int
     var title : String
-    var iconURL: String?
-    var textColor : String
-    var scope : scope
-    var schdules:[Schedule]?
-}
-
-struct Schedule : Hashable,Codable {
-    var categoryID : Int
-    var startTime : String
-    var endTime : String
-    var text : String
-    var isAlarm : Bool
-    var currentUser: Bool
+    var icon : String
+    var color : String
+    var visibility : Bool
+    var user: Member
+    var schedules:[Schedule]?
 }
