@@ -107,8 +107,7 @@ class MainController: UIViewController {
     
     //MARK: - configure
     func configureUI(){
-        
-//        let plusButton = UIBarButtonItem(customView: addButton)
+    
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
         view.backgroundColor = .init(named: "edebf5")
         
