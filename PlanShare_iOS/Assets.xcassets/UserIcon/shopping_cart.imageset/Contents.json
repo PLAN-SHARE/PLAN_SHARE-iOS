@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "outline_event_note_black_20pt_1x.png",
+      "filename" : "outline_shopping_cart_black_36pt_1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "outline_event_note_black_20pt_2x.png",
+      "filename" : "outline_shopping_cart_black_36pt_2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "outline_event_note_black_20pt_3x.png",
+      "filename" : "outline_shopping_cart_black_36pt_3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

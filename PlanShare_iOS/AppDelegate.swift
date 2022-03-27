@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 15.0, *) {
             let navigationBarAppearance = UINavigationBarAppearance()
             navigationBarAppearance.configureWithDefaultBackground()
-            navigationBarAppearance.backgroundColor = .white
+            navigationBarAppearance.backgroundColor = .systemGroupedBackground
             navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.darkGray]
             
             UINavigationBar.appearance().standardAppearance = navigationBarAppearance
@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
