@@ -12,16 +12,13 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import Differentiator
+import PanModal
 
 class MainController: UIViewController {
     //MARK: - Properties
     private var collectionView : UICollectionView!
-    //    private var dataSource : UICollectionViewDiffableDataSource<Int,Item>!
-    
     private var sectionSubject = BehaviorRelay<[SectionModel]>(value: [])
-    
     private let disposBag = DisposeBag()
-    
     let viewModel : MainViewModel!
     
     private var calendarIsMonth : Bool = true {
@@ -30,25 +27,18 @@ class MainController: UIViewController {
         }
     }
     
-    var following = ["박도윤","창묵","호성","희중","가나","다라","하하하","+"]
     private var isFloating : Bool = false
     
     private lazy var AddButtons = [UIButton]()
     
     private lazy var searchButton = UIButton().then {
-        $0.setImage(UIImage(named: "outline_search_black_36pt"), for: .normal)
+        $0.setImage(UIImage(named: "search"), for: .normal)
         $0.imageView?.contentMode = .scaleAspectFit
         $0.addTarget(self, action: #selector(handleSearch), for: .touchUpInside)
         $0.tintColor = .black
     }
     
-    private let notificationButton = UIButton().then {
-        $0.setImage(UIImage(named: "outline_notifications_black_36pt"), for: .normal)
-        $0.addTarget(self, action: #selector(handleNotifications), for: .touchUpInside)
-        $0.tintColor = .black
-    }
-    
-    private var addGoalButton = UIButton().then {
+    private lazy var addGoalButton = UIButton().then {
         $0.setImage(UIImage(systemName: "folder.badge.plus"), for: .normal)
         $0.layer.cornerRadius = 50/2
         $0.layer.masksToBounds = true
@@ -61,7 +51,7 @@ class MainController: UIViewController {
         $0.addTarget(self, action: #selector(addGoal), for: .touchUpInside)
     }
     
-    private var addScheduleButton = UIButton().then {
+    private lazy var addScheduleButton = UIButton().then {
         $0.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         $0.tintColor = .darkGray
         $0.contentMode = .scaleToFill
@@ -74,7 +64,7 @@ class MainController: UIViewController {
         $0.addTarget(self, action: #selector(addSchedule), for: .touchUpInside)
     }
     
-    private let floatingButton = UIButton().then {
+    private lazy var floatingButton = UIButton().then {
         $0.setImage(UIImage(systemName: "plus"), for: .normal)
         $0.backgroundColor = .black
         $0.tintColor = .white
@@ -92,13 +82,18 @@ class MainController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("DEBUG : main view loaded")
-        configureNavigation()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didDismissDetailNotification(_:)),
+            name: NSNotification.Name("dismissCreateView"),
+            object: nil
+        )
+        
         configureCollectionView()
         configureUI()
         fetchSectionModel()
         bind()
-        //        subscribe()
     }
     
     init(viewModel: MainViewModel) {
@@ -112,7 +107,10 @@ class MainController: UIViewController {
     
     //MARK: - configure
     func configureUI(){
-        view.backgroundColor = .white
+        
+//        let plusButton = UIBarButtonItem(customView: addButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
+        view.backgroundColor = .init(named: "edebf5")
         
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
@@ -141,42 +139,41 @@ class MainController: UIViewController {
             make.height.equalTo(110)
         }
     }
-    
-    func configureNavigation() {
-        let search = UIBarButtonItem(customView: searchButton)
-        let notification = UIBarButtonItem(customView: notificationButton)
-        navigationItem.rightBarButtonItems = [search,notification]
-    }
-    
     func configureCollectionView() {
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(state:calendarIsMonth))
         collectionView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: CategoryHeader.reuseIdentifier, withReuseIdentifier: CategoryHeader.reuseIdentifier)
         collectionView.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.reuseIdentifier)
         collectionView.register(FollowingCell.self, forCellWithReuseIdentifier: FollowingCell.reuseIdentifier)
         collectionView.register(CalendarView.self, forSupplementaryViewOfKind: CalendarView.reuseIdentifier , withReuseIdentifier: CalendarView.reuseIdentifier)
-        collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
     }
     
-    
-    
     // API
     func bind(){
         let dataSource =  dataSource()
+        
         sectionSubject.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposBag)
         
-        collectionView.rx.itemSelected.subscribe(onNext: { indexPath in
-            print(indexPath)
-            print(self.sectionSubject.value[0].items.count)
-//            if indexPath.section == 0 && indexPath.row = sectionSubject.value[0].items.count {
-//
-//            }
-        }).disposed(by: disposBag)
+        collectionView.rx.itemSelected.subscribe {
+            
+            guard let element = $0.element else {
+                return
+            }
+
+            let datasource = self.sectionSubject.value[element.section].items[element.row]
+            
+            switch datasource {
+            case .schedule(schedule: let schedule) :
+                break
+            case .following(member: let user) :
+                break
+            }
+        }.disposed(by: disposBag)
     }
     
     func fetchSectionModel(){
@@ -187,25 +184,22 @@ class MainController: UIViewController {
         viewModel.fetchCategory().subscribe { sectionModel in
             self.sectionSubject.accept(self.sectionSubject.value + sectionModel)
         }.disposed(by: disposBag)
+        
+//        print(sectionSubject.value)
+
     }
     
     //MARK: - selector
     @objc func handleSearch() {
-        print("DEBUG : Handle Search")
         let vc = UINavigationController(rootViewController:SearchController())
         vc.modalPresentationStyle = .fullScreen
         present(vc,animated: false)
     }
     
-    @objc func handleNotifications(){
-        print("did tap notification")
-    }
-    
     @objc func handleFloatingButton() {
-        print("DEBUG : Did tap floating Button")
         if isFloating {
             AddButtons.reversed().forEach { button in
-                UIView.animate(withDuration: 0.1) {
+                UIView.animate(withDuration: 0.2) {
                     button.isHidden = true
                     self.view.layoutIfNeeded()
                 }
@@ -215,7 +209,7 @@ class MainController: UIViewController {
                 button.isHidden = false
                 button.alpha = 0
                 
-                UIView.animate(withDuration: 0.1) {
+                UIView.animate(withDuration: 0.2) {
                     button.alpha = 1
                     self?.view.layoutIfNeeded()
                 }
@@ -226,24 +220,31 @@ class MainController: UIViewController {
     
     @objc func addGoal(){
         AddButtons.reversed().forEach { button in
-            UIView.animate(withDuration: 0.1) {
+            UIView.animate(withDuration: 0.2) {
                 button.isHidden = true
                 self.view.layoutIfNeeded()
             }
         }
-        let vc = SetCategoryController()
+        let vc = CreateCategoryController(viewModel: CreateViewModel(categoryService: CategoryService()))
         navigationController?.pushViewController(vc, animated: true)
     }
+    
     @objc func addSchedule(){
         AddButtons.reversed().forEach { button in
-            UIView.animate(withDuration: 0.1) {
+            UIView.animate(withDuration: 0.2) {
                 button.isHidden = true
                 self.view.layoutIfNeeded()
             }
         }
-        let vc = SetScheduleController()
+        let vc = CreateScheduleController(viewModel: CreateViewModel(categoryService: CategoryService()))
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @objc func didDismissDetailNotification(_ notification: Notification) {
+        fetchSectionModel()
+//        bind()
+    }
+    
 }
 
 //MARK: - CollectionViewDataSoruce
@@ -258,8 +259,8 @@ extension MainController {
                     return UICollectionViewCell()
                 }
                 switch items[indexPath.row] {
-                case .following(user: let user):
-                    cell.configure(name: user.nickname)
+                case .following(member: let member):
+                    cell.configure(name: member.nickName)
                     let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: 35)
                     cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
                     cell.sizeToFit()
@@ -274,6 +275,7 @@ extension MainController {
                 switch items[indexPath.row] {
                 case .schedule(schedule: let schdule):
                     cell.schedule = schdule
+                    //                    cell.delegate = self
                 default : break
                 }
                 return cell
@@ -290,12 +292,13 @@ extension MainController {
             case CategoryHeader.reuseIdentifier :
                 switch dataSource.sectionModels[indexPath.section] {
                 case .FollowingModel(items: _) : break
-                case .ScheduleModel(header: let viewModel, items:_) :
+                case .ScheduleModel(header: let header, items:_) :
                     guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
                         ofKind: kind,
                         withReuseIdentifier: CategoryHeader.reuseIdentifier,
                         for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
-                    supplementaryView.categoryViewModel = viewModel
+                    supplementaryView.category = header
+                    supplementaryView.delegate = self
                     return supplementaryView
                 }
                 
@@ -343,37 +346,37 @@ extension MainController {
         
         return section
     }
-    //
+    
     func generateCategoryLayout() -> NSCollectionLayoutSection {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(40))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
+        group.interItemSpacing = .fixed(10)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 20, bottom: 3, trailing: 20)
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .estimated(40))
+                                                heightDimension: .absolute(40))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: CategoryHeader.reuseIdentifier, alignment: .top)
         
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
-        
         return section
     }
 }
-extension MainController : UICollectionViewDelegate {
-    //    collectionView
-}
-
 extension MainController : CalendarViewDelegate {
     func updateCalendarScope() {
         calendarIsMonth.toggle()
     }
 }
-
-
+extension MainController : CategoryHeaderDelegate {
+    func handleCategory(category: Category) {
+        let vc = DetailViewController(category: category)
+        self.presentPanModal(vc)
+    }
+}

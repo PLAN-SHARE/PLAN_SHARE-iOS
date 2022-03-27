@@ -6,22 +6,31 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
-class SetScheduleController: UIViewController {
+class CreateScheduleController: UIViewController {
+    
+    private var viewModel: CreateViewModel!
+    private var disposeBag = DisposeBag()
     
     private var pickerView = UIPickerView()
     private var datePicker = UIDatePicker()
     private var isAlarm = false
+    
     private var categories = ["프로젝트","장보기","과제","운동"]
+    private var categoryRelay = BehaviorRelay<[Category]>(value: [])
+    private var selectedCateogry : Category!
     
     private let categoryLabel = UILabel().then{
         $0.text = "목표"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 22)
+        $0.font = .boldSystemFont(ofSize: 18)
     }
     
     private lazy var categoryTextField = UITextField().then {
         $0.textColor = .black
+        $0.backgroundColor = .red
         $0.inputView = pickerView
         $0.font = .systemFont(ofSize: 20)
         
@@ -38,7 +47,7 @@ class SetScheduleController: UIViewController {
     private let scheudleLabel = UILabel().then{
         $0.text = "해야할 일"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 22)
+        $0.font = .boldSystemFont(ofSize: 18)
     }
     
     private lazy var scheduleTextField = UITextField().then {
@@ -52,7 +61,7 @@ class SetScheduleController: UIViewController {
     private let startDateLabel = UILabel().then{
         $0.text = "시작 시간"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 22)
+        $0.font = .boldSystemFont(ofSize: 18)
     }
     
     private lazy var startDateTextField = UITextField().then {
@@ -69,6 +78,7 @@ class SetScheduleController: UIViewController {
         $0.inputView = datePicker
         $0.font = .systemFont(ofSize: 20)
         $0.setLeftPaddingPoints(15)
+        
         let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: 44.0))
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -76,14 +86,14 @@ class SetScheduleController: UIViewController {
         let barButton = UIBarButtonItem(title: "확인", style: .done, target: target, action: #selector(didTapDone))
         
         toolBar.setItems([cancel, flexible, barButton], animated: false)
-        toolBar.tintColor = .white
+        toolBar.tintColor = .black
         $0.inputAccessoryView = toolBar
     }
     
     private let endDateLabel = UILabel().then{
         $0.text = "종료 시간"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 22)
+        $0.font = .boldSystemFont(ofSize: 18)
     }
     
     private lazy var endDateTextField = UITextField().then {
@@ -107,7 +117,7 @@ class SetScheduleController: UIViewController {
         let barButton = UIBarButtonItem(title: "확인", style: .done, target: target, action: #selector(didTapDone))
         
         toolBar.setItems([cancel, flexible, barButton], animated: false)
-        toolBar.tintColor = .white
+        toolBar.tintColor = .black
         $0.inputAccessoryView = toolBar
     }
     
@@ -129,22 +139,53 @@ class SetScheduleController: UIViewController {
         configureNavigationbar()
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(view.endEditing))
         view.addGestureRecognizer(tapGesture)
-
+    }
+    
+    init(viewModel:CreateViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - API
+    func fetchCategories(){
+        viewModel.fetchCategories()
+            .subscribe(onNext: {
+                self.categoryRelay.accept($0)
+            }).disposed(by: disposeBag)
+        
+        pickerView.rx.itemSelected
+            .subscribe { event in
+                self.selectedCateogry = self.categoryRelay.value[event.element!.row]
+                self.categoryTextField.text = self.categoryRelay.value[event.element!.row].title
+            }.disposed(by: disposeBag)
+    }
+    
+    func bind() {
+        categoryRelay.bind(to: pickerView.rx.itemTitles) { $1.title }
+            .disposed(by: disposeBag)
     }
     //MARK: - Configure
     func configureUI(){
         view.backgroundColor = .white
+        
         view.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(24)
+            make.left.equalToSuperview().offset(35)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.width.equalTo(45)
         }
+        
         view.addSubview(categoryTextField)
         categoryTextField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.top.equalTo(categoryLabel.snp.bottom).offset(25)
-            make.height.equalTo(40)
+            make.left.equalTo(categoryLabel.snp.right).offset(10)
+            make.right.equalToSuperview().offset(-32)
+            make.centerY.equalTo(categoryLabel.snp.centerY)
+            make.height.equalTo(35)
         }
         
         let ul1 = UIView()
@@ -152,24 +193,24 @@ class SetScheduleController: UIViewController {
         
         view.addSubview(ul1)
         ul1.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().offset(-30)
             make.height.equalTo(1)
-            make.top.equalTo(categoryTextField.snp.bottom)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(5)
         }
         
         view.addSubview(scheudleLabel)
         scheudleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(30)
             make.top.equalTo(ul1.snp.bottom).offset(20)
         }
         
         view.addSubview(scheduleTextField)
         scheduleTextField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.top.equalTo(scheudleLabel.snp.bottom).offset(25)
-            make.height.equalTo(45)
+            make.left.equalTo(scheudleLabel.snp.right).offset(32)
+            make.right.equalToSuperview().offset(-32)
+            make.centerY.equalTo(scheudleLabel.snp.centerY)
+            make.height.equalTo(35)
         }
         
         let ul2 = UIView()
@@ -177,30 +218,30 @@ class SetScheduleController: UIViewController {
         
         view.addSubview(ul2)
         ul2.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.left.equalToSuperview().offset(35)
+            make.right.equalToSuperview().offset(-35)
             make.height.equalTo(1)
             make.top.equalTo(scheduleTextField.snp.bottom)
         }
         
         view.addSubview(startDateLabel)
         startDateLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(32)
             make.top.equalTo(ul2.snp.bottom).offset(20)
         }
         
         view.addSubview(startDateTextField)
         startDateTextField.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().offset(-30)
-            make.top.equalTo(startDateLabel.snp.bottom).offset(25)
-            make.height.equalTo(50)
+            make.left.equalTo(startDateLabel.snp.right).offset(35)
+            make.right.equalToSuperview().offset(-35)
+            make.centerY.equalTo(startDateLabel.snp.centerY)
+            make.height.equalTo(35)
         }
         
         
         view.addSubview(endDateLabel)
         endDateLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(30)
             make.top.equalTo(startDateTextField.snp.bottom).offset(20)
         }
         
@@ -208,13 +249,13 @@ class SetScheduleController: UIViewController {
         endDateTextField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
-            make.top.equalTo(endDateLabel.snp.bottom).offset(25)
+            make.top.equalTo(endDateLabel.snp.bottom).offset(20)
             make.height.equalTo(50)
         }
         
         view.addSubview(alarmLabel)
         alarmLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(30)
             make.top.equalTo(endDateTextField.snp.bottom).offset(30)
         }
         
@@ -222,15 +263,12 @@ class SetScheduleController: UIViewController {
         alarmSwitch.snp.makeConstraints { make in
             make.centerY.equalTo(alarmLabel.snp.centerY)
             make.right.equalToSuperview().offset(-30)
-            
         }
-        
     }
     
     func configurePicker(){
-        pickerView.delegate = self
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .dateAndTime
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ko-KR")
         datePicker.timeZone = .autoupdatingCurrent
         scheduleTextField.delegate = self
@@ -251,7 +289,6 @@ class SetScheduleController: UIViewController {
     @objc func didTapCancel(){
         if categoryTextField.isFirstResponder {
             categoryTextField.resignFirstResponder()
-            
         }
         
         if startDateTextField.isFirstResponder {
@@ -269,7 +306,7 @@ class SetScheduleController: UIViewController {
             categoryTextField.resignFirstResponder()
         }
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 MM월 dd일 a hh:mm"
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         
         if startDateTextField.isFirstResponder {
             startDateTextField.text = dateFormatter.string(from: datePicker.date)
@@ -280,6 +317,19 @@ class SetScheduleController: UIViewController {
             endDateTextField.text = dateFormatter.string(from: datePicker.date)
             endDateTextField.resignFirstResponder()
         }
+        
+    }
+    @objc func didTapGoal(){
+        let alert = UIAlertController(title: "목표롤 설정해주세요", message: nil, preferredStyle: .actionSheet)
+        alert.isModalInPopover = true
+        alert.view.addSubview(pickerView)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
+            
+//            print("You selected " + self.typeValue )
+            
+        }))
         
     }
     @objc func handleDone() {
@@ -296,7 +346,7 @@ class SetScheduleController: UIViewController {
     
 }
 
-extension SetScheduleController : UITextFieldDelegate {
+extension CreateScheduleController : UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -307,19 +357,4 @@ extension SetScheduleController : UITextFieldDelegate {
         self.view.endEditing(true)
     }
 }
-extension SetScheduleController : UIPickerViewDelegate,UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        categories.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categories[row]
-    }
-    
-}
-
 
