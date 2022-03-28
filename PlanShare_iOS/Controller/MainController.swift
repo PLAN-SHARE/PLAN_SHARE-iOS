@@ -107,7 +107,11 @@ class MainController: UIViewController {
     
     //MARK: - configure
     func configureUI(){
-    
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
         view.backgroundColor = .init(named: "edebf5")
         
@@ -163,29 +167,32 @@ class MainController: UIViewController {
             guard let element = $0.element else {
                 return
             }
-
+            
             let datasource = self.sectionSubject.value[element.section].items[element.row]
             
             switch datasource {
             case .schedule(schedule: let schedule) :
                 break
-            case .following(member: let user) :
+            case .following(member: let user):
+                if user.nickName == "+" {
+                    let vc = FollowController(viewModel: FollowViewModel(userService: UserService()))
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
                 break
             }
         }.disposed(by: disposBag)
     }
     
     func fetchSectionModel(){
-        viewModel.fetchUser().subscribe { sectionModel in
-            self.sectionSubject.accept([sectionModel])
-        }.disposed(by: disposBag)
-        
-        viewModel.fetchCategory().subscribe { sectionModel in
-            self.sectionSubject.accept(self.sectionSubject.value + sectionModel)
-        }.disposed(by: disposBag)
-        
-//        print(sectionSubject.value)
-
+        viewModel.fetchUser()
+            .subscribe ( onNext : {
+                self.sectionSubject.accept([$0])
+            }).disposed(by: disposBag)
+        viewModel.fetchCategory()
+            .subscribe(onNext : {
+                self.sectionSubject.accept(self.sectionSubject.value + $0)
+            }).disposed(by: disposBag)
+ 
     }
     
     //MARK: - selector
@@ -241,7 +248,7 @@ class MainController: UIViewController {
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
         fetchSectionModel()
-//        bind()
+        //        bind()
     }
     
 }
@@ -252,62 +259,49 @@ extension MainController {
         return RxCollectionViewSectionedReloadDataSource<SectionModel> {
             dataSource, collectionView, indexPath, item in
             
-            switch dataSource.sectionModels[indexPath.section] {
-            case .FollowingModel(items: let items) :
+            switch item {
+            case .following(member: let member) :
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingCell.reuseIdentifier, for: indexPath) as? FollowingCell else {
                     return UICollectionViewCell()
                 }
-                switch items[indexPath.row] {
-                case .following(member: let member):
-                    cell.configure(name: member.nickName)
-                    let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: 35)
-                    cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
-                    cell.sizeToFit()
-                case .schedule(schedule: _): break
-                }
+                cell.member = member
                 return cell
-                
-            case .ScheduleModel(header: _, items: let items) :
+            case .schedule(schedule: let schedule) :
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScheduleCell.reuseIdentifier, for: indexPath) as? ScheduleCell else {
                     return UICollectionViewCell()
                 }
-                switch items[indexPath.row] {
-                case .schedule(schedule: let schdule):
-                    cell.schedule = schdule
-                    //                    cell.delegate = self
-                default : break
-                }
+                cell.schedule = schedule
                 return cell
             }
-        } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-            switch kind {
-            case CalendarView.reuseIdentifier :
+    } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+        switch kind {
+        case CalendarView.reuseIdentifier :
+            guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: CalendarView.reuseIdentifier,
+                for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
+            supplementaryView.delegate = self
+            return supplementaryView
+        case CategoryHeader.reuseIdentifier :
+            switch dataSource.sectionModels[indexPath.section] {
+            case .FollowingModel(items: _) : break
+            case .ScheduleModel(header: let header, items:_) :
                 guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,
-                    withReuseIdentifier: CalendarView.reuseIdentifier,
-                    for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
+                    withReuseIdentifier: CategoryHeader.reuseIdentifier,
+                    for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
+                supplementaryView.category = header
                 supplementaryView.delegate = self
                 return supplementaryView
-            case CategoryHeader.reuseIdentifier :
-                switch dataSource.sectionModels[indexPath.section] {
-                case .FollowingModel(items: _) : break
-                case .ScheduleModel(header: let header, items:_) :
-                    guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
-                        ofKind: kind,
-                        withReuseIdentifier: CategoryHeader.reuseIdentifier,
-                        for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
-                    supplementaryView.category = header
-                    supplementaryView.delegate = self
-                    return supplementaryView
-                }
-                
-            default:
-                return UICollectionReusableView()
             }
+            
+        default:
             return UICollectionReusableView()
         }
+        return UICollectionReusableView()
     }
-    
+}
+
 }
 //MARK: - CollectionView Layout
 extension MainController {
@@ -324,7 +318,7 @@ extension MainController {
         
         let estimatedWidth: CGFloat = 45
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(estimatedWidth),
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.edgeSpacing = .init(leading: .fixed(5), top: nil, trailing: .fixed(5), bottom: nil)
