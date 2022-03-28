@@ -138,7 +138,7 @@ class CreateCategoryController: UIViewController {
     //MARK: - configure
     func configureUI(){
         view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .systemGroupedBackground
+        navigationController?.navigationBar.backgroundColor = .white
         
         view.addSubview(goalLabel)
         goalLabel.snp.makeConstraints { make in
