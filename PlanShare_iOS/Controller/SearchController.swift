@@ -6,13 +6,17 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
-class SearchController: UIViewController {
+class SearchController: UIViewController, UISearchControllerDelegate {
 
     //MARK: - Properties
     private let tableView = UITableView().then {
         $0.backgroundColor = .white
     }
+    
+    private var inputText = BehaviorRelay<String?>(value: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,25 +26,30 @@ class SearchController: UIViewController {
     }
     
     //MARK: - configure
-    func configureUI() {
+    private func configureUI() {
         view.addSubview(tableView)
         tableView.frame = view.bounds
     }
     
-    func configureSearch(){
+    private func configureSearch(){
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
-        
+        searchController.searchBar.placeholder = "email로 유저를 검색해주세요"
+        searchController.delegate = self
+//        tableView.tableHeaderView = searchController.searchBar
         navigationItem.searchController = searchController
-        navigationItem.title = "search"
         navigationItem.hidesSearchBarWhenScrolling = false
     }
-    func configureTable(){
+    private func configureTable(){
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
     
-
+    
+    
+    
 }
 
 extension SearchController : UITableViewDelegate, UITableViewDataSource {
