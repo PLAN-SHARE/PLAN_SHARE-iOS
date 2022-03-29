@@ -81,11 +81,7 @@ class CategoryService : CategoryServiceProtocol {
             return Disposables.create()
         }
     }
-    
-    func fetchFollowing() {
-        
-    }
-    
+
     func fetchCategory(completion:@escaping((Error?,[CategoryModel]?) -> Void )) {
         
         let URL = "http://52.79.87.87:9090/goal/read/myself"
