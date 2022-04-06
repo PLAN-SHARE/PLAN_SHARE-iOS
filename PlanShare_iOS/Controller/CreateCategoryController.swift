@@ -49,6 +49,7 @@ class CreateCategoryController: UIViewController {
         $0.clearButtonMode = .whileEditing
         $0.textColor = .black
         $0.tintColor = .black
+        $0.placeholder = "목표를 입력해주세요"
     }
     
     private let iconLabel = UILabel().then{

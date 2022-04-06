@@ -3,17 +3,6 @@
 //  PlanShare_iOS
 //
 //  Created by Doyun Park on 2022/03/28.
-//
-
-import UIKit
-
-
-//
-//  ReservationFilterCell.swift
-//  withpet_iOS
-//
-//  Created by Doyun Park on 2022/03/08.
-//
 
 import UIKit
 
@@ -25,6 +14,14 @@ enum FollowFilterOptions: Int,CaseIterable {
         switch self {
         case .follower: return "팔로워"
         case .following : return "팔로잉"
+        }
+    }
+    
+    var color : UIColor {
+        
+        switch self {
+        case .follower : return UIColor.mainColor
+        case .following : return UIColor.black
         }
     }
 }
