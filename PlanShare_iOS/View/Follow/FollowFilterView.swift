@@ -11,9 +11,7 @@ protocol FollowFilterViewDelegate: class {
     func filterView(_ view: FollowFilterView,didSeletect index: Int)
 }
 
-class FollowFilterView: UICollectionReusableView {
-
-    static let reuseIdentifier = "FollowFilterView"
+class FollowFilterView: UIView {
     
     weak var delegate: FollowFilterViewDelegate?
     
@@ -36,11 +34,9 @@ class FollowFilterView: UICollectionReusableView {
         //초기에 indexPath(0,0)을 선택하도록 설정.
         let selectedIndexPath = IndexPath(row: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .left)
-        backgroundColor = .white
     }
     
     override func layoutSubviews() {
-        print("DEBUG: did layout subviews")
         addSubview(underlineView)
         underlineView.snp.makeConstraints { make in
             make.left.bottom.equalToSuperview()
@@ -52,7 +48,6 @@ class FollowFilterView: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     //MARK: - configure
     private func configureCollectionView() {
@@ -93,8 +88,6 @@ extension FollowFilterView: UICollectionViewDelegate {
         delegate?.filterView(self, didSeletect: indexPath.row)
     }
 }
-
-
 
 //MARK: - UICollectionViewDelegateFlowLayout
 extension FollowFilterView: UICollectionViewDelegateFlowLayout {
