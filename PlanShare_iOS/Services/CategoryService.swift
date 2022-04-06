@@ -45,7 +45,7 @@ class CategoryService : CategoryServiceProtocol {
 //                    }
                     let category = Category(id: category.id, title: category.name, icon: category.icon, color: category.color, visibility: category.visibility, user: category.member, schedules: [Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true),Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true),Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true)
                                                                                                                                                                                                   ])
-                    //
+                    
                     categoriesArray.append(category)
                 }
                 
@@ -91,19 +91,6 @@ class CategoryService : CategoryServiceProtocol {
         let header : HTTPHeaders = [
             "Authorization" : "Bearer \(accessToken!)"
          ]
-
-//        AF.request(URL,encoding: JSONEncoding.default,headers: header).responseDecodable(of: [CategoryModel].self) { response in
-//            print(response)
-//            print("DEBUG : \(response.result)")
-//            switch response.result {
-//
-//            case .failure(let error) :
-//                completion(error,nil)
-//            case .success(let result):
-//                print(result)
-////                print(result.categories)
-//            }
-//        }
         AF.request(URL,method: .get,encoding: JSONEncoding.default, headers: header).responseData(completionHandler: { data in
             switch data.result {
             case .failure(let error) :

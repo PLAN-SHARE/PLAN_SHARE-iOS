@@ -15,6 +15,7 @@ import Differentiator
 import PanModal
 
 class MainController: UIViewController {
+    
     //MARK: - Properties
     private var collectionView : UICollectionView!
     private var sectionSubject = BehaviorRelay<[SectionModel]>(value: [])
@@ -92,8 +93,10 @@ class MainController: UIViewController {
         
         configureCollectionView()
         configureUI()
-        fetchSectionModel()
         bind()
+        
+        fetchSectionModel()
+        
     }
     
     init(viewModel: MainViewModel) {
@@ -142,6 +145,7 @@ class MainController: UIViewController {
             make.height.equalTo(110)
         }
     }
+    
     func configureCollectionView() {
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(state:calendarIsMonth))
@@ -192,14 +196,13 @@ class MainController: UIViewController {
             .subscribe(onNext : {
                 self.sectionSubject.accept(self.sectionSubject.value + $0)
             }).disposed(by: disposBag)
- 
     }
     
     //MARK: - selector
     @objc func handleSearch() {
-        let vc = UINavigationController(rootViewController:SearchController())
-        vc.modalPresentationStyle = .fullScreen
-        present(vc,animated: false)
+        let vc = SearchController(viewModel: SearchViewModel(userService: UserService(), categoryService: CategoryService()))
+        navigationController?.pushViewController(vc, animated: true)
+
     }
     
     @objc func handleFloatingButton() {
@@ -248,9 +251,7 @@ class MainController: UIViewController {
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
         fetchSectionModel()
-        //        bind()
     }
-    
 }
 
 //MARK: - CollectionViewDataSoruce
@@ -362,11 +363,13 @@ extension MainController {
         return section
     }
 }
+
 extension MainController : CalendarViewDelegate {
     func updateCalendarScope() {
         calendarIsMonth.toggle()
     }
 }
+
 extension MainController : CategoryHeaderDelegate {
     func handleCategory(category: Category) {
         let vc = DetailViewController(category: category)
