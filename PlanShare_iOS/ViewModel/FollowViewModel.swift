@@ -19,8 +19,6 @@ class FollowViewModel {
     func fetchFollow(option:FollowFilterOptions) -> Observable<[FollowSectionModel]> {
         userService.fetchFollow(option: option)
             .map {
-                print($0)
-                print([FollowSectionModel(items: $0)])
                 return [FollowSectionModel(items: $0)]
             }
     }
