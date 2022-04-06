@@ -11,6 +11,7 @@ import RxSwift
 
 class CreateScheduleController: UIViewController {
     
+    //MARK: - Properties
     private var viewModel: CreateViewModel!
     private var disposeBag = DisposeBag()
     
@@ -33,7 +34,6 @@ class CreateScheduleController: UIViewController {
         $0.backgroundColor = .red
         $0.inputView = pickerView
         $0.font = .systemFont(ofSize: 20)
-        
         let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: 44.0))
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -55,6 +55,7 @@ class CreateScheduleController: UIViewController {
         $0.textColor = .black
         $0.clearButtonMode = .whileEditing
         $0.textAlignment = .left
+        $0.placeholder = "계획을 입력해주세요"
         
     }
     
@@ -132,6 +133,7 @@ class CreateScheduleController: UIViewController {
         $0.addTarget(self, action: #selector(alarmOnoff), for: .valueChanged)
     }
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configurePicker()

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 extension UITextField {
     func setLeftPaddingPoints(_ amount:CGFloat){
@@ -49,12 +50,23 @@ extension UIColor {
         
         return String(format:"#%06x", rgb)
     }
+    
+    static let mainColor = UIColor.init(hex: "a1b5f5")
 }
 
 extension String {
     func strikeThrough() -> NSAttributedString {
         let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: self)
-        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+//        attributeString.addAttribute(NSAttributedString.Key.strikethroughColor, value: UIColor.red,  range: NSMakeRange(0, attributeString.length))
         return attributeString
+    }
+}
+
+extension Reactive where Base: CustomSearchBar {
+    var endEditing: Binder<Void> {
+        return Binder(base) { base, _ in
+            base.endEditing(true)
+        }
     }
 }

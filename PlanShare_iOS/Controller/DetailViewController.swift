@@ -15,6 +15,7 @@ import PanModal
 
 class DetailViewController: UIViewController, UIScrollViewDelegate {
     
+    //MARK: - Properties
     private var tableView: UITableView!
     
     private var disposBag = DisposeBag()
@@ -29,6 +30,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
         $0.textAlignment = .center
     }
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         bindTableView()
@@ -55,7 +57,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: DetailCell.reuseIdentifier, cellType: DetailCell.self)) { index,element,cell in
             cell.schedule = element
-            print(element)
         }.disposed(by: disposBag)
         
     }

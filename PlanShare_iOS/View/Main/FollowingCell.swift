@@ -12,17 +12,23 @@ import Then
 class FollowingCell: UICollectionViewCell {
     
     //MARK: - Properties
+    var member: Member? {
+        didSet {
+            configure(member: self.member)
+        }
+    }
+    
     static let reuseIdentifier = "FollowingCell"
     
     static func fittingSize(availableHeight: CGFloat, name: String?) -> CGSize {
         let cell = FollowingCell()
-        cell.configure(name: name)
+//        cell.configure(name: name)
         
         let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: availableHeight)
         return cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
     }
     
-    private let titleLabel = UILabel().then {
+    private var titleLabel = UILabel().then {
         $0.textAlignment = .center
         $0.textColor = .white
         $0.font = .boldSystemFont(ofSize: 16)
@@ -58,8 +64,11 @@ class FollowingCell: UICollectionViewCell {
         }
     }
     
-    func configure(name: String?) {
-        titleLabel.text = name
+    private func configure(member: Member?) {
+        guard let member = member else {
+            return
+        }
+        titleLabel.text = member.nickName
     }
     
 }

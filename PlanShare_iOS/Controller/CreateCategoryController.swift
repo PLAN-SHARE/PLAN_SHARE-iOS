@@ -49,6 +49,7 @@ class CreateCategoryController: UIViewController {
         $0.clearButtonMode = .whileEditing
         $0.textColor = .black
         $0.tintColor = .black
+        $0.placeholder = "목표를 입력해주세요"
     }
     
     private let iconLabel = UILabel().then{
@@ -138,7 +139,7 @@ class CreateCategoryController: UIViewController {
     //MARK: - configure
     func configureUI(){
         view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .systemGroupedBackground
+        navigationController?.navigationBar.backgroundColor = .white
         
         view.addSubview(goalLabel)
         goalLabel.snp.makeConstraints { make in
