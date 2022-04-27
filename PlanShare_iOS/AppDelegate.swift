@@ -16,15 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoSDK.initSDK(appKey: "b617faf2f8c4c4d2d7de5243c2952e55")
         
         if #available(iOS 15.0, *) {
-            let navigationBarAppearance = UINavigationBarAppearance()
-            navigationBarAppearance.configureWithDefaultBackground()
-            navigationBarAppearance.backgroundColor = .systemGroupedBackground
-            navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.darkGray]
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.configureWithDefaultBackground()
+            tabBarAppearance.backgroundColor = .white
+            UITabBar.appearance().standardAppearance = tabBarAppearance
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
             
-            UINavigationBar.appearance().standardAppearance = navigationBarAppearance
-            UINavigationBar.appearance().compactAppearance = navigationBarAppearance
-            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
+        
+        //네비게이션 바 색상 UIColor와 일치시키기
+        UITabBar.appearance().isTranslucent = false
+        
         return true
     }
 
