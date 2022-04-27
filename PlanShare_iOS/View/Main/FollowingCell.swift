@@ -31,7 +31,7 @@ class FollowingCell: UICollectionViewCell {
     private var titleLabel = UILabel().then {
         $0.textAlignment = .center
         $0.textColor = .white
-        $0.font = .boldSystemFont(ofSize: 16)
+        $0.font = .noto(size: 16, family: .Regular)
     }
     
     //MARK: - LifeCycle
@@ -47,7 +47,7 @@ class FollowingCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.layer.cornerRadius = 40 / 2
+        contentView.layer.cornerRadius = 35 / 2
     }
     
     //MARK: - Configure
