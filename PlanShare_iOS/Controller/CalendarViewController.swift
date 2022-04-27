@@ -12,23 +12,28 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import Differentiator
-import PanModal
 
-class MainController: UIViewController {
+class CalendarViewController: UIViewController {
     
     //MARK: - Properties
     private var collectionView : UICollectionView!
+    
     private var sectionSubject = BehaviorRelay<[SectionModel]>(value: [])
+    
+    private var filteredSubject = BehaviorRelay<[SectionModel]>(value:[])
+    
+    private let refreshLoading = PublishRelay<Bool>()
+    
     private let disposBag = DisposeBag()
     let viewModel : MainViewModel!
+    
+    private var indicator = UIActivityIndicatorView(style: .medium)
     
     private var calendarIsMonth : Bool = true {
         didSet {
             collectionView.collectionViewLayout = generateLayout(state: self.calendarIsMonth)
         }
     }
-    
-    private var isFloating : Bool = false
     
     private lazy var AddButtons = [UIButton]()
     
@@ -37,32 +42,6 @@ class MainController: UIViewController {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.addTarget(self, action: #selector(handleSearch), for: .touchUpInside)
         $0.tintColor = .black
-    }
-    
-    private lazy var addGoalButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "folder.badge.plus"), for: .normal)
-        $0.layer.cornerRadius = 50/2
-        $0.layer.masksToBounds = true
-        $0.layer.borderColor = UIColor.darkGray.cgColor
-        $0.backgroundColor = .white
-        $0.layer.borderWidth = 1.5
-        $0.tintColor = .darkGray
-        $0.contentMode = .scaleToFill
-        $0.isHidden = true
-        $0.addTarget(self, action: #selector(addGoal), for: .touchUpInside)
-    }
-    
-    private lazy var addScheduleButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
-        $0.tintColor = .darkGray
-        $0.contentMode = .scaleToFill
-        $0.layer.cornerRadius = 50/2
-        $0.layer.masksToBounds = true
-        $0.layer.borderColor = UIColor.darkGray.cgColor
-        $0.layer.borderWidth = 1.5
-        $0.backgroundColor = .white
-        $0.isHidden = true
-        $0.addTarget(self, action: #selector(addSchedule), for: .touchUpInside)
     }
     
     private lazy var floatingButton = UIButton().then {
@@ -78,7 +57,7 @@ class MainController: UIViewController {
         $0.layer.masksToBounds = true
         $0.layer.borderColor = UIColor.darkGray.cgColor
         $0.layer.borderWidth = 1.5
-        $0.addTarget(self, action: #selector(handleFloatingButton), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(handleAddPlan), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -118,6 +97,7 @@ class MainController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
         view.backgroundColor = .init(named: "edebf5")
         
+        
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
         
@@ -126,23 +106,6 @@ class MainController: UIViewController {
             make.bottom.equalToSuperview().offset(-30)
             make.right.equalToSuperview().offset(-30)
             make.width.height.equalTo(50)
-        }
-        
-        AddButtons.append(addGoalButton)
-        AddButtons.append(addScheduleButton)
-        
-        let buttonStack = UIStackView(arrangedSubviews: [addGoalButton,addScheduleButton])
-        
-        buttonStack.axis = .vertical
-        buttonStack.distribution = .fillEqually
-        buttonStack.spacing = 8
-        
-        view.addSubview(buttonStack)
-        buttonStack.snp.makeConstraints { make in
-            make.bottom.equalTo(floatingButton.snp.top).offset(-10)
-            make.centerX.equalTo(floatingButton.snp.centerX)
-            make.width.equalTo(50)
-            make.height.equalTo(110)
         }
     }
     
@@ -157,6 +120,21 @@ class MainController: UIViewController {
         collectionView.register(CalendarView.self, forSupplementaryViewOfKind: CalendarView.reuseIdentifier , withReuseIdentifier: CalendarView.reuseIdentifier)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.endRefreshing()
+        collectionView.refreshControl = refreshControl
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .bind { [weak self] _ in
+                self?.refreshLoading.accept(true)
+                self?.fetchSectionModel()
+                self?.refreshLoading.accept(false)
+            }.disposed(by: disposBag)
+        
+        refreshLoading
+            .bind(to: refreshControl.rx.isRefreshing)
+            .disposed(by: disposBag)
     }
     
     // API
@@ -202,51 +180,15 @@ class MainController: UIViewController {
     @objc func handleSearch() {
         let vc = SearchController(viewModel: SearchViewModel(userService: UserService(), categoryService: CategoryService()))
         navigationController?.pushViewController(vc, animated: true)
-
+        
     }
     
-    @objc func handleFloatingButton() {
-        if isFloating {
-            AddButtons.reversed().forEach { button in
-                UIView.animate(withDuration: 0.2) {
-                    button.isHidden = true
-                    self.view.layoutIfNeeded()
-                }
-            }
-        } else {
-            AddButtons.forEach { [weak self] button in
-                button.isHidden = false
-                button.alpha = 0
-                
-                UIView.animate(withDuration: 0.2) {
-                    button.alpha = 1
-                    self?.view.layoutIfNeeded()
-                }
-            }
-        }
-        isFloating.toggle()
-    }
-    
-    @objc func addGoal(){
-        AddButtons.reversed().forEach { button in
-            UIView.animate(withDuration: 0.2) {
-                button.isHidden = true
-                self.view.layoutIfNeeded()
-            }
-        }
-        let vc = CreateCategoryController(viewModel: CreateViewModel(categoryService: CategoryService()))
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func addSchedule(){
-        AddButtons.reversed().forEach { button in
-            UIView.animate(withDuration: 0.2) {
-                button.isHidden = true
-                self.view.layoutIfNeeded()
-            }
-        }
-        let vc = CreateScheduleController(viewModel: CreateViewModel(categoryService: CategoryService()))
-        navigationController?.pushViewController(vc, animated: true)
+    @objc func handleAddPlan() {
+        let vc = CreateScheduleController(viewModel: CreateViewModel(categoryService: CategoryService(),
+                                                                     scheduleService: ScheduleService()))
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
@@ -255,7 +197,7 @@ class MainController: UIViewController {
 }
 
 //MARK: - CollectionViewDataSoruce
-extension MainController {
+extension CalendarViewController {
     func dataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
         return RxCollectionViewSectionedReloadDataSource<SectionModel> {
             dataSource, collectionView, indexPath, item in
@@ -272,40 +214,39 @@ extension MainController {
                     return UICollectionViewCell()
                 }
                 cell.schedule = schedule
+                cell.delegate = self
                 return cell
             }
-    } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-        switch kind {
-        case CalendarView.reuseIdentifier :
-            guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: CalendarView.reuseIdentifier,
-                for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
-            supplementaryView.delegate = self
-            return supplementaryView
-        case CategoryHeader.reuseIdentifier :
-            switch dataSource.sectionModels[indexPath.section] {
-            case .FollowingModel(items: _) : break
-            case .ScheduleModel(header: let header, items:_) :
+        } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+            switch kind {
+            case CalendarView.reuseIdentifier :
                 guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,
-                    withReuseIdentifier: CategoryHeader.reuseIdentifier,
-                    for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
-                supplementaryView.category = header
+                    withReuseIdentifier: CalendarView.reuseIdentifier,
+                    for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
                 supplementaryView.delegate = self
                 return supplementaryView
+            case CategoryHeader.reuseIdentifier :
+                switch dataSource.sectionModels[indexPath.section] {
+                case .FollowingModel(items: _) : break
+                case .ScheduleModel(header: let header, items:_) :
+                    guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+                        ofKind: kind,
+                        withReuseIdentifier: CategoryHeader.reuseIdentifier,
+                        for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
+                    supplementaryView.category = header
+                    return supplementaryView
+                }
+                
+            default:
+                return UICollectionReusableView()
             }
-            
-        default:
             return UICollectionReusableView()
         }
-        return UICollectionReusableView()
     }
 }
-
-}
 //MARK: - CollectionView Layout
-extension MainController {
+extension CalendarViewController {
     func generateLayout(state:Bool) -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
                                                                         layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -317,7 +258,7 @@ extension MainController {
     
     func generateFollowingLayout(isMonth:Bool) -> NSCollectionLayoutSection {
         
-        let estimatedWidth: CGFloat = 45
+        let estimatedWidth: CGFloat = 35
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1))
@@ -326,11 +267,11 @@ extension MainController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .estimated(estimatedWidth),
-            heightDimension: .absolute(40))
+            heightDimension: .absolute(35))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
         
-        let footerHeight = isMonth ? NSCollectionLayoutDimension.absolute(345) : NSCollectionLayoutDimension.absolute(130)
+        let footerHeight = isMonth ? NSCollectionLayoutDimension.absolute(350) : NSCollectionLayoutDimension.absolute(130)
         
         let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                 heightDimension: footerHeight)
@@ -363,16 +304,58 @@ extension MainController {
         return section
     }
 }
-
-extension MainController : CalendarViewDelegate {
+//MARK: - CalendarViewDelegate
+extension CalendarViewController : CalendarViewDelegate {
+    func updateDate(date: String) {
+        sectionSubject.map { sectionModels in
+            print(sectionModels)
+        }
+    }
+    
     func updateCalendarScope() {
         calendarIsMonth.toggle()
     }
+    
 }
+extension CalendarViewController : ScheduleCellDelegate {
+    
+    func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void)) {
+        
+        guard let schedule = schedule else {
+            return
+        }
 
-extension MainController : CategoryHeaderDelegate {
-    func handleCategory(category: Category) {
-        let vc = DetailViewController(category: category)
-        self.presentPanModal(vc)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "미완료", style: .default, handler: { _ in
+            if schedule.checkStatus {
+                self.viewModel.updatePlanCheckStatus(schedule: schedule)
+                completion(false)
+            }
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "완료", style: .default, handler: { _ in
+            if !schedule.checkStatus {
+                self.viewModel.updatePlanCheckStatus(schedule: schedule)
+                completion(true)
+            }
+            
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "미루기", style: .default, handler: { _ in
+            
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+            self.viewModel.deletePlan(schedule: schedule)
+            NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: nil, userInfo: nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "삭제", style: .cancel))
+        present(alertController, animated: true)
+        
+        
     }
+    
+    
 }
