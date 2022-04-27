@@ -3,30 +3,30 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol ScheduleCellDelegate : class {
+    func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void))
+}
+
 class ScheduleCell: UICollectionViewCell {
     
     //MARK: - Properties
     static let reuseIdentifier = "ScheduleCell"
     
     private var disposBag = DisposeBag()
+    weak var delegate : ScheduleCellDelegate?
     
     var schedule: Schedule? {
         didSet{
             guard let schedule = schedule else {
                 return
             }
+
             configure(schedule: schedule)
-        }
-    }
-    
-    private var isChecked : Bool? {
-        didSet {
-            
         }
     }
     private var scheduleLabel = UILabel().then {
         $0.text = "프로젝트 기획서 마감"
-        $0.font = .systemFont(ofSize: 16)
+        $0.font = .noto(size: 16, family: .Regular)
         $0.textColor = .darkGray
         $0.textAlignment = .left
     }
@@ -36,7 +36,7 @@ class ScheduleCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
         $0.layer.masksToBounds = false
         $0.layer.borderColor = UIColor.init(named: "a1b5f5")?.cgColor
-        $0.layer.borderWidth = 0.7
+        $0.layer.borderWidth = 0.2
         $0.tintColor = .white
         $0.layer.cornerRadius = 23/2
     }
@@ -67,8 +67,14 @@ class ScheduleCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
         
         checkButton.rx.tap.bind {
-            self.schedule?.isDone.toggle()
-            self.isChecked = self.schedule?.isDone
+            self.delegate?.handleButtonClicked(schedule: self.schedule) { [weak self] status in
+                guard let newschedule = self?.schedule else {
+                    return
+                }
+
+                let newSchedule = Schedule(categoryID: newschedule.categoryID, checkStatus: status, date: newschedule.date, id: newschedule.id, name: newschedule.name)
+                self?.schedule = newSchedule
+            }
         }.disposed(by: disposBag)
     }
     
@@ -78,8 +84,7 @@ class ScheduleCell: UICollectionViewCell {
     
     //MARK: - Configure
     func configure(schedule:Schedule) {
-
-        checkButton.backgroundColor = schedule.isDone ? .init(hex: "a1b5f5") : .white
-        scheduleLabel.attributedText = schedule.isDone ? schedule.text.strikeThrough() : NSAttributedString(string: schedule.text)
+        checkButton.backgroundColor = schedule.checkStatus ? .init(hex: "a1b5f5") : .white
+        scheduleLabel.attributedText = schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }
 }
