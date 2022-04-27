@@ -11,14 +11,13 @@ import UIKit
 struct CategoryResponse: Codable {
     var categories : [CategoryModel]?
 }
-struct CategoryModel: Codable {
+struct CategoryModel: Codable,Hashable {
     var color : String
     var icon : String
     var id : Int
     var member: Member
     var name : String
     var visibility : Bool
-    
 }
 
 struct Category : Codable {
