@@ -7,17 +7,10 @@
 
 import UIKit
 
-
-protocol CategoryHeaderDelegate {
-    func handleCategory(category:Category)
-}
-
 class CategoryHeader: UICollectionReusableView {
     
     //MARK: - Properties
     static let reuseIdentifier = "CategoryCell"
-    
-    var delegate: CategoryHeaderDelegate?
     
     var category : Category? {
         didSet{
@@ -28,29 +21,34 @@ class CategoryHeader: UICollectionReusableView {
         }
     }
     
-    private lazy var categoryButton = UIButton().then {
-        $0.setTitle(" 프로젝트", for: .normal)
-        $0.titleLabel?.font = .boldSystemFont(ofSize: 22)
-        $0.setTitleColor(.orange, for: .normal)
-        $0.setImage(UIImage(systemName: "note.text"), for: .normal)
-        $0.imageView?.contentMode = .scaleAspectFit
-        $0.contentHorizontalAlignment = .left
-        $0.tintColor = .black
-        $0.backgroundColor = .systemGroupedBackground
-        $0.semanticContentAttribute = .forceLeftToRight
-        $0.addTarget(self, action: #selector(didTapCategory), for: .touchUpInside)
+    private var imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private lazy var goalLabel = UILabel().then {
+        $0.font = .noto(size: 18, family: .Regular)
+        $0.textAlignment = .left
+        $0.text = "목표"
     }
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         backgroundColor = .systemGroupedBackground
-        addSubview(categoryButton)
-        categoryButton.snp.makeConstraints { make in
+        
+        addSubview(imageView)
+        imageView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(20)
+        }
+        
+        addSubview(goalLabel)
+        goalLabel.snp.makeConstraints { make in
+            make.left.equalTo(imageView.snp.right).offset(5)
             make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
     required init?(coder: NSCoder) {
@@ -59,20 +57,12 @@ class CategoryHeader: UICollectionReusableView {
     
     private func configure(category: Category){
         let viewModel = CategoryViewModel(category: category)
-        categoryButton.setTitle(" \(viewModel.title!)", for: .normal)
+        goalLabel.text = "\(viewModel.title!)"
+        imageView.image = UIImage(named:viewModel.imageUrl)
         
         let color = UIColor.init(hex: viewModel.textColor)
-        categoryButton.setTitleColor(color, for: .normal)
-        categoryButton.tintColor = color
-        categoryButton.setImage(UIImage(named:viewModel.imageUrl), for: .normal)
+        imageView.tintColor = color
 
-    }
-    @objc func didTapCategory(){
-        guard let category = category else {
-            return
-        }
-
-        delegate?.handleCategory(category: category)
     }
 }
 

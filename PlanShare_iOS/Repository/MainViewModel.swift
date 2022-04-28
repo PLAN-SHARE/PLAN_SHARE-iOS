@@ -7,22 +7,22 @@ class MainViewModel {
     
     private let categoryService: CategoryServiceProtocol
     private let userService: UserSerivceProtocol
+    private let scheduleService: ScheduleService
     
-    init(categoryService: CategoryServiceProtocol, userService: UserSerivceProtocol) {
+    init(categoryService: CategoryServiceProtocol,
+         userService: UserSerivceProtocol,scheduleService: ScheduleService) {
         self.categoryService = categoryService
         self.userService = userService
+        self.scheduleService = scheduleService
     }
     
-//    func fetchCategory() -> Observable<[CategoryViewModel]> {
-//        categoryService.fetchCategory()
-//            .map { $0.map { CategoryViewModel(category: $0)}}
-//    }
-//
     func fetchCategory() -> Observable<[SectionModel]> {
         categoryService.fetchCategory()
             .map { category in
                 category.map { category in
-                    if let sheduleItem = category.schedules?.map({ SectionItem.schedule(schedule: $0)}) {
+                    if let sheduleItem = category.schedules?.map({
+                        SectionItem.schedule(schedule: $0)
+                    }) {
                         return SectionModel.ScheduleModel(header: category, items: sheduleItem)
                     } else {
                         return SectionModel.ScheduleModel(header: category, items: [])
@@ -32,6 +32,10 @@ class MainViewModel {
             }
     }
     
+    func fetchCatgory() -> Observable<[Category]> {
+        categoryService.fetchCategory()
+    }
+    
     func fetchUser() -> Observable<SectionModel> {
         userService.fetchUser()
             .map {
@@ -39,4 +43,23 @@ class MainViewModel {
                 return SectionModel.FollowingModel(items: sectionItem)
             }
     }
+    
+    func updatePlanCheckStatus(schedule:Schedule?) {
+        
+        guard let schedule = schedule else {
+            return
+        }
+
+        scheduleService.updatePlanCheckStatus(goalId: schedule.categoryID, planId: schedule.id)
+    }
+    
+    func deletePlan(schedule:Schedule?) {
+        
+        guard let schedule = schedule else {
+            return
+        }
+        
+        scheduleService.delegatePlan(goalId: schedule.categoryID, planId: schedule.id)
+    }
+    
 }

@@ -58,7 +58,6 @@ extension String {
     func strikeThrough() -> NSAttributedString {
         let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: self)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle,value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
-//        attributeString.addAttribute(NSAttributedString.Key.strikethroughColor, value: UIColor.red,  range: NSMakeRange(0, attributeString.length))
         return attributeString
     }
 }
@@ -70,3 +69,38 @@ extension Reactive where Base: CustomSearchBar {
         }
     }
 }
+
+extension UIFont {
+    
+    enum Family: String {
+            case Bold, Light, Medium, Regular, Thin
+        }
+        
+    static func noto(size: CGFloat = 12, family: Family = .Regular) -> UIFont! {
+            return UIFont(name: "NotoSansCJKkr-\(family)", size: size)
+        }
+}
+//extension UIViewController: UITextFieldDelegate{
+//    func addToolBar(textField: UITextField){
+//        var toolBar = UIToolbar()
+//        toolBar.barStyle = UIBarStyle.default
+//        toolBar.isTranslucent = true
+//        
+//        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+//        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed))
+//        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:  #selector(cancelPressed))
+//        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        
+//        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+//        toolBar.isUserInteractionEnabled = true
+//        toolBar.sizeToFit()
+//        textField.delegate = self
+//        textField.inputAccessoryView = toolBar
+//    }
+//    @objc func donePressed(){
+//        view.endEditing(true)
+//    }
+//    @objc func cancelPressed(){
+//        view.endEditing(true) // or do something
+//    }
+//}

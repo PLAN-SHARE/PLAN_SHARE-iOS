@@ -2,16 +2,21 @@
 
 import Foundation
 
-struct ScheduleResponse: Hashable,Codable {
-    let categoryID : Int
-    let schedules:[Schedule]?
+struct Schedule: Codable {
+    var categoryID : Int
+    var checkStatus: Bool
+    var date : String
+    var id : Int
+    var name: String
 }
 
-struct Schedule : Hashable,Codable {
-    
-    var startTime : Date
-    var endTime : Date
-    var text : String
-    var isAlarm : Bool
-    var isDone : Bool
+struct ScheduleModel : Hashable,Codable {
+    static func == (lhs: ScheduleModel, rhs: ScheduleModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+    var checkStatus: Bool
+    var date : String
+    var goal : CategoryModel
+    var id : Int
+    var name: String
 }
