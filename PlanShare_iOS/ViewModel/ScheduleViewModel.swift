@@ -12,16 +12,11 @@ class ScheduleViewModel {
     private let schedule: Schedule
     
     private var dateLabel : String {
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "ko_KR")
-        df.timeZone = TimeZone(abbreviation: "KST")
-        df.dateFormat = "yyyy-MM-dd"
-
-        return df.string(from: schedule.startTime)
+        return schedule.date
     }
 //
     var scheduleTitle : NSAttributedString {
-        return schedule.isDone ? schedule.text.strikeThrough() : NSAttributedString(string: schedule.text)
+        return schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }
     
 

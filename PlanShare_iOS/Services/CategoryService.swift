@@ -30,26 +30,45 @@ class CategoryService : CategoryServiceProtocol {
                     return
                 }
                 
-                var categoriesArray = [Category]()
+                let group = DispatchGroup()
                 
+                var categoriesArray = [Category]()
                 for category in categories {
                     
-//                    self.fetchSchedule(categoryID: category.id) { error, schedules in
-//                        if let error = error {
-//                            print("DEBUG : \(error.localizedDescription)")
-//                        }
-//
-//                        let category = Category(id: category.id, title: category.title, icon: category.icon, color: category.color, visibility: category.visibility, user: category.user, schedules: schedules)
-//
-//                        categoriesArray.append(category)
-//                    }
-                    let category = Category(id: category.id, title: category.name, icon: category.icon, color: category.color, visibility: category.visibility, user: category.member, schedules: [Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true),Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true),Schedule(startTime: Date(), endTime: Date(), text: "일하기", isAlarm: true, isDone: true)
-                                                                                                                                                                                                  ])
-                    
-                    categoriesArray.append(category)
+                    group.enter()
+                    self.fetchSchedule(goalId: category.id) { error, schedules in
+                        if let error = error {
+                            print("DEBUG : \(error.localizedDescription)")
+                        }
+                        
+                        let category = Category(id: category.id, title: category.name, icon: category.icon, color: category.color, visibility: category.visibility, user: category.member, schedules: schedules)
+                        
+                        categoriesArray.append(category)
+                        
+                        group.leave()
+                    }
                 }
                 
-                observer.onNext(categoriesArray)
+                group.notify(queue: .main) {
+                    observer.onNext(categoriesArray)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func fetchCategoryModel() -> Observable<[CategoryModel]> {
+        return Observable.create { observer in
+            self.fetchCategory { error, categories in
+                if let error = error {
+                    observer.onError(error)
+                }
+                
+                guard let categories = categories else {
+                    observer.onNext([])
+                    return
+                }
+                observer.onNext(categories)
             }
             return Disposables.create()
         }
@@ -57,7 +76,7 @@ class CategoryService : CategoryServiceProtocol {
     
     func createCategory(_ parameters:[String:Any],completion:@escaping(String)-> Void){
         
-        let URL = "http://52.79.87.87:9090/goal/create"
+        let URL = "http://52.79.87.87:9090/goals"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -68,29 +87,21 @@ class CategoryService : CategoryServiceProtocol {
             case .failure(let error) :
                 print("Error : \(error.localizedDescription)")
             }
-            print(response)
-            
             completion("result")
         }
     }
     
-    func fetchIcon() -> Observable<[String]> {
-        return Observable.create { observer in
-            observer.onNext([
-                "alarm","article","bed","business_center","coffee","contact_mail","delete","desktop","edit","event","favorite","fitness_center","house","leaderboard","airport","shipping","notifications","pool","question","room","schedule","search","shopping","shopping_cart","star_rate","tips_and_updates","warning","watch"])
-            return Disposables.create()
-        }
-    }
-
+    
+    
     func fetchCategory(completion:@escaping((Error?,[CategoryModel]?) -> Void )) {
-        
-        let URL = "http://52.79.87.87:9090/goal/read/myself"
+        let URL = "http://52.79.87.87:9090/goals/my-goals"
         
         let accessToken = KeychainWrapper.standard.string(forKey: "AccessToken")
         
         let header : HTTPHeaders = [
             "Authorization" : "Bearer \(accessToken!)"
-         ]
+        ]
+        
         AF.request(URL,method: .get,encoding: JSONEncoding.default, headers: header).responseData(completionHandler: { data in
             switch data.result {
             case .failure(let error) :
@@ -108,27 +119,32 @@ class CategoryService : CategoryServiceProtocol {
     }
     
     
-    func fetchSchedule(categoryID: Int,completion:@escaping((Error?,[Schedule]?) -> Void)){
-        let URL = "http://52.79.87.87:9090/plan/read/myself"
-        
+    func fetchSchedule(goalId:Int,completion:@escaping(Error?,[Schedule]?)-> Void) {
         let header = AuthService.shared.getAuthorizationHeader()
         
-        AF.request(URL, encoding: JSONEncoding.default, headers: header).validate(statusCode: 200..<300)
-            .responseJSON { response in
-                switch response.result {
-                case .failure(let error) :
-                    print("DEBUG : \(error.localizedDescription)")
-                case .success(let result):
-                    do {
-                        let jsonData = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
-                        
-                        let decodedJson = try JSONDecoder().decode(ScheduleResponse.self, from: jsonData)
-                        completion(nil,decodedJson.schedules)
+        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans"
+        
+        AF.request(URL,headers:header).responseData(completionHandler: { response in
+            switch response.result {
+                
+            case .failure(let error) :
+                fatalError(error.localizedDescription)
+            case .success(let datas):
+                do {
+                    let ScheduleModels = try JSONDecoder().decode([ScheduleModel].self, from: datas)
+                    
+                    var schedule_Array = [Schedule]()
+                    for schedule in ScheduleModels {
+                        schedule_Array.append(Schedule(categoryID: Int(exactly: goalId)!, checkStatus: schedule.checkStatus, date: schedule.date, id: schedule.id, name: schedule.name))
                     }
-                    catch(let error){
-                        completion(error,nil)
-                    }
+                    completion(nil,schedule_Array)
+                    
+                }
+                catch(let error){
+                    completion(error,nil)
                 }
             }
+        })
+        
     }
 }

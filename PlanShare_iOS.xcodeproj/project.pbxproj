@@ -10,7 +10,7 @@
 		0974BBF019053470B6B89499 /* Pods_PlanShare_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */; };
 		780796B727C27C6F00C0BF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796B627C27C6F00C0BF12 /* AppDelegate.swift */; };
 		780796B927C27C6F00C0BF12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796B827C27C6F00C0BF12 /* SceneDelegate.swift */; };
-		780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796BA27C27C6F00C0BF12 /* MainController.swift */; };
+		780796BB27C27C6F00C0BF12 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */; };
 		780796C027C27C7200C0BF12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 780796BF27C27C7200C0BF12 /* Assets.xcassets */; };
 		780796C327C27C7200C0BF12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */; };
 		780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780796CA27C27EE500C0BF12 /* FollowingCell.swift */; };
@@ -26,7 +26,9 @@
 		7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */; };
 		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
 		E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40474D927EEDD090041547D /* ScheduleViewModel.swift */; };
-		E40474DC27EEEA490041547D /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40474DB27EEEA490041547D /* DetailCell.swift */; };
+		E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E428A0D628142DCB00CABBB7 /* ScheduleService.swift */; };
+		E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */; };
+		E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C072128181EF80059D4F1 /* MainTapViewController.swift */; };
 		E456B02927E38D74009CC2AC /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B02827E38D74009CC2AC /* SearchController.swift */; };
 		E456B02B27E4CED8009CC2AC /* MainSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B02A27E4CED8009CC2AC /* MainSection.swift */; };
 		E456B04227E718C7009CC2AC /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B04127E718C7009CC2AC /* CreateViewModel.swift */; };
@@ -46,8 +48,15 @@
 		E484EDB827DB4DDD00513BA7 /* CategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDB727DB4DDD00513BA7 /* CategoryService.swift */; };
 		E484EDBB27DDF06E00513BA7 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDBA27DDF06E00513BA7 /* MainViewModel.swift */; };
 		E484EDBE27DDF0F200513BA7 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */; };
-		E48B65E427EC94C3002A6410 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48B65E327EC94C3002A6410 /* DetailViewController.swift */; };
+		E48B65E427EC94C3002A6410 /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48B65E327EC94C3002A6410 /* GoalViewController.swift */; };
 		E49C683F27DF79E900B050E3 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C683E27DF79E900B050E3 /* UserService.swift */; };
+		E4ECE8E228178CCA00893069 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DB28178CC900893069 /* NotoSansKR-Black.otf */; };
+		E4ECE8E328178CCA00893069 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DC28178CC900893069 /* NotoSansKR-Regular.otf */; };
+		E4ECE8E428178CCA00893069 /* NotoSansKR-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DD28178CC900893069 /* NotoSansKR-Light.otf */; };
+		E4ECE8E528178CCA00893069 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DE28178CCA00893069 /* NotoSansKR-Bold.otf */; };
+		E4ECE8E628178CCA00893069 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DF28178CCA00893069 /* OFL.txt */; };
+		E4ECE8E728178CCA00893069 /* NotoSansKR-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8E028178CCA00893069 /* NotoSansKR-Thin.otf */; };
+		E4ECE8E828178CCA00893069 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8E128178CCA00893069 /* NotoSansKR-Medium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +64,7 @@
 		780796B327C27C6F00C0BF12 /* PlanShare_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlanShare_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		780796B627C27C6F00C0BF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		780796B827C27C6F00C0BF12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		780796BA27C27C6F00C0BF12 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		780796BF27C27C7200C0BF12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		780796C227C27C7200C0BF12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		780796C427C27C7200C0BF12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,7 +82,9 @@
 		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40474D927EEDD090041547D /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
-		E40474DB27EEEA490041547D /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
+		E428A0D628142DCB00CABBB7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
+		E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewCell.swift; sourceTree = "<group>"; };
+		E43C072128181EF80059D4F1 /* MainTapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTapViewController.swift; sourceTree = "<group>"; };
 		E456B02827E38D74009CC2AC /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		E456B02A27E4CED8009CC2AC /* MainSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSection.swift; sourceTree = "<group>"; };
 		E456B04127E718C7009CC2AC /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
@@ -93,8 +104,15 @@
 		E484EDB727DB4DDD00513BA7 /* CategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryService.swift; sourceTree = "<group>"; };
 		E484EDBA27DDF06E00513BA7 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewModel.swift; path = ../Repository/MainViewModel.swift; sourceTree = "<group>"; };
 		E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
-		E48B65E327EC94C3002A6410 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E48B65E327EC94C3002A6410 /* GoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
 		E49C683E27DF79E900B050E3 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		E4ECE8DB28178CC900893069 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
+		E4ECE8DC28178CC900893069 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
+		E4ECE8DD28178CC900893069 /* NotoSansKR-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Light.otf"; sourceTree = "<group>"; };
+		E4ECE8DE28178CCA00893069 /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
+		E4ECE8DF28178CCA00893069 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		E4ECE8E028178CCA00893069 /* NotoSansKR-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.otf"; sourceTree = "<group>"; };
+		E4ECE8E128178CCA00893069 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
 		FB35D85C30E962FB227D7A46 /* Pods-PlanShare_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanShare_iOS.debug.xcconfig"; path = "Target Support Files/Pods-PlanShare_iOS/Pods-PlanShare_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +168,7 @@
 				780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */,
 				780796C427C27C7200C0BF12 /* Info.plist */,
 				7897BBD927C5F6AF003CE1F2 /* Extensions.swift */,
+				E4ECE8DA28178CB500893069 /* Font */,
 			);
 			path = PlanShare_iOS;
 			sourceTree = "<group>";
@@ -158,8 +177,8 @@
 			isa = PBXGroup;
 			children = (
 				E456B04427E77185009CC2AC /* IconCell.swift */,
+				E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */,
 				E456B04327E7716C009CC2AC /* Main */,
-				E48B65E527EC98C8002A6410 /* Detail */,
 				E470A76227F33873001D2F5A /* Follow */,
 				E470A76327F3387C001D2F5A /* Search */,
 			);
@@ -169,12 +188,12 @@
 		780796CF27C381CB00C0BF12 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E43C072128181EF80059D4F1 /* MainTapViewController.swift */,
 				7822317F27CE144900FB5826 /* Authentication */,
-				780796BA27C27C6F00C0BF12 /* MainController.swift */,
+				780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */,
 				E456B02827E38D74009CC2AC /* SearchController.swift */,
-				E48B65E327EC94C3002A6410 /* DetailViewController.swift */,
-				7897BBD527C526C2003CE1F2 /* CreateCategoryController.swift */,
-				7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */,
+				E48B65E327EC94C3002A6410 /* GoalViewController.swift */,
+				E43C072328195EDF0059D4F1 /* Create */,
 				E470A75027F1BE2A001D2F5A /* FollowController.swift */,
 			);
 			path = Controller;
@@ -195,6 +214,7 @@
 				7822318227CE16E700FB5826 /* AuthService.swift */,
 				E484EDB727DB4DDD00513BA7 /* CategoryService.swift */,
 				E49C683E27DF79E900B050E3 /* UserService.swift */,
+				E428A0D628142DCB00CABBB7 /* ScheduleService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -217,6 +237,15 @@
 				0A25DAC6AF29AE718976B25B /* Pods-PlanShare_iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E43C072328195EDF0059D4F1 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				7897BBD527C526C2003CE1F2 /* CreateCategoryController.swift */,
+				7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */,
+			);
+			path = Create;
 			sourceTree = "<group>";
 		};
 		E456B04327E7716C009CC2AC /* Main */ = {
@@ -273,12 +302,18 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		E48B65E527EC98C8002A6410 /* Detail */ = {
+		E4ECE8DA28178CB500893069 /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				E40474DB27EEEA490041547D /* DetailCell.swift */,
+				E4ECE8DB28178CC900893069 /* NotoSansKR-Black.otf */,
+				E4ECE8DE28178CCA00893069 /* NotoSansKR-Bold.otf */,
+				E4ECE8DD28178CC900893069 /* NotoSansKR-Light.otf */,
+				E4ECE8E128178CCA00893069 /* NotoSansKR-Medium.otf */,
+				E4ECE8DC28178CC900893069 /* NotoSansKR-Regular.otf */,
+				E4ECE8E028178CCA00893069 /* NotoSansKR-Thin.otf */,
+				E4ECE8DF28178CCA00893069 /* OFL.txt */,
 			);
-			path = Detail;
+			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,7 +376,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4ECE8E628178CCA00893069 /* OFL.txt in Resources */,
+				E4ECE8E228178CCA00893069 /* NotoSansKR-Black.otf in Resources */,
+				E4ECE8E428178CCA00893069 /* NotoSansKR-Light.otf in Resources */,
+				E4ECE8E828178CCA00893069 /* NotoSansKR-Medium.otf in Resources */,
 				780796C327C27C7200C0BF12 /* LaunchScreen.storyboard in Resources */,
+				E4ECE8E728178CCA00893069 /* NotoSansKR-Thin.otf in Resources */,
+				E4ECE8E328178CCA00893069 /* NotoSansKR-Regular.otf in Resources */,
+				E4ECE8E528178CCA00893069 /* NotoSansKR-Bold.otf in Resources */,
 				780796C027C27C7200C0BF12 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,10 +439,13 @@
 			files = (
 				7822317A27CA8C7200FB5826 /* LoginController.swift in Sources */,
 				E470A76027F32E91001D2F5A /* SearchViewModel.swift in Sources */,
+				E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */,
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
-				E48B65E427EC94C3002A6410 /* DetailViewController.swift in Sources */,
+				E48B65E427EC94C3002A6410 /* GoalViewController.swift in Sources */,
 				E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */,
 				E470A75127F1BE2A001D2F5A /* FollowController.swift in Sources */,
+				E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */,
+				E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */,
 				E456B04527E77185009CC2AC /* IconCell.swift in Sources */,
 				780796D127C3839000C0BF12 /* CategoryHeader.swift in Sources */,
 				E456B04227E718C7009CC2AC /* CreateViewModel.swift in Sources */,
@@ -415,9 +460,8 @@
 				E470A75E27F31D70001D2F5A /* CustomSearchBar.swift in Sources */,
 				E470A75927F1DD86001D2F5A /* FollowViewModel.swift in Sources */,
 				7822319427D1D83800FB5826 /* Member.swift in Sources */,
-				780796BB27C27C6F00C0BF12 /* MainController.swift in Sources */,
+				780796BB27C27C6F00C0BF12 /* CalendarViewController.swift in Sources */,
 				E456B02927E38D74009CC2AC /* SearchController.swift in Sources */,
-				E40474DC27EEEA490041547D /* DetailCell.swift in Sources */,
 				E470A75C27F1E64F001D2F5A /* FollowSection.swift in Sources */,
 				E470A75727F1DC7A001D2F5A /* FollowerMemberCell.swift in Sources */,
 				E484EDBE27DDF0F200513BA7 /* CategoryViewModel.swift in Sources */,

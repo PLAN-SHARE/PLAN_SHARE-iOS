@@ -20,7 +20,15 @@ class CustomSearchBar : UISearchBar {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        configureUI()
+        bind()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureUI() {
         self.addSubview(searchButton)
             
         searchTextField.snp.makeConstraints {
@@ -37,11 +45,6 @@ class CustomSearchBar : UISearchBar {
         searchTextField.clearButtonMode = .whileEditing
         searchButton.setTitle("검색", for: .normal)
         searchButton.setTitleColor(.black, for: .normal)
-        bind()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     private func bind() {
 

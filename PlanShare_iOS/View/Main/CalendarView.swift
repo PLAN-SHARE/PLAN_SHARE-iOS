@@ -7,19 +7,25 @@
 
 import UIKit
 import FSCalendar
+import RxSwift
+import RxCocoa
 
 protocol CalendarViewDelegate: class {
     func updateCalendarScope()
+    func updateDate(date:String)
 }
+
 class CalendarView: UICollectionReusableView {
 
     //MARK: - Properties
     static let reuseIdentifier = "CalendarView"
-    
+
     weak var delegate: CalendarViewDelegate?
+    var viewModel : MainViewModel?  
+    var categorySubject = PublishSubject<[Category]>()
     
+    private var disposBag = DisposeBag()
     private var calendar = FSCalendar()
-    
     private var calendarIsMonth : Bool = true{
         didSet {
             if calendarIsMonth == true {
@@ -71,17 +77,31 @@ class CalendarView: UICollectionReusableView {
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(10)
             make.height.equalTo(300)
         }
+        
+        fetch()
+        
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func fetch() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
+        viewModel.fetchCatgory()
+            .subscribe(onNext: {
+                self.categorySubject.onNext($0)
+            }).disposed(by: disposBag)
+        
+    }
     func configureCalendar() {
         calendar.delegate = self
         calendar.dataSource = self
         calendar.locale = Locale(identifier: "ko_KR")
         
-        calendar.appearance.headerDateFormat = "YYYY년 M월"
+        calendar.appearance.headerDateFormat = "YYYY년 MM월"
         calendar.headerHeight = 0
         
         //weak
@@ -89,21 +109,22 @@ class CalendarView: UICollectionReusableView {
         calendar.appearance.weekdayTextColor = .darkGray
         
         //title
-        calendar.appearance.titleFont = .systemFont(ofSize: 18)
+        calendar.appearance.titleFont = .systemFont(ofSize: 16)
         calendar.appearance.eventSelectionColor = .green
         
-        calendar.appearance.titleTodayColor = .orange
+        calendar.appearance.titleTodayColor = .darkGray
         calendar.backgroundColor = .systemGroupedBackground
         calendar.appearance.todayColor = .clear
         calendar.appearance.todaySelectionColor = .none
-        calendar.appearance.titleWeekendColor = .red
-        calendar.appearance.selectionColor = .black
+        calendar.appearance.titleWeekendColor = .darkGray
+        calendar.appearance.selectionColor = .darkGray
         calendar.appearance.titleSelectionColor = .white
         calendar.placeholderType = .none
-
+        calendar.select(Date())
+        calendar.appearance.eventSelectionColor = .darkGray
         dateTitleLabel.text = converToString(from: calendar.currentPage)
     }
-    
+
     @objc func didTapConvertCalendar() {
         calendarIsMonth.toggle()
     }
@@ -121,12 +142,9 @@ class CalendarView: UICollectionReusableView {
 
 extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("\(date) 날짜가 선택되었습니다.")
-    }
-    
-    // 날짜 선택 해제 콜백 메소드
-    public func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("\(date) 날짜가 선택 해제 되었습니다.")
+        let dateString = converToString(from: date)
+        delegate?.updateDate(date: dateString)
+//        dateSubject.accept(dateString)
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -137,8 +155,13 @@ extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
         self.layoutIfNeeded()
         delegate?.updateCalendarScope()
     }
+    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         dateTitleLabel.text = converToString(from: calendar.currentPage)
+    }
+    
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        return 1
     }
     
 }

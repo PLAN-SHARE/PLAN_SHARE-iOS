@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         KeychainWrapper.standard.removeObject(forKey: "AccessToken")
         
         if KeychainWrapper.standard.string(forKey: "AccessToken") != nil {
-            window?.rootViewController = UINavigationController(rootViewController: MainController(viewModel: MainViewModel(categoryService: CategoryService()                                                            ,userService: UserService())))
+            window?.rootViewController = MainTapViewController()
        }else {
             window?.rootViewController = LoginController()
         }
