@@ -13,7 +13,7 @@ class MainTapViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .init(named: "edebf5")
+        view.backgroundColor = .white
         configureTapbar()
         // Do any additional setup after loading the view.
     }
