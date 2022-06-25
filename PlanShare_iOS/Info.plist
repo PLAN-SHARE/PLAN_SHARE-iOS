@@ -2,20 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>NotoSansKR-Black.otf</string>
-		<string>NotoSansKR-Bold.otf</string>
-		<string>NotoSansKR-Light.otf</string>
-		<string>NotoSansKR-Medium.otf</string>
-		<string>NotoSansKR-Regular.otf</string>
-		<string>NotoSansKR-Thin.otf</string>
-	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -31,6 +17,20 @@
 	<array>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>NotoSansKR-Black.otf</string>
+		<string>NotoSansKR-Bold.otf</string>
+		<string>NotoSansKR-Light.otf</string>
+		<string>NotoSansKR-Medium.otf</string>
+		<string>NotoSansKR-Regular.otf</string>
+		<string>NotoSansKR-Thin.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -49,5 +49,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 </dict>
 </plist>
