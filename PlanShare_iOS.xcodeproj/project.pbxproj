@@ -26,9 +26,12 @@
 		7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */; };
 		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
 		E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40474D927EEDD090041547D /* ScheduleViewModel.swift */; };
+		E4127022286603DD007D191D /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4127021286603DD007D191D /* GoalViewModel.swift */; };
+		E41270242867063C007D191D /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41270232867063C007D191D /* Goal.swift */; };
 		E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E428A0D628142DCB00CABBB7 /* ScheduleService.swift */; };
 		E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */; };
 		E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C072128181EF80059D4F1 /* MainTapViewController.swift */; };
+		E44E41E028645EF9001F10A9 /* CircleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E41DF28645EF9001F10A9 /* CircleProgressBar.swift */; };
 		E456B02927E38D74009CC2AC /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B02827E38D74009CC2AC /* SearchController.swift */; };
 		E456B02B27E4CED8009CC2AC /* MainSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B02A27E4CED8009CC2AC /* MainSection.swift */; };
 		E456B04227E718C7009CC2AC /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E456B04127E718C7009CC2AC /* CreateViewModel.swift */; };
@@ -82,9 +85,12 @@
 		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40474D927EEDD090041547D /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
+		E4127021286603DD007D191D /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
+		E41270232867063C007D191D /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		E428A0D628142DCB00CABBB7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
 		E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewCell.swift; sourceTree = "<group>"; };
 		E43C072128181EF80059D4F1 /* MainTapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTapViewController.swift; sourceTree = "<group>"; };
+		E44E41DF28645EF9001F10A9 /* CircleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBar.swift; sourceTree = "<group>"; };
 		E456B02827E38D74009CC2AC /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		E456B02A27E4CED8009CC2AC /* MainSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSection.swift; sourceTree = "<group>"; };
 		E456B04127E718C7009CC2AC /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
@@ -164,11 +170,10 @@
 				E484EDBC27DDF0EB00513BA7 /* ViewModel */,
 				780796CF27C381CB00C0BF12 /* Controller */,
 				7822318027CE145200FB5826 /* Services */,
-				780796BF27C27C7200C0BF12 /* Assets.xcassets */,
+				E44E41DC28645DF4001F10A9 /* Resource */,
 				780796C127C27C7200C0BF12 /* LaunchScreen.storyboard */,
 				780796C427C27C7200C0BF12 /* Info.plist */,
 				7897BBD927C5F6AF003CE1F2 /* Extensions.swift */,
-				E4ECE8DA28178CB500893069 /* Font */,
 			);
 			path = PlanShare_iOS;
 			sourceTree = "<group>";
@@ -176,10 +181,10 @@
 		780796CE27C381C700C0BF12 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				E456B04427E77185009CC2AC /* IconCell.swift */,
-				E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */,
 				E456B04327E7716C009CC2AC /* Main */,
+				E44E41DD28645E3C001F10A9 /* Goal */,
 				E470A76227F33873001D2F5A /* Follow */,
+				E44E41E128645FEA001F10A9 /* Create */,
 				E470A76327F3387C001D2F5A /* Search */,
 			);
 			path = View;
@@ -194,7 +199,7 @@
 				E456B02827E38D74009CC2AC /* SearchController.swift */,
 				E48B65E327EC94C3002A6410 /* GoalViewController.swift */,
 				E43C072328195EDF0059D4F1 /* Create */,
-				E470A75027F1BE2A001D2F5A /* FollowController.swift */,
+				E44E41DE28645E9C001F10A9 /* Follow */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				7822319327D1D83800FB5826 /* Member.swift */,
 				7822318E27D1CE1A00FB5826 /* Schedule.swift */,
 				7822319027D1CE2E00FB5826 /* Category.swift */,
+				E41270232867063C007D191D /* Goal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,6 +250,40 @@
 			children = (
 				7897BBD527C526C2003CE1F2 /* CreateCategoryController.swift */,
 				7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		E44E41DC28645DF4001F10A9 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				780796BF27C27C7200C0BF12 /* Assets.xcassets */,
+				E4ECE8DA28178CB500893069 /* Font */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		E44E41DD28645E3C001F10A9 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */,
+				E44E41DF28645EF9001F10A9 /* CircleProgressBar.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		E44E41DE28645E9C001F10A9 /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				E470A75027F1BE2A001D2F5A /* FollowController.swift */,
+			);
+			path = Follow;
+			sourceTree = "<group>";
+		};
+		E44E41E128645FEA001F10A9 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				E456B04427E77185009CC2AC /* IconCell.swift */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -298,6 +338,7 @@
 				E470A75F27F32E91001D2F5A /* SearchViewModel.swift */,
 				E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */,
 				E40474D927EEDD090041547D /* ScheduleViewModel.swift */,
+				E4127021286603DD007D191D /* GoalViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -443,6 +484,7 @@
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
 				E48B65E427EC94C3002A6410 /* GoalViewController.swift in Sources */,
 				E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */,
+				E44E41E028645EF9001F10A9 /* CircleProgressBar.swift in Sources */,
 				E470A75127F1BE2A001D2F5A /* FollowController.swift in Sources */,
 				E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */,
 				E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */,
@@ -453,6 +495,7 @@
 				E470A76727F3406B001D2F5A /* FollowingMemberCell.swift in Sources */,
 				7822318327CE16E700FB5826 /* AuthService.swift in Sources */,
 				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
+				E4127022286603DD007D191D /* GoalViewModel.swift in Sources */,
 				7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */,
 				E470A75327F1BF61001D2F5A /* FollowFilterView.swift in Sources */,
 				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
@@ -463,6 +506,7 @@
 				780796BB27C27C6F00C0BF12 /* CalendarViewController.swift in Sources */,
 				E456B02927E38D74009CC2AC /* SearchController.swift in Sources */,
 				E470A75C27F1E64F001D2F5A /* FollowSection.swift in Sources */,
+				E41270242867063C007D191D /* Goal.swift in Sources */,
 				E470A75727F1DC7A001D2F5A /* FollowerMemberCell.swift in Sources */,
 				E484EDBE27DDF0F200513BA7 /* CategoryViewModel.swift in Sources */,
 				E456B02B27E4CED8009CC2AC /* MainSection.swift in Sources */,
@@ -676,7 +720,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -744,7 +788,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -95,7 +95,7 @@ class CalendarViewController: UIViewController {
         self.navigationController?.navigationBar.layoutIfNeeded()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
-        view.backgroundColor = .init(named: "edebf5")
+        view.backgroundColor = .mainBackgroundColor
         
         
         view.addSubview(collectionView)

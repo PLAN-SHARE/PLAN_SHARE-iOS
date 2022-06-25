@@ -13,7 +13,7 @@ class MainTapViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .init(named: "edebf5")
+        view.backgroundColor = .white
         configureTapbar()
         // Do any additional setup after loading the view.
     }
@@ -24,7 +24,7 @@ class MainTapViewController: UITabBarController {
         let calendarVC = CalendarViewController(viewModel: MainViewModel(categoryService: CategoryService(), userService: UserService(),scheduleService: ScheduleService()))
         let nav1 = templateNavigationController(image: UIImage(systemName: "calendar"), rootViewController: calendarVC)
         
-        let goalVC = GaolViewController()
+        let goalVC = GoalViewController()
         let nav2 = templateNavigationController(image: UIImage(systemName: "target"), rootViewController: goalVC)
         setViewControllers([nav1,nav2], animated: false)
         tabBar.tintColor = .darkGray

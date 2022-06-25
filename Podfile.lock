@@ -16,7 +16,6 @@ PODS:
   - KakaoSDKUser (2.8.4):
     - KakaoSDKAuth (= 2.8.4)
   - M13Checkbox (3.4.0)
-  - PanModal (1.2.7)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -37,7 +36,6 @@ DEPENDENCIES:
   - KakaoSDKAuth
   - KakaoSDKCommon
   - KakaoSDKUser
-  - PanModal
   - RxCocoa (= 6.5.0)
   - RxDataSources (~> 5.0)
   - RxSwift (= 6.5.0)
@@ -55,7 +53,6 @@ SPEC REPOS:
     - KakaoSDKCommon
     - KakaoSDKUser
     - M13Checkbox
-    - PanModal
     - RxCocoa
     - RxDataSources
     - RxRelay
@@ -73,7 +70,6 @@ SPEC CHECKSUMS:
   KakaoSDKCommon: 33c9902ee9ce13e9d1cac3549896406229836ff5
   KakaoSDKUser: d878977e0ba6b365cfeac3b6319cdf4231713bea
   M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
-  PanModal: 3e16ead1a907fb06f4df3f13492fd00149fa4974
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
@@ -82,6 +78,6 @@ SPEC CHECKSUMS:
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: 8e22a3ab01a8c6001c840790b8cabd08cf3d0f87
+PODFILE CHECKSUM: 35ef0a7806caa7c0322dadf96f29f9f6ba96c694
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

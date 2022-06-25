@@ -52,6 +52,8 @@ extension UIColor {
     }
     
     static let mainColor = UIColor.init(hex: "a1b5f5")
+    static let mainBackgroundColor = UIColor.init(hex: "edebf5")
+    
 }
 
 extension String {
