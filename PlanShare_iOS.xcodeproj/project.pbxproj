@@ -26,6 +26,8 @@
 		7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD727C5407A003CE1F2 /* CreateScheduleController.swift */; };
 		7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7897BBD927C5F6AF003CE1F2 /* Extensions.swift */; };
 		E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40474D927EEDD090041547D /* ScheduleViewModel.swift */; };
+		E4127022286603DD007D191D /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4127021286603DD007D191D /* GoalViewModel.swift */; };
+		E41270242867063C007D191D /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41270232867063C007D191D /* Goal.swift */; };
 		E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E428A0D628142DCB00CABBB7 /* ScheduleService.swift */; };
 		E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */; };
 		E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C072128181EF80059D4F1 /* MainTapViewController.swift */; };
@@ -83,6 +85,8 @@
 		7897BBD927C5F6AF003CE1F2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9247365B1621C537ECB0FF72 /* Pods_PlanShare_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlanShare_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40474D927EEDD090041547D /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
+		E4127021286603DD007D191D /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
+		E41270232867063C007D191D /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		E428A0D628142DCB00CABBB7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
 		E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewCell.swift; sourceTree = "<group>"; };
 		E43C072128181EF80059D4F1 /* MainTapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTapViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +231,7 @@
 				7822319327D1D83800FB5826 /* Member.swift */,
 				7822318E27D1CE1A00FB5826 /* Schedule.swift */,
 				7822319027D1CE2E00FB5826 /* Category.swift */,
+				E41270232867063C007D191D /* Goal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -333,6 +338,7 @@
 				E470A75F27F32E91001D2F5A /* SearchViewModel.swift */,
 				E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */,
 				E40474D927EEDD090041547D /* ScheduleViewModel.swift */,
+				E4127021286603DD007D191D /* GoalViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -489,6 +495,7 @@
 				E470A76727F3406B001D2F5A /* FollowingMemberCell.swift in Sources */,
 				7822318327CE16E700FB5826 /* AuthService.swift in Sources */,
 				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
+				E4127022286603DD007D191D /* GoalViewModel.swift in Sources */,
 				7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */,
 				E470A75327F1BF61001D2F5A /* FollowFilterView.swift in Sources */,
 				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
@@ -499,6 +506,7 @@
 				780796BB27C27C6F00C0BF12 /* CalendarViewController.swift in Sources */,
 				E456B02927E38D74009CC2AC /* SearchController.swift in Sources */,
 				E470A75C27F1E64F001D2F5A /* FollowSection.swift in Sources */,
+				E41270242867063C007D191D /* Goal.swift in Sources */,
 				E470A75727F1DC7A001D2F5A /* FollowerMemberCell.swift in Sources */,
 				E484EDBE27DDF0F200513BA7 /* CategoryViewModel.swift in Sources */,
 				E456B02B27E4CED8009CC2AC /* MainSection.swift in Sources */,
@@ -712,7 +720,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -780,7 +788,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
