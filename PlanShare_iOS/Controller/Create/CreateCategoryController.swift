@@ -201,7 +201,6 @@ class CreateCategoryController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: nil, userInfo: nil)
     }
     
     init(viewModel:CreateViewModel) {
@@ -298,6 +297,9 @@ class CreateCategoryController: UIViewController {
         viewModel.createCategory(color: selectedColorString, icon: iconURL, name: title, visibility: visibility) {
             print($0)
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: nil, userInfo: nil)
+        
         dismiss(animated: true)
     }
     
