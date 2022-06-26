@@ -17,7 +17,6 @@ class CircleProgressBar: UIView {
     
     var percent: Double = 0 {
         didSet{
-            print(percent)
             progressLayer.strokeEnd = percent
         }
     }
@@ -35,7 +34,7 @@ class CircleProgressBar: UIView {
     
     private func createCircularPath() {
         // created circularPath for circleLayer and progressLayer
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: 30, y: 30), radius: 15, startAngle: startPoint, endAngle: endPoint, clockwise: true)
+        let circularPath = UIBezierPath(arcCenter: CGPoint(x: 0, y: 0), radius: frame.height/2, startAngle: startPoint, endAngle: endPoint, clockwise: true)
         // circleLayer path defined to circularPath
         circleLayer.path = circularPath.cgPath
         // ui edits
