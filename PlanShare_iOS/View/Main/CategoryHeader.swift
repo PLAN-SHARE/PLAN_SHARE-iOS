@@ -35,7 +35,7 @@ class CategoryHeader: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemGroupedBackground
+        backgroundColor = .clear
         
         addSubview(imageView)
         imageView.snp.makeConstraints { make in

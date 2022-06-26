@@ -44,7 +44,7 @@ class ScheduleCell: UICollectionViewCell {
     //MARK: - LifeCycle
     override init(frame:CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemGroupedBackground
+        backgroundColor = .clear
         
         contentView.addSubview(scheduleLabel)
         scheduleLabel.snp.makeConstraints { make in
