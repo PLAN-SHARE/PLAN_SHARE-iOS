@@ -3,27 +3,25 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol ScheduleCellDelegate : class {
+protocol DetailGoalListCellDelegate : class {
     func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void))
 }
 
-class ScheduleCell: UICollectionViewCell {
+class DetailGoalListCell: UICollectionViewCell {
     
     //MARK: - Properties
-    static let reuseIdentifier = "ScheduleCell"
+    static let reuseIdentifier = "DetailGoalListCell"
     
     private var disposBag = DisposeBag()
-    weak var delegate : ScheduleCellDelegate?
     
-    var schedule: Schedule? {
+    weak var delegate : DetailGoalListCellDelegate?
+    
+    var schedule: Schedule?{
         didSet{
-            guard let schedule = schedule else {
-                return
-            }
-
-            configure(schedule: schedule)
+            configure()
         }
     }
+    
     private var scheduleLabel = UILabel().then {
         $0.text = "프로젝트 기획서 마감"
         $0.font = .noto(size: 16, family: .Regular)
@@ -35,7 +33,7 @@ class ScheduleCell: UICollectionViewCell {
         $0.setImage(UIImage(systemName: "checkmark"), for: .normal)
         $0.contentMode = .scaleAspectFit
         $0.layer.masksToBounds = false
-        $0.layer.borderColor = UIColor.init(named: "a1b5f5")?.cgColor
+        $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.layer.borderWidth = 0.2
         $0.tintColor = .white
         $0.layer.cornerRadius = 23/2
@@ -62,7 +60,6 @@ class ScheduleCell: UICollectionViewCell {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
         contentView.layer.borderWidth = 1.0
-
         contentView.layer.borderColor = UIColor.clear.cgColor
         contentView.layer.masksToBounds = true
         
@@ -83,7 +80,8 @@ class ScheduleCell: UICollectionViewCell {
     }
     
     //MARK: - Configure
-    func configure(schedule:Schedule) {
+    func configure() {
+        guard let schedule = schedule else { return }
         checkButton.backgroundColor = schedule.checkStatus ? .init(hex: "a1b5f5") : .white
         scheduleLabel.attributedText = schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }

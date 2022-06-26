@@ -52,10 +52,9 @@ class FollowingCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configureUI() {
-        backgroundColor = .systemGroupedBackground
-        
+
         contentView.addSubview(titleLabel)
-        contentView.backgroundColor = .lightGray
+        contentView.backgroundColor = .mainColor
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(3)
             make.right.equalToSuperview().offset(-3)

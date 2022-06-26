@@ -52,7 +52,7 @@ extension UIColor {
     }
     
     static let mainColor = UIColor.init(hex: "a1b5f5")
-    static let mainBackgroundColor = UIColor.init(hex: "edebf5")
+    static let mainBackgroundColor = UIColor.init(hex: "f2f2f2")
     
 }
 
@@ -106,3 +106,19 @@ extension UIFont {
 //        view.endEditing(true) // or do something
 //    }
 //}
+
+extension Date {
+    
+    func dateCompare(fromDate: Date) -> GoalFilterOptions {
+        let result: ComparisonResult = self.compare(fromDate)
+        
+        switch result {
+        case .orderedAscending, .orderedSame:
+            return .expected
+        case .orderedDescending:
+            return .past
+        default :
+            return .past
+        }
+    }
+}

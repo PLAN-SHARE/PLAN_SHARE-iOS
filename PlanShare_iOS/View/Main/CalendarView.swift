@@ -113,7 +113,7 @@ class CalendarView: UICollectionReusableView {
         calendar.appearance.eventSelectionColor = .green
         
         calendar.appearance.titleTodayColor = .darkGray
-        calendar.backgroundColor = .systemGroupedBackground
+        calendar.backgroundColor = .mainBackgroundColor
         calendar.appearance.todayColor = .clear
         calendar.appearance.todaySelectionColor = .none
         calendar.appearance.titleWeekendColor = .darkGray

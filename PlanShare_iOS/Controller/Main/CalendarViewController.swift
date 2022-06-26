@@ -113,7 +113,7 @@ class CalendarViewController: UIViewController {
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(state:calendarIsMonth))
         collectionView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.backgroundColor = .mainBackgroundColor
         collectionView.register(CategoryHeader.self, forSupplementaryViewOfKind: CategoryHeader.reuseIdentifier, withReuseIdentifier: CategoryHeader.reuseIdentifier)
         collectionView.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.reuseIdentifier)
         collectionView.register(FollowingCell.self, forCellWithReuseIdentifier: FollowingCell.reuseIdentifier)

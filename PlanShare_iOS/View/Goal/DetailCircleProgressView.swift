@@ -1,13 +1,6 @@
-//
-//  CircleProgressBar.swift
-//  PlanShare_iOS
-//
-//  Created by Doyun Park on 2022/06/23.
-//
-
 import UIKit
 
-class CircleProgressBar: UIView {
+class DetailCircleProgressView: UIView {
     
     //MARK: - Properties
     private var circleLayer = CAShapeLayer()
@@ -15,14 +8,34 @@ class CircleProgressBar: UIView {
     private var startPoint = CGFloat(-Double.pi / 2)
     private var endPoint = CGFloat(3 * Double.pi / 2)
     
-    var percent: Double = 0 {
+    var goal: Goal? {
         didSet{
-            progressLayer.strokeEnd = percent
+            guard let goal = goal else {
+                return
+            }
+            guard let schedule = goal.schedules else { return }
+            
+            progressLayer.strokeEnd = Double(Double(goal.doneSchedule) / Double(schedule.count))
+            circleLayer.strokeColor = UIColor(hex:goal.color).cgColor
+            progressLayer.strokeColor = UIColor(hex:goal.color).cgColor
+            percentLabel.text = schedule.count == 0 ? "0%" :  String(round(Double(Double(goal.doneSchedule) / Double(schedule.count)) * 100)) + "%"
         }
     }
+    
+    var percentLabel = UILabel().then{
+        $0.font = .noto(size: 20, family: .Regular)
+        $0.text = "100%"
+        $0.textColor = .black
+    }
+    
     //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .black
+        addSubview(percentLabel)
+        percentLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         createCircularPath()
         
     }
@@ -30,7 +43,6 @@ class CircleProgressBar: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
     
     private func createCircularPath() {
         // created circularPath for circleLayer and progressLayer
@@ -40,7 +52,7 @@ class CircleProgressBar: UIView {
         // ui edits
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineCap = .round
-        circleLayer.lineWidth = 4
+        circleLayer.lineWidth = 12
         circleLayer.strokeEnd = 1.0
         circleLayer.strokeColor = UIColor.gray.cgColor
         circleLayer.opacity = 0.4
@@ -51,10 +63,11 @@ class CircleProgressBar: UIView {
         // ui edits
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineCap = .round
-        progressLayer.lineWidth = 4
-        progressLayer.strokeEnd = percent
+        progressLayer.lineWidth = 12
+        progressLayer.strokeEnd = 0
         progressLayer.strokeColor = UIColor.white.cgColor
         // added progressLayer to layer
         layer.addSublayer(progressLayer)
+        
     }
 }

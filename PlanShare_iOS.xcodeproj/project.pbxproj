@@ -28,6 +28,12 @@
 		E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40474D927EEDD090041547D /* ScheduleViewModel.swift */; };
 		E4127022286603DD007D191D /* GoalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4127021286603DD007D191D /* GoalViewModel.swift */; };
 		E41270242867063C007D191D /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41270232867063C007D191D /* Goal.swift */; };
+		E412702728673E95007D191D /* DetailGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412702628673E95007D191D /* DetailGoalViewController.swift */; };
+		E4127029286744A9007D191D /* DetailGoalViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4127028286744A9007D191D /* DetailGoalViewHeader.swift */; };
+		E412702E28674E00007D191D /* GoalFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412702D28674E00007D191D /* GoalFilterCell.swift */; };
+		E41270302868374D007D191D /* DetailGoalListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412702F2868374D007D191D /* DetailGoalListCell.swift */; };
+		E412703328684024007D191D /* DetailCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412703228684024007D191D /* DetailCircleProgressView.swift */; };
+		E4127037286875F6007D191D /* DefaultTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4127036286875F6007D191D /* DefaultTextCell.swift */; };
 		E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E428A0D628142DCB00CABBB7 /* ScheduleService.swift */; };
 		E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */; };
 		E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C072128181EF80059D4F1 /* MainTapViewController.swift */; };
@@ -87,6 +93,12 @@
 		E40474D927EEDD090041547D /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		E4127021286603DD007D191D /* GoalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewModel.swift; sourceTree = "<group>"; };
 		E41270232867063C007D191D /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		E412702628673E95007D191D /* DetailGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGoalViewController.swift; sourceTree = "<group>"; };
+		E4127028286744A9007D191D /* DetailGoalViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGoalViewHeader.swift; sourceTree = "<group>"; };
+		E412702D28674E00007D191D /* GoalFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalFilterCell.swift; sourceTree = "<group>"; };
+		E412702F2868374D007D191D /* DetailGoalListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGoalListCell.swift; sourceTree = "<group>"; };
+		E412703228684024007D191D /* DetailCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCircleProgressView.swift; sourceTree = "<group>"; };
+		E4127036286875F6007D191D /* DefaultTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextCell.swift; sourceTree = "<group>"; };
 		E428A0D628142DCB00CABBB7 /* ScheduleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleService.swift; sourceTree = "<group>"; };
 		E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewCell.swift; sourceTree = "<group>"; };
 		E43C072128181EF80059D4F1 /* MainTapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTapViewController.swift; sourceTree = "<group>"; };
@@ -195,11 +207,10 @@
 			children = (
 				E43C072128181EF80059D4F1 /* MainTapViewController.swift */,
 				7822317F27CE144900FB5826 /* Authentication */,
-				780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */,
-				E456B02827E38D74009CC2AC /* SearchController.swift */,
-				E48B65E327EC94C3002A6410 /* GoalViewController.swift */,
+				E412703128683CA1007D191D /* Main */,
+				E412702A2867492B007D191D /* Goal */,
 				E43C072328195EDF0059D4F1 /* Create */,
-				E44E41DE28645E9C001F10A9 /* Follow */,
+				E412702528673E80007D191D /* Follow */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -245,6 +256,32 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E412702528673E80007D191D /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				E470A75027F1BE2A001D2F5A /* FollowController.swift */,
+			);
+			path = Follow;
+			sourceTree = "<group>";
+		};
+		E412702A2867492B007D191D /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				E48B65E327EC94C3002A6410 /* GoalViewController.swift */,
+				E412702628673E95007D191D /* DetailGoalViewController.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		E412703128683CA1007D191D /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */,
+				E456B02827E38D74009CC2AC /* SearchController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		E43C072328195EDF0059D4F1 /* Create */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,18 +303,15 @@
 		E44E41DD28645E3C001F10A9 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
-				E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */,
 				E44E41DF28645EF9001F10A9 /* CircleProgressBar.swift */,
+				E42DEAC228195FA400DF9F77 /* GoalViewCell.swift */,
+				E4127028286744A9007D191D /* DetailGoalViewHeader.swift */,
+				E412703228684024007D191D /* DetailCircleProgressView.swift */,
+				E412702D28674E00007D191D /* GoalFilterCell.swift */,
+				E412702F2868374D007D191D /* DetailGoalListCell.swift */,
+				E4127036286875F6007D191D /* DefaultTextCell.swift */,
 			);
 			path = Goal;
-			sourceTree = "<group>";
-		};
-		E44E41DE28645E9C001F10A9 /* Follow */ = {
-			isa = PBXGroup;
-			children = (
-				E470A75027F1BE2A001D2F5A /* FollowController.swift */,
-			);
-			path = Follow;
 			sourceTree = "<group>";
 		};
 		E44E41E128645FEA001F10A9 /* Create */ = {
@@ -484,22 +518,28 @@
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
 				E48B65E427EC94C3002A6410 /* GoalViewController.swift in Sources */,
 				E40474DA27EEDD090041547D /* ScheduleViewModel.swift in Sources */,
+				E412702728673E95007D191D /* DetailGoalViewController.swift in Sources */,
+				E4127029286744A9007D191D /* DetailGoalViewHeader.swift in Sources */,
 				E44E41E028645EF9001F10A9 /* CircleProgressBar.swift in Sources */,
 				E470A75127F1BE2A001D2F5A /* FollowController.swift in Sources */,
+				E4127037286875F6007D191D /* DefaultTextCell.swift in Sources */,
 				E428A0D728142DCB00CABBB7 /* ScheduleService.swift in Sources */,
 				E43C072228181EF80059D4F1 /* MainTapViewController.swift in Sources */,
 				E456B04527E77185009CC2AC /* IconCell.swift in Sources */,
 				780796D127C3839000C0BF12 /* CategoryHeader.swift in Sources */,
+				E412703328684024007D191D /* DetailCircleProgressView.swift in Sources */,
 				E456B04227E718C7009CC2AC /* CreateViewModel.swift in Sources */,
 				E470A75527F1BFD3001D2F5A /* FollowFilterCell.swift in Sources */,
 				E470A76727F3406B001D2F5A /* FollowingMemberCell.swift in Sources */,
 				7822318327CE16E700FB5826 /* AuthService.swift in Sources */,
 				780796CB27C27EE500C0BF12 /* FollowingCell.swift in Sources */,
 				E4127022286603DD007D191D /* GoalViewModel.swift in Sources */,
+				E412702E28674E00007D191D /* GoalFilterCell.swift in Sources */,
 				7897BBD827C5407A003CE1F2 /* CreateScheduleController.swift in Sources */,
 				E470A75327F1BF61001D2F5A /* FollowFilterView.swift in Sources */,
 				780796D327C3861000C0BF12 /* ScheduleCell.swift in Sources */,
 				7897BBDA27C5F6B0003CE1F2 /* Extensions.swift in Sources */,
+				E41270302868374D007D191D /* DetailGoalListCell.swift in Sources */,
 				E470A75E27F31D70001D2F5A /* CustomSearchBar.swift in Sources */,
 				E470A75927F1DD86001D2F5A /* FollowViewModel.swift in Sources */,
 				7822319427D1D83800FB5826 /* Member.swift in Sources */,

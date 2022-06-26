@@ -70,13 +70,13 @@ class GoalViewCell: UICollectionViewCell {
         
         contentView.addSubview(circleProgressBar)
         circleProgressBar.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-30)
-            make.trailing.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.width.height.equalTo(40)
         }
         
         contentView.layer.masksToBounds = false
-        contentView.layer.shadowOpacity = 0.8
+        contentView.layer.shadowOpacity = 0.3
         contentView.layer.shadowOffset = CGSize(width: -2, height: 2)
         contentView.layer.cornerRadius = 20
         contentView.layer.shadowColor = UIColor.black.cgColor

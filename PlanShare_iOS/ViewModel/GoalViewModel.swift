@@ -40,8 +40,4 @@ class GoalViewModel {
                 return goals
             }
     }
-    
-    func fetchCatgory() -> Observable<[Category]> {
-        categoryService.fetchCategory()
-    }
 }
