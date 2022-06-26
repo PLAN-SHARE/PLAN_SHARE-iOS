@@ -14,11 +14,10 @@ class ScheduleViewModel {
     private var dateLabel : String {
         return schedule.date
     }
-//
+
     var scheduleTitle : NSAttributedString {
         return schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }
-    
 
     init(schedule: Schedule){
         self.schedule = schedule
