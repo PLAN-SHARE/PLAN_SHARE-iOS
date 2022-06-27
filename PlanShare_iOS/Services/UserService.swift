@@ -65,7 +65,7 @@ class UserService : UserSerivceProtocol{
         
         let followInfo = option == .following ? "following" : "follower"
         
-        let url = "http://52.79.87.87:9090/friend/\(followInfo)/list"
+        let url = "http://3.36.130.116:9090/friend/\(followInfo)/list"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -101,7 +101,7 @@ class UserService : UserSerivceProtocol{
     
     private func searchUser(email:String,completion:@escaping((Error?,MemberResponse?) -> Void)){
         
-        let url = "http://52.79.87.87:9090/friend/search"
+        let url = "http://3.36.130.116:9090/friend/search"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -154,7 +154,7 @@ class UserService : UserSerivceProtocol{
     
     private func follow(email:String,completion:@escaping(MemberResponse?,Error?)->Void) {
         
-        let url = "http://52.79.87.87:9090/friend/follow"
+        let url = "http://3.36.130.116:9090/friend/follow"
         
         let header = AuthService.shared.getAuthorizationHeader()
 //        header?.add(name: "Content-Type", value: "application/json")
@@ -184,7 +184,7 @@ class UserService : UserSerivceProtocol{
     
 
     func unFollow(email:String,completion:@escaping(MemberResponse?,Error?)->Void) {
-        let url = "http://52.79.87.87:9090/friend/unfollow"
+        let url = "http://3.36.130.116:9090/friend/unfollow"
         
         let header = AuthService.shared.getAuthorizationHeader()
         

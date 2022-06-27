@@ -19,7 +19,7 @@ class ScheduleService {
     func createSchedule(goalId:Int64,_ parameters:[String:Any],completion:@escaping(Bool)-> Void){
         let header = AuthService.shared.getAuthorizationHeader()
 
-        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans"
         AF.request(URL, method: .post, parameters: parameters,encoding: JSONEncoding.default,headers: header).responseJSON { response in
             switch response.result {
                 
@@ -34,7 +34,7 @@ class ScheduleService {
     func fetchSchedule(goalId:Int,completion:@escaping(Error?,[Schedule]?)-> Void) {
         let header = AuthService.shared.getAuthorizationHeader()
         
-        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans"
         
         AF.request(URL,headers:header).responseData(completionHandler: { response in
             switch response.result {
@@ -63,7 +63,7 @@ class ScheduleService {
     func updatePlanCheckStatus(goalId:Int,planId:Int) {
         let header = AuthService.shared.getAuthorizationHeader()
         
-        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans/\(planId)/check"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans/\(planId)/check"
         
         AF.request(URL, method: .put,headers: header).validate(statusCode: 200..<300).responseData { response in
             switch response.result {
@@ -78,7 +78,7 @@ class ScheduleService {
     func delegatePlan(goalId:Int,planId:Int){
         let header = AuthService.shared.getAuthorizationHeader()
         
-        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans/\(planId)/check"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans/\(planId)/check"
         
         AF.request(URL, method: .delete,headers: header).validate(statusCode: 200..<300).responseJSON { response in
             switch response.result {
