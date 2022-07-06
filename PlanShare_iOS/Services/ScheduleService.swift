@@ -18,7 +18,7 @@ class ScheduleService {
     
     func createSchedule(goalId:Int64,_ parameters:[String:Any],completion:@escaping(Bool)-> Void){
         let header = AuthService.shared.getAuthorizationHeader()
-
+        
         let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans"
         AF.request(URL, method: .post, parameters: parameters,encoding: JSONEncoding.default,headers: header).responseJSON { response in
             switch response.result {
@@ -57,7 +57,7 @@ class ScheduleService {
                 }
             }
         })
-            
+        
     }
     
     func updatePlanCheckStatus(goalId:Int,planId:Int) {
@@ -87,6 +87,31 @@ class ScheduleService {
             case .success(let datas):
                 print(datas)
             }
+        }
+    }
+    
+    func fetchScheduleByDate(year:Int,month:Int,completion:@escaping([ScheduleByDates]?,Error?) -> Void) {
+        let header = AuthService.shared.getAuthorizationHeader()
+        
+        guard let id = KeychainWrapper.standard.string(forKey: "id") else { return }
+        
+        let URL =
+        "http://3.36.130.116:9090/users/\(id)/goals/plans/years/\(year)/months/\(month)"
+        
+        AF.request(URL,method: .get,headers: header).validate(statusCode: 200..<300).responseData { response in
+            switch response.result {
+            case .failure(let error) :
+                fatalError(error.localizedDescription)
+            case .success(let data):
+                do {
+                    let scheduleByDates = try JSONDecoder().decode([ScheduleByDates].self, from: data)
+                    completion(scheduleByDates,nil)
+                }
+                catch(let error){
+                    completion(nil,error)
+                }
+            }
+            
         }
     }
 }

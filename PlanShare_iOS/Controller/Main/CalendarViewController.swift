@@ -18,8 +18,6 @@ class CalendarViewController: UIViewController {
     //MARK: - Properties
     private var collectionView : UICollectionView!
     
-    private var sectionSubject = BehaviorRelay<[SectionModel]>(value: [])
-    
     private var filteredSubject = BehaviorRelay<[SectionModel]>(value:[])
     
     private let refreshLoading = PublishRelay<Bool>()
@@ -29,7 +27,7 @@ class CalendarViewController: UIViewController {
     
     private var indicator = UIActivityIndicatorView(style: .medium)
     
-    private var calendarIsMonth : Bool = true {
+    private var calendarIsMonth: Bool = true {
         didSet {
             collectionView.collectionViewLayout = generateLayout(state: self.calendarIsMonth)
         }
@@ -69,13 +67,9 @@ class CalendarViewController: UIViewController {
             name: NSNotification.Name("dismissCreateView"),
             object: nil
         )
-        
         configureCollectionView()
         configureUI()
         bind()
-        
-        fetchSectionModel()
-        
     }
     
     init(viewModel: MainViewModel) {
@@ -89,7 +83,6 @@ class CalendarViewController: UIViewController {
     
     //MARK: - configure
     func configureUI(){
-        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
@@ -128,7 +121,7 @@ class CalendarViewController: UIViewController {
         refreshControl.rx.controlEvent(.valueChanged)
             .bind { [weak self] _ in
                 self?.refreshLoading.accept(true)
-                self?.fetchSectionModel()
+//                self?.viewModel.fetchSectionData()
                 self?.refreshLoading.accept(false)
             }.disposed(by: disposBag)
         
@@ -141,41 +134,30 @@ class CalendarViewController: UIViewController {
     func bind(){
         let dataSource =  dataSource()
         
-        sectionSubject.bind(to: collectionView.rx.items(dataSource: dataSource))
+        viewModel.sectionSubject.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposBag)
-        
-        collectionView.rx.itemSelected.subscribe {
-            
-            guard let element = $0.element else {
-                return
-            }
-            
-            let datasource = self.sectionSubject.value[element.section].items[element.row]
-            
-            switch datasource {
-            case .schedule(schedule: let schedule) :
-                break
-            case .following(member: let user):
-                if user.nickName == "+" {
-                    let vc = FollowController(viewModel: FollowViewModel(userService: UserService()))
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-                break
-            }
-        }.disposed(by: disposBag)
+
+//        collectionView.rx.itemSelected.subscribe {
+//
+//            guard let element = $0.element else {
+//                return
+//            }
+//
+//            let datasource = self.viewModel.section.
+//
+//            switch datasource {
+//            case .schedule(schedule: let schedule) :
+//                print(schedule)
+//                break
+//            case .following(member: let user):
+//                if user.nickName == "+" {
+//                    let vc = FollowController(viewModel: FollowViewModel(userService: UserService()))
+//                    self.navigationController?.pushViewController(vc, animated: true)
+//                }
+//                break
+//            }
+//        }.disposed(by: disposBag)
     }
-    
-    func fetchSectionModel(){
-        viewModel.fetchUser()
-            .subscribe ( onNext : {
-                self.sectionSubject.accept([$0])
-            }).disposed(by: disposBag)
-        viewModel.fetchCategory()
-            .subscribe(onNext : {
-                self.sectionSubject.accept(self.sectionSubject.value + $0)
-            }).disposed(by: disposBag)
-    }
-    
     //MARK: - selector
     @objc func handleSearch() {
         let vc = SearchController(viewModel: SearchViewModel(userService: UserService(), categoryService: CategoryService()))
@@ -192,7 +174,7 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
-        fetchSectionModel()
+//        viewModel.fetchSectionData()
     }
 }
 
@@ -201,7 +183,6 @@ extension CalendarViewController {
     func dataSource() -> RxCollectionViewSectionedReloadDataSource<SectionModel> {
         return RxCollectionViewSectionedReloadDataSource<SectionModel> {
             dataSource, collectionView, indexPath, item in
-            
             switch item {
             case .following(member: let member) :
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingCell.reuseIdentifier, for: indexPath) as? FollowingCell else {
@@ -229,12 +210,12 @@ extension CalendarViewController {
             case CategoryHeader.reuseIdentifier :
                 switch dataSource.sectionModels[indexPath.section] {
                 case .FollowingModel(items: _) : break
-                case .ScheduleModel(header: let header, items:_) :
+                case .ScheduleModel(header: let header, items: _) :
                     guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
                         ofKind: kind,
                         withReuseIdentifier: CategoryHeader.reuseIdentifier,
                         for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
-                    supplementaryView.category = header
+                    supplementaryView.task = header
                     return supplementaryView
                 }
                 
@@ -245,7 +226,7 @@ extension CalendarViewController {
         }
     }
 }
-//MARK: - CollectionView Layout
+//MARK: - CollectionViewLayout
 extension CalendarViewController {
     func generateLayout(state:Bool) -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
@@ -258,7 +239,16 @@ extension CalendarViewController {
     
     func generateFollowingLayout(isMonth:Bool) -> NSCollectionLayoutSection {
         
-        let estimatedWidth: CGFloat = 35
+        let label = UILabel().then {
+            $0.font = .systemFont(ofSize: 14)
+            $0.text = "heejung"
+            $0.sizeToFit()
+        }
+        
+        let size = label.frame.size
+        
+        let estimatedWidth: CGFloat = size.width + 16
+        let estimatedHeight: CGFloat = size.height + 16
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1))
@@ -267,7 +257,7 @@ extension CalendarViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .estimated(estimatedWidth),
-            heightDimension: .absolute(35))
+            heightDimension: .absolute(estimatedHeight))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
         
@@ -307,9 +297,13 @@ extension CalendarViewController {
 //MARK: - CalendarViewDelegate
 extension CalendarViewController : CalendarViewDelegate {
     func updateDate(date: String) {
-        sectionSubject.map { sectionModels in
-            print(sectionModels)
-        }
+        viewModel.fetchSectionData(current: date)
+//        viewModel.fetchSchedule(date: date) { schedules in
+//            print("DEBUG mainvc: \(schedules)")
+//        }
+//        sectionSubject.map { sectionModels in
+//            print(sectionModels)
+//        }
     }
     
     func updateCalendarScope() {
