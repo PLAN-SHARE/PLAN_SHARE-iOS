@@ -79,7 +79,7 @@ extension UIFont {
         }
         
     static func noto(size: CGFloat = 12, family: Family = .Regular) -> UIFont! {
-            return UIFont(name: "NotoSansCJKkr-\(family)", size: size)
+            return UIFont(name: "NotoSansKR-\(family)", size: size)
         }
 }
 //extension UIViewController: UITextFieldDelegate{
@@ -109,6 +109,20 @@ extension UIFont {
 
 extension Date {
     
+    static func converToString(from date: Date,type: DateType) -> String {
+        let dfMatter = DateFormatter()
+        
+        switch type {
+        case .api : dfMatter.dateFormat = "yyyy-MM"
+        case .calendar : dfMatter.dateFormat = "yyyy년 MM월"
+        case .full : dfMatter.dateFormat = "yyyy-MM-dd"
+        }
+        
+        dfMatter.locale = Locale(identifier: "ko_KR")
+        
+        return dfMatter.string(from: date)
+    }
+    
     func dateCompare(fromDate: Date) -> GoalFilterOptions {
         let result: ComparisonResult = self.compare(fromDate)
         
@@ -120,5 +134,13 @@ extension Date {
         default :
             return .past
         }
+    }
+}
+
+extension String {
+    subscript(_ range: Range<Int>) -> String {
+        let fromIndex = self.index(self.startIndex, offsetBy: range.startIndex)
+        let toIndex = self.index(self.startIndex,offsetBy: range.endIndex)
+        return String(self[fromIndex..<toIndex])
     }
 }

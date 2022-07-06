@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 
 struct CategoryResponse: Codable {
-    var categories : [CategoryModel]?
+    var categories: [CategoryModel]?
 }
+
 struct CategoryModel: Codable,Hashable {
     var color : String
     var icon : String
@@ -20,7 +21,7 @@ struct CategoryModel: Codable,Hashable {
     var visibility : Bool
 }
 
-struct Category : Codable {
+struct Category: Codable {
     var id : Int
     var title : String
     var icon : String

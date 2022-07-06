@@ -9,6 +9,7 @@ import UIKit
 
 class GoalViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
     var goal: Goal? {
         didSet{
             configure()
@@ -30,32 +31,41 @@ class GoalViewCell: UICollectionViewCell {
         $0.textColor = .white
     }
     
+    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configureUI()
     }
+    
     override func setNeedsLayout() {
         super.setNeedsLayout()
+        
         configureUI()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Cofigure
     func configure() {
         guard let goal = goal else { return }
         guard let schedule = goal.schedules else { return }
         contentView.backgroundColor = .brown
         contentView.backgroundColor = UIColor.init(hex: goal.color)
-        iconImageView.image = UIImage(named:goal.icon)
-        titleLabel.text = goal.title
-
-        circleProgressBar.percent = Double(Double(goal.doneSchedule) / Double(schedule.count))
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.iconImageView.image = UIImage(named:goal.icon)
+            self.titleLabel.text = goal.title
+            self.circleProgressBar.percent = Double(Double(goal.doneSchedule) / Double(schedule.count))
+        }
         
     }
     
     func configureUI(){
-
+        
         contentView.addSubview(iconImageView)
         iconImageView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(20)
@@ -82,5 +92,5 @@ class GoalViewCell: UICollectionViewCell {
         contentView.layer.shadowColor = UIColor.black.cgColor
         
     }
-        
+    
 }

@@ -73,9 +73,11 @@ class DetailGoalViewHeader: UICollectionReusableView {
             return
         }
         progressBar.goal = goal
-        incompletedSchedule.text = String(goal.doneSchedule)
-        completedSchedule.text = String(schedule.count - goal.doneSchedule)
+        incompletedSchedule.text = String(schedule.count - goal.doneSchedule)
+        completedSchedule.text = String(goal.doneSchedule)
     }
+     
+        
     
     //MARK: - configure
     private func configureUI(){

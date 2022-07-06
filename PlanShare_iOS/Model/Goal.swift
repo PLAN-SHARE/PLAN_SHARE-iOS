@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct GoalWithoutSchedule: Codable {
+    let color, icon: String
+    let id: Int
+    let member: Member
+    let name: String
+    let visibility: Bool
+}
+
 struct Goal: Codable {
     var id : Int
     var title : String

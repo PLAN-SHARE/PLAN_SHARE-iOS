@@ -66,23 +66,24 @@ class GoalViewController: UIViewController {
     func configureCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 160, height: 160)
-        layout.minimumLineSpacing = 15
-        layout.minimumInteritemSpacing = 15
-        layout.sectionInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        layout.minimumLineSpacing = 20
+        layout.minimumInteritemSpacing = 20
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 24, bottom: 20, right: 24)
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(GoalViewCell.self, forCellWithReuseIdentifier: GoalViewCell.reuseIdentifier)
         collectionView.delegate = nil
         collectionView.dataSource = nil
+//        setupLongGestureRecognizerOnCollection()
     }
     
     func bind() {
-
+        
         viewModel.fetchCategory()
             .bind(to: collectionView.rx.items(cellIdentifier: GoalViewCell.reuseIdentifier, cellType: GoalViewCell.self)) { row, element, cell in
                 cell.goal = element
             }.disposed(by: disposBag)
-    
+        
         collectionView.rx.modelSelected(Goal.self)
             .subscribe(onNext: { [weak self] product in
                 guard let schedules = product.schedules else { return }
@@ -91,6 +92,40 @@ class GoalViewController: UIViewController {
                 self?.present(vc,animated: false)
             }).disposed(by: disposBag)
     }
+    
+    //    func setupLongGestureRecognizerOnCollection() {
+    //        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
+    //        longPressedGesture.minimumPressDuration = 0.5
+    //        longPressedGesture.delegate = self
+    //        longPressedGesture.delaysTouchesBegan = true
+    //        collectionView?.addGestureRecognizer(longPressedGesture)
+    //    }
+    //
+    //    @objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+    //
+    //        let location = gestureRecognizer.location(in: collectionView)
+    //
+    //        if gestureRecognizer.state == .began {
+    //
+    //            if let indexPath = collectionView.indexPathForItem(at: location) {
+    //                print("Long press at item began: \(indexPath.row)")
+    //
+    //                // animation
+    //                UIView.animate(withDuration: 0.2) {
+    //                    if let cell = self.collectionView.cellForItem(at: indexPath) as? GoalViewCell {
+    //                        self.currentLongPressedCell = cell
+    //                        cell.transform = .init(scaleX: 0.95, y: 0.95)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //
+    //        let p = gestureRecognizer.location(in: collectionView)
+    //
+    //        if let indexPath = collectionView?.indexPathForItem(at: p) {
+    //            print("Long press at item: \(indexPath.row)")
+    //        }
+    //    }
     
     @objc func addGoal(){
         let vc = CreateCategoryController(viewModel: CreateViewModel(categoryService: CategoryService(), scheduleService: ScheduleService()))
@@ -102,4 +137,15 @@ class GoalViewController: UIViewController {
     @objc func didDismissDetailNotification(_ notification: Notification) {
         bind()
     }
+}
+
+extension GoalViewController: UIGestureRecognizerDelegate {
+//    private func setupLongGestureRecognizerOnCollection() {
+//
+//        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
+//        longPressedGesture.minimumPressDuration = 0.5
+//        longPressedGesture.delegate = self
+//        longPressedGesture.delaysTouchesBegan = true
+//        collectionView.addGestureRecognizer(longPressedGesture)
+//    }
 }

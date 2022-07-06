@@ -17,7 +17,7 @@ struct AuthService {
     //Login
     func login(request token: String,completion:@escaping(Result<[String:Any],Error>)->Void) {
         
-        let url = "http://52.79.87.87:9090/user/login"
+        let url = "http://3.36.130.116:9090/user/login"
         
         let parameters = [
             "accessToken" : token
@@ -67,7 +67,7 @@ struct AuthService {
                   return
               }
         
-        let url = "http://52.79.87.87:9090/user/signup"
+        let url = "http://3.36.130.116:9090/user/signup"
         
         let parameters = [
             "email" : email,

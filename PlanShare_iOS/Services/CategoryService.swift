@@ -76,7 +76,7 @@ class CategoryService : CategoryServiceProtocol {
     
     func createCategory(_ parameters:[String:Any],completion:@escaping(String)-> Void){
         
-        let URL = "http://52.79.87.87:9090/goals"
+        let URL = "http://3.36.130.116:9090/goals"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -94,7 +94,7 @@ class CategoryService : CategoryServiceProtocol {
     
     
     func fetchCategory(completion:@escaping((Error?,[CategoryModel]?) -> Void )) {
-        let URL = "http://52.79.87.87:9090/goals/my-goals"
+        let URL = "http://3.36.130.116:9090/goals/my-goals"
         
         let accessToken = KeychainWrapper.standard.string(forKey: "AccessToken")
         
@@ -122,7 +122,7 @@ class CategoryService : CategoryServiceProtocol {
     func fetchSchedule(goalId:Int,completion:@escaping(Error?,[Schedule]?)-> Void) {
         let header = AuthService.shared.getAuthorizationHeader()
         
-        let URL = "http://52.79.87.87:9090/goals/\(goalId)/plans"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans"
         
         AF.request(URL,headers:header).responseData(completionHandler: { response in
             switch response.result {

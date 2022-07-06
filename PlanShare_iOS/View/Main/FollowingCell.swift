@@ -14,7 +14,9 @@ class FollowingCell: UICollectionViewCell {
     //MARK: - Properties
     var member: Member? {
         didSet {
-            configure(member: self.member)
+            DispatchQueue.main.async {
+                self.configure(member: self.member)
+            }
         }
     }
     
@@ -31,7 +33,7 @@ class FollowingCell: UICollectionViewCell {
     private var titleLabel = UILabel().then {
         $0.textAlignment = .center
         $0.textColor = .white
-        $0.font = .noto(size: 16, family: .Regular)
+        $0.font = .noto(size: 14, family: .Regular)
     }
     
     //MARK: - LifeCycle
@@ -47,19 +49,15 @@ class FollowingCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.layer.cornerRadius = 35 / 2
+        contentView.layer.cornerRadius = frame.height / 2
     }
     
     //MARK: - Configure
     private func configureUI() {
-
         contentView.addSubview(titleLabel)
         contentView.backgroundColor = .mainColor
-        titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(3)
-            make.right.equalToSuperview().offset(-3)
-            make.top.equalToSuperview().offset(3)
-            make.bottom.equalToSuperview().offset(-3)
+        titleLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     

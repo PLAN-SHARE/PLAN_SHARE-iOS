@@ -7,13 +7,12 @@
 
 import Foundation
 
-struct MemberResponse : Codable {
+struct MemberResponse: Codable {
     let member : Member
     let status : Bool
-    
 }
 
-struct Member : Hashable,Codable {
+struct Member: Hashable,Codable {
     let id : Int
     let email : String
     let kakaoId : Int

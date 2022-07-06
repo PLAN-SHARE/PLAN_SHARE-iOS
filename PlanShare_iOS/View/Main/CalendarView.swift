@@ -10,6 +10,11 @@ import FSCalendar
 import RxSwift
 import RxCocoa
 
+enum DateType: Int,CaseIterable {
+    case calendar = 0
+    case api
+    case full
+}
 protocol CalendarViewDelegate: class {
     func updateCalendarScope()
     func updateDate(date:String)
@@ -26,6 +31,7 @@ class CalendarView: UICollectionReusableView {
     
     private var disposBag = DisposeBag()
     private var calendar = FSCalendar()
+    
     private var calendarIsMonth : Bool = true{
         didSet {
             if calendarIsMonth == true {
@@ -56,7 +62,7 @@ class CalendarView: UICollectionReusableView {
         
         configureCalendar()
         
-        backgroundColor = .systemGroupedBackground
+        backgroundColor = .clear
         
         addSubview(dateTitleLabel)
         dateTitleLabel.snp.makeConstraints { make in
@@ -86,14 +92,14 @@ class CalendarView: UICollectionReusableView {
     }
     
     func fetch() {
-        guard let viewModel = viewModel else {
-            return
-        }
-        
-        viewModel.fetchCatgory()
-            .subscribe(onNext: {
-                self.categorySubject.onNext($0)
-            }).disposed(by: disposBag)
+//        guard let viewModel = viewModel else {
+//            return
+//        }
+//        
+//        viewModel.fetchCatgory()
+//            .subscribe(onNext: {
+//                self.categorySubject.onNext($0)
+//            }).disposed(by: disposBag)
         
     }
     func configureCalendar() {
@@ -101,15 +107,16 @@ class CalendarView: UICollectionReusableView {
         calendar.dataSource = self
         calendar.locale = Locale(identifier: "ko_KR")
         
+        calendar.backgroundColor = .red
         calendar.appearance.headerDateFormat = "YYYY년 MM월"
         calendar.headerHeight = 0
         
         //weak
-        calendar.appearance.weekdayFont = .boldSystemFont(ofSize: 16)
-        calendar.appearance.weekdayTextColor = .darkGray
+        calendar.appearance.weekdayFont = .noto(size: 16, family: .Bold)
+        calendar.appearance.weekdayTextColor = .black
         
         //title
-        calendar.appearance.titleFont = .systemFont(ofSize: 16)
+        calendar.appearance.titleFont = .noto(size: 16, family: .Regular)
         calendar.appearance.eventSelectionColor = .green
         
         calendar.appearance.titleTodayColor = .darkGray
@@ -122,7 +129,7 @@ class CalendarView: UICollectionReusableView {
         calendar.placeholderType = .none
         calendar.select(Date())
         calendar.appearance.eventSelectionColor = .darkGray
-        dateTitleLabel.text = converToString(from: calendar.currentPage)
+        dateTitleLabel.text = Date.converToString(from: calendar.currentPage,type: .calendar)
     }
 
     @objc func didTapConvertCalendar() {
@@ -131,20 +138,12 @@ class CalendarView: UICollectionReusableView {
     @objc func didTapConvertScheduleMode() {
         
     }
-    func converToString(from date: Date) -> String {
-        let dfMatter = DateFormatter()
-        dfMatter.locale = Locale(identifier: "ko_KR")
-        dfMatter.dateFormat = "yyyy년 MM월"
-        
-        return dfMatter.string(from: date)
-    }
 }
 
 extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let dateString = converToString(from: date)
-        delegate?.updateDate(date: dateString)
-//        dateSubject.accept(dateString)
+        
+        delegate?.updateDate(date: Date.converToString(from: date, type: .full))
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -157,11 +156,10 @@ extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        dateTitleLabel.text = converToString(from: calendar.currentPage)
+        dateTitleLabel.text = Date.converToString(from: calendar.currentPage,type: .calendar)
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         return 1
     }
-    
 }

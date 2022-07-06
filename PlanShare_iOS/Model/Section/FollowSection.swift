@@ -13,13 +13,12 @@ struct FollowSectionModel {
     var items: [Item]
 }
 
-extension FollowSectionModel : SectionModelType {
-    
+extension FollowSectionModel: SectionModelType {
+
+    typealias Item = Member
     
     init(original: FollowSectionModel, items: [Member]) {
         self = original
         self.items = items
     }
-    typealias Item = Member
-    
 }

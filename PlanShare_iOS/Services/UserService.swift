@@ -11,6 +11,7 @@ import Alamofire
 
 protocol UserSerivceProtocol {
     func fetchUser() -> Observable<[Member]>
+    func fetchFollowingMember(option:FollowFilterOptions, completion:@escaping((Error?,[Member]?) -> Void))
 }
 
 class UserService : UserSerivceProtocol{
@@ -32,7 +33,6 @@ class UserService : UserSerivceProtocol{
                         memberInfo.append($0)
                     }
                 }
-                
                 memberInfo.append(Member(id: -1, email: "plus", kakaoId: 0, nickName: "+"))
                 observer.onNext(memberInfo)
             }
@@ -40,6 +40,29 @@ class UserService : UserSerivceProtocol{
         }
         
     }
+//    func fetchUser() -> Observable<[Member]> {
+//
+//        return Observable.create { observer in
+//
+//            var memberInfo = [Member(id: 0, email: "doyun@gmail.com", kakaoId: 2, nickName: "doyun")]
+//
+//            self.fetchFollowingMember(option: .following) { error, members in
+//                if let error = error {
+//                    observer.onError(error)
+//                }
+//
+//                if let members = members {
+//                    members.forEach {
+//                        memberInfo.append($0)
+//                    }
+//                }
+//                memberInfo.append(Member(id: -1, email: "plus", kakaoId: 0, nickName: "+"))
+//                observer.onNext(memberInfo)
+//            }
+//            return Disposables.create()
+//        }
+//
+//    }
     
 //following/Follower 멤버들 조회
     func fetchFollow(option:FollowFilterOptions) -> Observable<[Member]> {
@@ -61,11 +84,11 @@ class UserService : UserSerivceProtocol{
     }
     
 //Following,Follower 조회 api
-    private func fetchFollowingMember(option:FollowFilterOptions, completion:@escaping((Error?,[Member]?) -> Void)) {
+    func fetchFollowingMember(option:FollowFilterOptions, completion:@escaping((Error?,[Member]?) -> Void)) {
         
         let followInfo = option == .following ? "following" : "follower"
         
-        let url = "http://52.79.87.87:9090/friend/\(followInfo)/list"
+        let url = "http://3.36.130.116:9090/friend/\(followInfo)/list"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -101,7 +124,7 @@ class UserService : UserSerivceProtocol{
     
     private func searchUser(email:String,completion:@escaping((Error?,MemberResponse?) -> Void)){
         
-        let url = "http://52.79.87.87:9090/friend/search"
+        let url = "http://3.36.130.116:9090/friend/search"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
@@ -154,7 +177,7 @@ class UserService : UserSerivceProtocol{
     
     private func follow(email:String,completion:@escaping(MemberResponse?,Error?)->Void) {
         
-        let url = "http://52.79.87.87:9090/friend/follow"
+        let url = "http://3.36.130.116:9090/friend/follow"
         
         let header = AuthService.shared.getAuthorizationHeader()
 //        header?.add(name: "Content-Type", value: "application/json")
@@ -184,7 +207,7 @@ class UserService : UserSerivceProtocol{
     
 
     func unFollow(email:String,completion:@escaping(MemberResponse?,Error?)->Void) {
-        let url = "http://52.79.87.87:9090/friend/unfollow"
+        let url = "http://3.36.130.116:9090/friend/unfollow"
         
         let header = AuthService.shared.getAuthorizationHeader()
         
