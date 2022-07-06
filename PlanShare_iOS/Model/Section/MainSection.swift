@@ -18,9 +18,9 @@ enum SectionModel: SectionModelType {
     typealias item = SectionItem
     
     case FollowingModel(items: [SectionItem])
-    case ScheduleModel(header:Category,items:[SectionItem])
+    case ScheduleModel(header: Int,items: [SectionItem])
     
-    var items:[SectionItem] {
+    var items: [SectionItem] {
         switch self {
         case .FollowingModel(items: let items) :
             return items.map{$0}

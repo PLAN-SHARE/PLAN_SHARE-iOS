@@ -17,11 +17,10 @@ class ScheduleCell: UICollectionViewCell {
     
     var schedule: Schedule? {
         didSet{
-            guard let schedule = schedule else {
-                return
+            DispatchQueue.main.async {
+                print(self.schedule)
+                self.configure()
             }
-
-            configure(schedule: schedule)
         }
     }
     private var scheduleLabel = UILabel().then {
@@ -71,7 +70,6 @@ class ScheduleCell: UICollectionViewCell {
                 guard let newschedule = self?.schedule else {
                     return
                 }
-
                 let newSchedule = Schedule(categoryID: newschedule.categoryID, checkStatus: status, date: newschedule.date, id: newschedule.id, name: newschedule.name)
                 self?.schedule = newSchedule
             }
@@ -83,7 +81,11 @@ class ScheduleCell: UICollectionViewCell {
     }
     
     //MARK: - Configure
-    func configure(schedule:Schedule) {
+    func configure() {
+        guard let schedule = schedule else {
+            return
+        }
+        
         checkButton.backgroundColor = schedule.checkStatus ? .init(hex: "a1b5f5") : .white
         scheduleLabel.attributedText = schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }
