@@ -23,7 +23,7 @@ class CategoryHeader: UICollectionReusableView {
     private lazy var goalLabel = UILabel().then {
         $0.font = .noto(size: 18, family: .Regular)
         $0.textAlignment = .left
-        $0.text = "목표"
+        $0.text = "0 Task"
     }
     
     override init(frame: CGRect) {
