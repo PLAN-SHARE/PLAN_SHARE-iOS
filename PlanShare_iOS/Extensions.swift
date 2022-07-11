@@ -82,30 +82,6 @@ extension UIFont {
             return UIFont(name: "NotoSansKR-\(family)", size: size)
         }
 }
-//extension UIViewController: UITextFieldDelegate{
-//    func addToolBar(textField: UITextField){
-//        var toolBar = UIToolbar()
-//        toolBar.barStyle = UIBarStyle.default
-//        toolBar.isTranslucent = true
-//        
-//        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
-//        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed))
-//        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:  #selector(cancelPressed))
-//        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//        
-//        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-//        toolBar.isUserInteractionEnabled = true
-//        toolBar.sizeToFit()
-//        textField.delegate = self
-//        textField.inputAccessoryView = toolBar
-//    }
-//    @objc func donePressed(){
-//        view.endEditing(true)
-//    }
-//    @objc func cancelPressed(){
-//        view.endEditing(true) // or do something
-//    }
-//}
 
 extension Date {
     
@@ -121,6 +97,13 @@ extension Date {
         dfMatter.locale = Locale(identifier: "ko_KR")
         
         return dfMatter.string(from: date)
+    }
+    
+    static func convertToDate(from date: String) -> Date {
+        let dfMatter = DateFormatter()
+        dfMatter.dateFormat = "yyyy-MM-dd"
+        dfMatter.locale = Locale(identifier: "ko_KR")
+        return dfMatter.date(from: date)!
     }
     
     func dateCompare(fromDate: Date) -> GoalFilterOptions {
