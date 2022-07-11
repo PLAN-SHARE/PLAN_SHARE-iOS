@@ -18,7 +18,6 @@ class ScheduleCell: UICollectionViewCell {
     var schedule: Schedule? {
         didSet{
             DispatchQueue.main.async {
-                print(self.schedule)
                 self.configure()
             }
         }
@@ -86,7 +85,7 @@ class ScheduleCell: UICollectionViewCell {
             return
         }
         
-        checkButton.backgroundColor = schedule.checkStatus ? .init(hex: "a1b5f5") : .white
+        checkButton.backgroundColor = schedule.checkStatus ? .mainColor : .white
         scheduleLabel.attributedText = schedule.checkStatus ? schedule.name.strikeThrough() : NSAttributedString(string: schedule.name)
     }
 }
