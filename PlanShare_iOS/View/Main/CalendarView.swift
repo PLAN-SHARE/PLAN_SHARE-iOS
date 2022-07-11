@@ -17,7 +17,6 @@ enum DateType: Int,CaseIterable {
 }
 protocol CalendarViewDelegate: class {
     func updateCalendarScope()
-    func updateDate(date:String)
 }
 
 class CalendarView: UICollectionReusableView {
@@ -26,13 +25,23 @@ class CalendarView: UICollectionReusableView {
     static let reuseIdentifier = "CalendarView"
 
     weak var delegate: CalendarViewDelegate?
-    var viewModel : MainViewModel?  
-    var categorySubject = PublishSubject<[Category]>()
+    
+    var viewModel: MainViewModel! {
+        didSet {
+            fetch()
+        }
+    }
     
     private var disposBag = DisposeBag()
     private var calendar = FSCalendar()
     
-    private var calendarIsMonth : Bool = true{
+    private var dates: [Date]? {
+        didSet {
+            calendar.reloadData()
+        }
+    }
+    
+    private var calendarIsMonth: Bool = true{
         didSet {
             if calendarIsMonth == true {
                 calendar.setScope(.month, animated: true)
@@ -59,9 +68,16 @@ class CalendarView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configureCalendar()
-        
+        configureUI()
+        fetch()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureUI(){
         backgroundColor = .clear
         
         addSubview(dateTitleLabel)
@@ -79,36 +95,18 @@ class CalendarView: UICollectionReusableView {
         
         addSubview(calendar)
         calendar.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(10)
-            make.height.equalTo(300)
+            make.height.equalTo(280)
         }
-        
-        fetch()
-        
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
-    func fetch() {
-//        guard let viewModel = viewModel else {
-//            return
-//        }
-//        
-//        viewModel.fetchCatgory()
-//            .subscribe(onNext: {
-//                self.categorySubject.onNext($0)
-//            }).disposed(by: disposBag)
-        
-    }
     func configureCalendar() {
         calendar.delegate = self
         calendar.dataSource = self
+        calendar.backgroundColor = .white
         calendar.locale = Locale(identifier: "ko_KR")
-        
-        calendar.backgroundColor = .red
-        calendar.appearance.headerDateFormat = "YYYY년 MM월"
         calendar.headerHeight = 0
         
         //weak
@@ -117,49 +115,66 @@ class CalendarView: UICollectionReusableView {
         
         //title
         calendar.appearance.titleFont = .noto(size: 16, family: .Regular)
-        calendar.appearance.eventSelectionColor = .green
-        
         calendar.appearance.titleTodayColor = .darkGray
-        calendar.backgroundColor = .mainBackgroundColor
+        
         calendar.appearance.todayColor = .clear
         calendar.appearance.todaySelectionColor = .none
         calendar.appearance.titleWeekendColor = .darkGray
-        calendar.appearance.selectionColor = .darkGray
+        calendar.appearance.selectionColor = .mainColor
         calendar.appearance.titleSelectionColor = .white
         calendar.placeholderType = .none
         calendar.select(Date())
-        calendar.appearance.eventSelectionColor = .darkGray
+        calendar.layer.cornerRadius = 10
+        
         dateTitleLabel.text = Date.converToString(from: calendar.currentPage,type: .calendar)
     }
-
+    
+    func fetch() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        viewModel.datesSubject.subscribe(onNext: {
+            self.dates = $0
+        }).disposed(by: disposBag)
+        
+        calendar.reloadData()
+    }
+    
     @objc func didTapConvertCalendar() {
         calendarIsMonth.toggle()
-    }
-    @objc func didTapConvertScheduleMode() {
-        
     }
 }
 
 extension CalendarView : FSCalendarDelegate,FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        
-        delegate?.updateDate(date: Date.converToString(from: date, type: .full))
+        viewModel.currentDate.onNext(Date.converToString(from: date, type: .full))
+        viewModel.eventDate.onNext(Date.converToString(from: date, type: .full))
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendar.snp.updateConstraints { (make) in
             make.height.equalTo(bounds.height)
         }
-        
         self.layoutIfNeeded()
         delegate?.updateCalendarScope()
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        dateTitleLabel.text = Date.converToString(from: calendar.currentPage,type: .calendar)
+        let currentDate = calendar.currentPage
+        
+        dateTitleLabel.text = Date.converToString(from: currentDate,type: .calendar)
+        calendar.select(currentDate)
+        viewModel.currentDate.onNext(Date.converToString(from: currentDate, type: .full))
+        viewModel.eventDate.onNext(Date.converToString(from: currentDate, type: .full))
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        return 1
+        guard let dates = dates else { return 0 }
+        
+        if dates.contains(date) {
+            return 1
+        } else {
+            return 0
+        }
     }
 }
