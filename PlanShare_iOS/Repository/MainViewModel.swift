@@ -10,12 +10,17 @@ class MainViewModel {
     private let userService: UserSerivceProtocol
     private let scheduleService: ScheduleService
     
-    private var disposBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
-    var sectionSubject = BehaviorSubject<[SectionModel]>(value:[])
-    var scheduleSubject = PublishRelay<ScheduleByDates>()
+//    input
+    var currentDate = BehaviorSubject<String>(value: Date.converToString(from: Date(), type: .full))
     
-    var date = Date().toString()[0..<7]
+//    output
+    var sectionSubject = PublishSubject<[SectionModel]>()
+    var scheduleSubject = PublishSubject<[SectionModel]>()
+    var userSubject = PublishSubject<[SectionModel]>()
+    var datesSubject = BehaviorSubject<[Date]>(value:[])
+    
     
     init(categoryService: CategoryServiceProtocol,
          userService: UserSerivceProtocol,scheduleService: ScheduleService) {
@@ -23,83 +28,64 @@ class MainViewModel {
         self.userService = userService
         self.scheduleService = scheduleService
         
-        fetchSchedule(date: Date.converToString(from: Date(), type: .api))
-            .take(1)
-            .bind(to: scheduleSubject)
-//            .subscribe(onNext: { [weak self] schedule in
-//                self?.scheduleSubject.accept(schedule)
-//            }).disposed(by: disposBag)
-        
-        fetchSectionData(current: Date.converToString(from: Date(), type: .full))
+        bind()
     }
     
-    func fetchSectionData(current:String) {
-        if date != current {
-            fetchSchedule(date: current)
-                .subscribe(onNext: {
-                    self.scheduleSubject.accept($0)
-                }).disposed(by: disposBag)
-            date = current
-        }
+    func bind() {
+        currentDate.subscribe(onNext: { [weak self] date in
+            print("DEBUG : \(date)")
+            self?.fetchDateEvent(date: date)
+            self?.fetchSectionData(current: date)
+        }).disposed(by: disposeBag)
         
-        let user = fetchUser().asObservable()
-            .subscribe(onNext:{
-                self.sectionSubject.onNext([$0])
-        }).disposed(by: disposBag)
+        fetchDateEvent()
+    }
+    
+    func fetchSectionData(current:String = Date.converToString(from: Date(), type: .full)) {
+        fetchUser()
+            .subscribe(onNext: {
+                self.userSubject.onNext([$0])
+            }).disposed(by: disposeBag)
+        
+//        2022년 7월 날짜 조회하여 원하는 날짜로 필터링
+        fetchSchedule(date:current)
+            .subscribe(onNext: {
+                self.scheduleSubject.onNext([$0])
+            }).disposed(by: disposeBag)
+        
+        Observable.combineLatest(userSubject, scheduleSubject).subscribe(onNext: {
+            self.sectionSubject.onNext($0.0 + $0.1)
+        }).disposed(by: disposeBag)
+    }
+    
+    func fetchDateEvent(date:String = Date.converToString(from: Date(), type: .full)){
+        let yyyyMM = date.components(separatedBy: "-").map{ Int($0)! }
+        
+        self.scheduleService.fetchScheduleByDate(year: yyyyMM[0], month: yyyyMM[1]) { [weak self] scheduleByDates, error in
+            if let error = error {
+                print("DEBUG: \(error.localizedDescription)")
+            }
+            guard let scheduleByDates = scheduleByDates else {
+                print("DEBUG: not showing")
+                return
+            }
+            
+            let dates = scheduleByDates.map {
+                Date.convertToDate(from: $0.date)
+            }
+            self?.datesSubject.onNext(dates)
+        }
+//        return Observable.create { observer in
 //
-        let schedule = scheduleSubject
-            .filter {
-                print($0.date)
-                print(current)
-                return $0.date == current
-                
-            }
-            .map { schedulebydates -> SectionModel in
-                let date = schedulebydates.date
-                let sectionItem = schedulebydates.ScheduleLists.map {
-                    return Schedule(categoryID: $0.id, checkStatus: $0.checkStatus, date: date, id: $0.id, name: $0.name)
-                }.map { SectionItem.schedule(schedule: $0)}
-                
-                let sectionModel = SectionModel.ScheduleModel(header: schedulebydates.ScheduleLists.count, items: sectionItem)
-                return sectionModel
-            }
-        
-        Observable.combineLatest(fetchUser(), schedule).subscribe(onNext: {
-            let output = [$0.0,$0.1]
-            print(output)
-            self.sectionSubject.onNext(output)
-        }).disposed(by: disposBag)
-     
-        
+//
+//            }
+//            return Disposables.create()
+//        }.subscribe(onNext : { [weak self] dates in
+//
+//        }).disposed(by: disposeBag)
     }
     
-    func fetchUser() -> Observable<SectionModel> {
-        userService.fetchUser()
-            .map {
-                let sectionItem = $0.map { SectionItem.following(member: $0)}
-                return SectionModel.FollowingModel(items: sectionItem)
-            }
-    }
-    
-    func updatePlanCheckStatus(schedule:Schedule?) {
-        
-        guard let schedule = schedule else {
-            return
-        }
-        
-        scheduleService.updatePlanCheckStatus(goalId: schedule.categoryID, planId: schedule.id)
-    }
-        
-    func deletePlan(schedule:Schedule?) {
-        
-        guard let schedule = schedule else {
-            return
-        }
-        
-        scheduleService.delegatePlan(goalId: schedule.categoryID, planId: schedule.id)
-    }
-    
-    func fetchSchedule(date:String) -> Observable<ScheduleByDates> {
+    func fetchSchedule(date:String) -> Observable<SectionModel> {
         let yyyyMM = date.components(separatedBy: "-").map{ Int($0)! }
         
         return Observable.create { observer in
@@ -113,14 +99,51 @@ class MainViewModel {
                     print("DEBUG: not showing")
                     return
                 }
-                scheduleByDates.forEach { scheduleByDates in
-                    observer.onNext(scheduleByDates)
+                
+                let schedule = scheduleByDates.filter {
+                    return $0.date == date
+                }
+                
+                if schedule.isEmpty {
+                    observer.onNext(SectionModel.ScheduleEmptyModel(header: 0, items: []))
+                } else {
+                    let result = schedule[0]
+                    if let scheduleList = result.ScheduleLists {
+                        let sectionItem = scheduleList.map {
+                            return Schedule(categoryID: $0.id, checkStatus: $0.checkStatus, date: result.date, id: $0.id, name: $0.name)
+                        }.map { SectionItem.schedule(schedule: $0)}
+                        observer.onNext(SectionModel.ScheduleModel(header: scheduleList.count, items: sectionItem))
+                    }
                 }
                 
             }
             return Disposables.create()
         }
-        
-        
     }
+    
+    func fetchUser() -> Observable<SectionModel> {
+        userService.fetchUser()
+            .map {
+                let sectionItem = $0.map { SectionItem.following(member: $0)}
+                return SectionModel.FollowingModel(items: sectionItem)
+            }
+    }
+    
+    func updatePlanCheckStatus(schedule:Schedule?) {
+        guard let schedule = schedule else {
+            return
+        }
+        
+        scheduleService.updatePlanCheckStatus(goalId: schedule.categoryID, planId: schedule.id)
+    }
+    
+    func deletePlan(schedule:Schedule?) {
+        guard let schedule = schedule else {
+            return
+        }
+        
+        scheduleService.delegatePlan(goalId: schedule.categoryID, planId: schedule.id)
+    }
+    
 }
+//jeong eun jjang do yun j.e ddaggari na neun gong ju ya

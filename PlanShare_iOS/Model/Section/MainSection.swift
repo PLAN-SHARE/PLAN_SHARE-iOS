@@ -18,7 +18,8 @@ enum SectionModel: SectionModelType {
     typealias item = SectionItem
     
     case FollowingModel(items: [SectionItem])
-    case ScheduleModel(header: Int,items: [SectionItem])
+    case ScheduleModel(header: Int, items: [SectionItem])
+    case ScheduleEmptyModel(header: Int = 0,items: [SectionItem])
     
     var items: [SectionItem] {
         switch self {
@@ -26,7 +27,10 @@ enum SectionModel: SectionModelType {
             return items.map{$0}
         case .ScheduleModel(header: _, items: let items) :
             return items.map{$0}
+        case .ScheduleEmptyModel(header: _, items: let items) :
+            return items
         }
+    
     }
     
     init(original: SectionModel, items: [SectionItem]) {
@@ -35,6 +39,8 @@ enum SectionModel: SectionModelType {
             self = .FollowingModel(items: items)
         case .ScheduleModel(let header, let items):
             self = .ScheduleModel(header: header, items: items)
+        case .ScheduleEmptyModel(header: let header, items: let items):
+            self = .ScheduleEmptyModel(header: header, items: items)
         }
     }
     

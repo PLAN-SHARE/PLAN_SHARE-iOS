@@ -23,7 +23,7 @@ struct ScheduleModel: Hashable,Codable {
 
 struct ScheduleByDates: Codable{
     let date: String
-    let ScheduleLists: [ScheduleList]
+    let ScheduleLists: [ScheduleList]?
 
     enum CodingKeys: String, CodingKey {
         case date
