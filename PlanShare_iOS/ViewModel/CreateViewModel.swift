@@ -13,15 +13,28 @@ class CreateViewModel {
     private var categoryService: CategoryService
     private var scheduleService: ScheduleService
     
+    var goalSubject = BehaviorSubject<[CategoryModel]>(value: [])
+    var disposeBag = DisposeBag()
+    
+    var selectedCateogry: CategoryModel?
+    var dateString: Date?
+    
     init(categoryService:CategoryService,
          scheduleService: ScheduleService){
         self.categoryService = categoryService
         self.scheduleService = scheduleService
+        
+        bind()
     }
     
 //    func fetchCategories()-> Observable<[Category]> {
 //        categoryService.fetchCategory()
 //    }
+    func bind(){
+        fetchCategoryModels().subscribe(onNext: { [weak self] goal in
+            self?.goalSubject.onNext(goal)
+        }).disposed(by: disposeBag)
+    }
     
     func fetchIcon() -> Observable<[String]> {
         return Observable.create { observer in
@@ -49,7 +62,7 @@ class CreateViewModel {
         }
     }
     
-    func createSchedule(goalId: Int64, date:Date,name:String,completion:@escaping(Bool)->Void) {
+    func createSchedule(goalId: Int64, date:Date,name:String) {
         
         let dateFormat = DateFormatter()
         dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.Z"
@@ -62,13 +75,9 @@ class CreateViewModel {
             "date" : dateString
         ] as [String:Any]
         
-        print(parameters)
         scheduleService.createSchedule(goalId: goalId, parameters) { result in
-            completion(result)
+            print(result)
         }
-
     }
-    
-    
 }
  

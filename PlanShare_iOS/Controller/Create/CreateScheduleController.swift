@@ -17,12 +17,7 @@ final class CreateScheduleController: UIViewController {
     
     private var pickerView = UIPickerView()
     private var datePicker = UIDatePicker()
-    private var isAlarm = false
-    private var dateString : Date?
-    
-    private var categoryRelay = BehaviorRelay<[CategoryModel]>(value: [])
-    private var selectedCateogry : CategoryModel!
-    
+   
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 15
@@ -193,7 +188,7 @@ final class CreateScheduleController: UIViewController {
         $0.font = .systemFont(ofSize: 20)
         $0.setLeftPaddingPoints(15)
         $0.text = Date.converToString(from: Date(), type: .full)
-        
+
         let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: 44.0))
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -205,24 +200,11 @@ final class CreateScheduleController: UIViewController {
         $0.inputAccessoryView = toolBar
     }
     
-    
-    private let alarmLabel = UILabel().then{
-        $0.text = "알람 설정"
-        $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 22)
-    }
-    
-    private lazy var alarmSwitch = UISwitch().then {
-        $0.isOn = false
-        $0.addTarget(self, action: #selector(alarmOnoff), for: .valueChanged)
-    }
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configurePicker()
         configureUI()
-        fetchCategories()
         bind()
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(view.endEditing))
         view.addGestureRecognizer(tapGesture)
@@ -239,23 +221,15 @@ final class CreateScheduleController: UIViewController {
     }
     
     //MARK: - API
-    func fetchCategories(){
-
-        viewModel.fetchCategoryModels()
-            .subscribe(onNext: {
-                print($0)
-                self.categoryRelay.accept($0)
-            }).disposed(by: disposeBag)
-
-        pickerView.rx.itemSelected
-            .subscribe { event in
-                self.selectedCateogry = self.categoryRelay.value[event.element!.row]
-                self.categoryTextField.text = self.categoryRelay.value[event.element!.row].name
-            }.disposed(by: disposeBag)
-    }
     
     func bind() {
-        categoryRelay.bind(to: pickerView.rx.itemTitles) { $1.name }.disposed(by: disposeBag)
+        viewModel.goalSubject.bind(to: pickerView.rx.itemTitles) { $1.name }.disposed(by: disposeBag)
+        
+        pickerView.rx.modelSelected(CategoryModel.self)
+            .subscribe(onNext: { [weak self] goal in
+                self?.viewModel.selectedCateogry = goal[0]
+                self?.categoryTextField.text = goal[0].name
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Configure
@@ -290,51 +264,34 @@ final class CreateScheduleController: UIViewController {
     }
     
     @objc func didTapDone() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         
         if dateTextField.isFirstResponder {
-            dateTextField.text = dateFormatter.string(from: datePicker.date)
-            dateString = dateFormatter.date(from: dateTextField.text!)
+            dateTextField.text = Date.converToString(from: datePicker.date, type: .full)
+            viewModel.dateString = datePicker.date
             dateTextField.resignFirstResponder()
         }
+        
         if categoryTextField.isFirstResponder {
             categoryTextField.resignFirstResponder()
         }
     }
     
-    @objc func didTapGoal(){
-        let alert = UIAlertController(title: "목표롤 설정해주세요", message: nil, preferredStyle: .actionSheet)
-        alert.view.addSubview(pickerView)
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (UIAlertAction) in
-            
-//            print("You selected " + self.typeValue )
-            
-        }))
-        
-    }
     @objc func handleDone() {
-        guard let category = selectedCateogry,
-              let date = dateString,
+        guard let category = viewModel.selectedCateogry,
+              let date = viewModel.dateString,
               let name = scheduleTextField.text else {
             return
         }
         
-        viewModel.createSchedule(goalId: Int64(category.id), date: date, name: name) {
-            print($0)
-        }
-        NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: nil, userInfo: nil)
+        viewModel.createSchedule(goalId: Int64(category.id), date: date, name: name)
+        
+        NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: Date.converToString(from: date, type: .full), userInfo: nil)
+        
         dismiss(animated: true)
     }
     
     @objc func handleDismissal() {
         dismiss(animated: true)
-    }
-    @objc func alarmOnoff(){
-        isAlarm.toggle()
-        alarmSwitch.setOn(isAlarm, animated: true)
     }
     
 }
