@@ -13,19 +13,13 @@ import RxCocoa
 import RxDataSources
 import Differentiator
 
-class CalendarViewController: UIViewController {
+final class CalendarViewController: UIViewController {
     
     //MARK: - Properties
     private var collectionView : UICollectionView!
+    private let disposeBag = DisposeBag()
     
-    private var filteredSubject = BehaviorRelay<[SectionModel]>(value:[])
-    
-    private let refreshLoading = PublishRelay<Bool>()
-    
-    private let disposBag = DisposeBag()
-    let viewModel : MainViewModel!
-    
-    private var indicator = UIActivityIndicatorView(style: .medium)
+    let viewModel: MainViewModel!
     
     private var calendarIsMonth: Bool = true {
         didSet {
@@ -67,6 +61,8 @@ class CalendarViewController: UIViewController {
             name: NSNotification.Name("dismissCreateView"),
             object: nil
         )
+        
+        configureNaviagation()
         configureCollectionView()
         configureUI()
         bind()
@@ -90,7 +86,6 @@ class CalendarViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchButton)
         view.backgroundColor = .mainBackgroundColor
         
-        
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
         
@@ -100,6 +95,12 @@ class CalendarViewController: UIViewController {
             make.right.equalToSuperview().offset(-30)
             make.width.height.equalTo(50)
         }
+    }
+    
+    func configureNaviagation() {
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
     }
     
     func configureCollectionView() {
@@ -113,50 +114,19 @@ class CalendarViewController: UIViewController {
         collectionView.register(CalendarView.self, forSupplementaryViewOfKind: CalendarView.reuseIdentifier , withReuseIdentifier: CalendarView.reuseIdentifier)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.endRefreshing()
-        collectionView.refreshControl = refreshControl
-        
-        refreshControl.rx.controlEvent(.valueChanged)
-            .bind { [weak self] _ in
-                self?.refreshLoading.accept(true)
-//                self?.viewModel.fetchSectionData()
-                self?.refreshLoading.accept(false)
-            }.disposed(by: disposBag)
-        
-        refreshLoading
-            .bind(to: refreshControl.rx.isRefreshing)
-            .disposed(by: disposBag)
     }
     
     // API
-    func bind(){
+    func bind() {
         let dataSource =  dataSource()
         
         viewModel.sectionSubject.bind(to: collectionView.rx.items(dataSource: dataSource))
-            .disposed(by: disposBag)
+            .disposed(by: disposeBag)
 
-//        collectionView.rx.itemSelected.subscribe {
-//
-//            guard let element = $0.element else {
-//                return
-//            }
-//
-//            let datasource = self.viewModel.section.
-//
-//            switch datasource {
-//            case .schedule(schedule: let schedule) :
-//                print(schedule)
-//                break
-//            case .following(member: let user):
-//                if user.nickName == "+" {
-//                    let vc = FollowController(viewModel: FollowViewModel(userService: UserService()))
-//                    self.navigationController?.pushViewController(vc, animated: true)
-//                }
-//                break
-//            }
-//        }.disposed(by: disposBag)
+        collectionView.rx.modelSelected(SectionModel.self)
+            .subscribe(onNext: {
+                print($0)
+            }).disposed(by: disposeBag)
     }
     //MARK: - selector
     @objc func handleSearch() {
@@ -174,7 +144,14 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
-//        viewModel.fetchSectionData()
+        let date = notification.object as! String
+        
+        if viewModel.selectedDate == date {
+            viewModel.currentDate.onNext(date)
+            viewModel.eventDate.onNext(date)
+        } else {
+            viewModel.eventDate.onNext(date)
+        }
     }
 }
 
@@ -199,6 +176,7 @@ extension CalendarViewController {
                 return cell
             }
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+            
             switch kind {
             case CalendarView.reuseIdentifier :
                 guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
@@ -206,11 +184,19 @@ extension CalendarViewController {
                     withReuseIdentifier: CalendarView.reuseIdentifier,
                     for: indexPath) as? CalendarView else { fatalError("Cannot create footer view") }
                 supplementaryView.delegate = self
+                supplementaryView.viewModel = self.viewModel
                 return supplementaryView
             case CategoryHeader.reuseIdentifier :
                 switch dataSource.sectionModels[indexPath.section] {
                 case .FollowingModel(items: _) : break
                 case .ScheduleModel(header: let header, items: _) :
+                    guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
+                        ofKind: kind,
+                        withReuseIdentifier: CategoryHeader.reuseIdentifier,
+                        for: indexPath) as? CategoryHeader else { fatalError("Cannot create Header view") }
+                    supplementaryView.task = header
+                    return supplementaryView
+                case .ScheduleEmptyModel(header: let header, items: _):
                     guard let supplementaryView = collectionView.dequeueReusableSupplementaryView(
                         ofKind: kind,
                         withReuseIdentifier: CategoryHeader.reuseIdentifier,
@@ -295,23 +281,13 @@ extension CalendarViewController {
     }
 }
 //MARK: - CalendarViewDelegate
-extension CalendarViewController : CalendarViewDelegate {
-    func updateDate(date: String) {
-        viewModel.fetchSectionData(current: date)
-//        viewModel.fetchSchedule(date: date) { schedules in
-//            print("DEBUG mainvc: \(schedules)")
-//        }
-//        sectionSubject.map { sectionModels in
-//            print(sectionModels)
-//        }
-    }
-    
+extension CalendarViewController: CalendarViewDelegate {
     func updateCalendarScope() {
         calendarIsMonth.toggle()
     }
-    
 }
-extension CalendarViewController : ScheduleCellDelegate {
+
+extension CalendarViewController: ScheduleCellDelegate {
     
     func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void)) {
         
@@ -333,11 +309,6 @@ extension CalendarViewController : ScheduleCellDelegate {
                 self.viewModel.updatePlanCheckStatus(schedule: schedule)
                 completion(true)
             }
-            
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "미루기", style: .default, handler: { _ in
-            
         }))
         
         alertController.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
@@ -345,7 +316,8 @@ extension CalendarViewController : ScheduleCellDelegate {
             NotificationCenter.default.post(name: NSNotification.Name("dismissCreateView"), object: nil, userInfo: nil)
         }))
         
-        alertController.addAction(UIAlertAction(title: "삭제", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
         present(alertController, animated: true)
         
         
