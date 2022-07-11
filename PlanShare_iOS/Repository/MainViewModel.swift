@@ -12,8 +12,10 @@ class MainViewModel {
     
     private var disposeBag = DisposeBag()
     
+    var selectedDate = Date.converToString(from: Date(), type: .full)
 //    input
     var currentDate = BehaviorSubject<String>(value: Date.converToString(from: Date(), type: .full))
+    var eventDate = BehaviorSubject<String>(value: Date.converToString(from: Date(), type: .full))
     
 //    output
     var sectionSubject = PublishSubject<[SectionModel]>()
@@ -33,12 +35,14 @@ class MainViewModel {
     
     func bind() {
         currentDate.subscribe(onNext: { [weak self] date in
-            print("DEBUG : \(date)")
-            self?.fetchDateEvent(date: date)
             self?.fetchSectionData(current: date)
+            self?.selectedDate = date
         }).disposed(by: disposeBag)
         
-        fetchDateEvent()
+        eventDate.subscribe(onNext: { [weak self] date in
+            self?.fetchDateEvent(date: date)
+            self?.selectedDate = date
+        }).disposed(by: disposeBag)
     }
     
     func fetchSectionData(current:String = Date.converToString(from: Date(), type: .full)) {
@@ -69,20 +73,11 @@ class MainViewModel {
                 print("DEBUG: not showing")
                 return
             }
-            
             let dates = scheduleByDates.map {
                 Date.convertToDate(from: $0.date)
             }
             self?.datesSubject.onNext(dates)
         }
-//        return Observable.create { observer in
-//
-//
-//            }
-//            return Disposables.create()
-//        }.subscribe(onNext : { [weak self] dates in
-//
-//        }).disposed(by: disposeBag)
     }
     
     func fetchSchedule(date:String) -> Observable<SectionModel> {
