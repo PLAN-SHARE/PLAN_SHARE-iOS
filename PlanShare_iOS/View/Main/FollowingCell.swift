@@ -22,14 +22,6 @@ class FollowingCell: UICollectionViewCell {
     
     static let reuseIdentifier = "FollowingCell"
     
-    static func fittingSize(availableHeight: CGFloat, name: String?) -> CGSize {
-        let cell = FollowingCell()
-//        cell.configure(name: name)
-        
-        let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: availableHeight)
-        return cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
-    }
-    
     private var titleLabel = UILabel().then {
         $0.textAlignment = .center
         $0.textColor = .white
@@ -44,7 +36,6 @@ class FollowingCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        configureUI()
     }
     
     override func layoutSubviews() {
