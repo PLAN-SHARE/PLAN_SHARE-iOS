@@ -192,6 +192,7 @@ class CreateScheduleController: UIViewController {
         $0.inputView = datePicker
         $0.font = .systemFont(ofSize: 20)
         $0.setLeftPaddingPoints(15)
+        $0.text = Date.converToString(from: Date(), type: .full)
         
         let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: 44.0))
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -300,10 +301,8 @@ class CreateScheduleController: UIViewController {
         if categoryTextField.isFirstResponder {
             categoryTextField.resignFirstResponder()
         }
-        
-        
-        
     }
+    
     @objc func didTapGoal(){
         let alert = UIAlertController(title: "목표롤 설정해주세요", message: nil, preferredStyle: .actionSheet)
         alert.view.addSubview(pickerView)
