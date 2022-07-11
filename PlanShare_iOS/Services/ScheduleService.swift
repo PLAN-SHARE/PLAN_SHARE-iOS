@@ -78,7 +78,7 @@ class ScheduleService {
     func delegatePlan(goalId:Int,planId:Int){
         let header = AuthService.shared.getAuthorizationHeader()
         
-        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans/\(planId)/check"
+        let URL = "http://3.36.130.116:9090/goals/\(goalId)/plans/\(planId)"
         
         AF.request(URL, method: .delete,headers: header).validate(statusCode: 200..<300).responseJSON { response in
             switch response.result {
