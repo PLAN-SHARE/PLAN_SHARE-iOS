@@ -9,7 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class CreateScheduleController: UIViewController {
+final class CreateScheduleController: UIViewController {
     
     //MARK: - Properties
     private var viewModel: CreateViewModel!

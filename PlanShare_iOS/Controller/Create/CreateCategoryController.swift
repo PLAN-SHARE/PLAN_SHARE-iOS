@@ -11,7 +11,7 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-class CreateCategoryController: UIViewController {
+final class CreateCategoryController: UIViewController {
     
     //MARK: - Properties
     private var viewModel : CreateViewModel!

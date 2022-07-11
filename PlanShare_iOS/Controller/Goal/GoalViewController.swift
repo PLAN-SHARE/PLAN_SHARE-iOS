@@ -12,7 +12,7 @@ import RxSwift
 import RxDataSources
 import Differentiator
 
-class GoalViewController: UIViewController {
+final class GoalViewController: UIViewController {
     
     //MARK: - Properties
     

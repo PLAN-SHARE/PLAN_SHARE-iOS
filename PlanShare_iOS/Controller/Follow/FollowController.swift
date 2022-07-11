@@ -11,7 +11,7 @@ import RxCocoa
 import RxDataSources
 import Differentiator
 
-class FollowController: UIViewController {
+final class FollowController: UIViewController {
     
     //MARK: - Properties
     private var collectionView: UICollectionView!

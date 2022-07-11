@@ -9,7 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class SearchController: UIViewController {
+final class SearchController: UIViewController {
 
     //MARK: - Properties
     private var tableView : UITableView!
@@ -78,6 +78,7 @@ class SearchController: UIViewController {
                 cell.delegate = self
         }.disposed(by: disposeBag)
     }
+    
     private func fetchData(){
         searchBar.shouldLoadResult
             .subscribe(onNext : {
