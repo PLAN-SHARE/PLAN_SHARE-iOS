@@ -19,7 +19,7 @@ protocol CalendarViewDelegate: class {
     func updateCalendarScope()
 }
 
-class CalendarView: UICollectionReusableView {
+final class CalendarView: UICollectionReusableView {
 
     //MARK: - Properties
     static let reuseIdentifier = "CalendarView"

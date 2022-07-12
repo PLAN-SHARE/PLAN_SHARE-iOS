@@ -7,7 +7,7 @@ protocol DetailGoalListCellDelegate : class {
     func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void))
 }
 
-class DetailGoalListCell: UICollectionViewCell {
+final class DetailGoalListCell: UICollectionViewCell {
     
     //MARK: - Properties
     static let reuseIdentifier = "DetailGoalListCell"

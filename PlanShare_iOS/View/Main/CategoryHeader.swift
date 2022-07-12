@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoryHeader: UICollectionReusableView {
+final class CategoryHeader: UICollectionReusableView {
     
     //MARK: - Properties
     static let reuseIdentifier = "CategoryCell"

@@ -18,7 +18,7 @@ enum GoalFilterOptions: Int,CaseIterable {
     }
 }
 
-class GoalFilterCell: UICollectionViewCell {
+final class GoalFilterCell: UICollectionViewCell {
     
     //MARK: - Property
     static let reuseIdentifier = "GoalFilterCell"

@@ -7,7 +7,7 @@
 //
 //import UIKit
 //
-//class FollowStateView: UIView {
+//final class FollowStateView: UIView {
 //
 //    private lazy var button = UIButton().then {
 //    }

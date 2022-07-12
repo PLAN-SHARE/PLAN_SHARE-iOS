@@ -26,7 +26,7 @@ enum FollowFilterOptions: Int,CaseIterable {
     }
 }
 
-class FollowFilterCell: UICollectionViewCell {
+final class FollowFilterCell: UICollectionViewCell {
     
     //MARK: - Property
     static let reuseIdentifier = "FollowFilterCell"

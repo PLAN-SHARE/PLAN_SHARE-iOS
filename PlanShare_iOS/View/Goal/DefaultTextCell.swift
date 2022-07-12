@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DefaultTextCell: UICollectionViewCell {
+final class DefaultTextCell: UICollectionViewCell {
     
     static let reuseIdentifier = "DefaultTextCell"
 

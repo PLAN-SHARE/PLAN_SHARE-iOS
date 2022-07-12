@@ -10,7 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class CustomSearchBar : UISearchBar {
+final class CustomSearchBar : UISearchBar {
     
     let disposeBag = DisposeBag()
     let searchButton = UIButton()

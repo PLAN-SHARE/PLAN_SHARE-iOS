@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailCircleProgressView: UIView {
+final class DetailCircleProgressView: UIView {
     
     //MARK: - Properties
     private var circleLayer = CAShapeLayer()

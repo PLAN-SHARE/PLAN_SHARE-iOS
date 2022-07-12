@@ -11,7 +11,7 @@ protocol FollowFilterViewDelegate: class {
     func filterView(_ view: FollowFilterView,didSeletect index: Int)
 }
 
-class FollowFilterView: UIView {
+final class FollowFilterView: UIView {
     
     weak var delegate: FollowFilterViewDelegate?
     

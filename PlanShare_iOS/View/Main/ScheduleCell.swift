@@ -7,7 +7,7 @@ protocol ScheduleCellDelegate : class {
     func handleButtonClicked(schedule:Schedule?,completion:@escaping((Bool) -> Void))
 }
 
-class ScheduleCell: UICollectionViewCell {
+final class ScheduleCell: UICollectionViewCell {
     
     //MARK: - Properties
     static let reuseIdentifier = "ScheduleCell"

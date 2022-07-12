@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CircleProgressBar: UIView {
+final class CircleProgressBar: UIView {
     
     //MARK: - Properties
     private var circleLayer = CAShapeLayer()

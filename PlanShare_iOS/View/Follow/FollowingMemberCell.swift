@@ -30,7 +30,7 @@ protocol FollowingMemeberCellDelegate : class {
     func didTapFollow(member:Member,isFollowed:Bool)
 }
 
-class FollowingMemberCell: UICollectionViewCell {
+final class FollowingMemberCell: UICollectionViewCell {
     
     static let reuseIdentifier = "FollowingMemberCell"
     

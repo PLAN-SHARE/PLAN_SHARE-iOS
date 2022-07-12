@@ -10,7 +10,7 @@ import UIKit
 //protocol FollowerMemeberCellDelegate:class {
 //    func didTapDelete()
 //}
-class FollowerMemeberCell: UICollectionViewCell {
+final class FollowerMemeberCell: UICollectionViewCell {
     
     static let reuseIdentifier = "FollowerMemeberCell"
 //    weak var delegate: FollowerMemeberCellDelegate?

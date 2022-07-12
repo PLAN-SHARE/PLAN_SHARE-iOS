@@ -12,7 +12,7 @@ protocol DetailGoalViewHeaderDelegate: class {
     func filterView(_ view: DetailGoalViewHeader,didSeletect index: Int)
 }
 
-class DetailGoalViewHeader: UICollectionReusableView {
+final class DetailGoalViewHeader: UICollectionReusableView {
     
     //MARK: - Properties
     static let reuseIdentifier = "DetailGaolViewHeader"

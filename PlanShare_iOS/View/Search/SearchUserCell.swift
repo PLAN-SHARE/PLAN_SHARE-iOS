@@ -10,7 +10,7 @@ import UIKit
 protocol SearchUserCellDelegate: class {
     func handleFollow(member:Member,isFollow:Bool)
 }
-class SearchUserCell: UITableViewCell {
+final class SearchUserCell: UITableViewCell {
 
     static let reuseIdentifier = "SearchUserCell"
     

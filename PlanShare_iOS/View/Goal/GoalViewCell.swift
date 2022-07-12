@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GoalViewCell: UICollectionViewCell {
+final class GoalViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     var goal: Goal? {
