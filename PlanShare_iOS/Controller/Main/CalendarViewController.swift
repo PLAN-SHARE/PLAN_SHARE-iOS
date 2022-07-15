@@ -104,7 +104,6 @@ final class CalendarViewController: UIViewController {
     }
     
     func configureCollectionView() {
-        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout(state:calendarIsMonth))
         collectionView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         collectionView.backgroundColor = .mainBackgroundColor
@@ -116,19 +115,20 @@ final class CalendarViewController: UIViewController {
         collectionView.showsVerticalScrollIndicator = false
     }
     
-    // API
+    //MARK: - Bind
     func bind() {
-        let dataSource =  dataSource()
+        let dataSource = dataSource()
         
         viewModel.sectionSubject.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        collectionView.rx.modelSelected(SectionModel.self)
-            .subscribe(onNext: {
-                print($0)
-            }).disposed(by: disposeBag)
+        Observable.zip(collectionView.rx.itemSelected,collectionView.rx.modelSelected(SectionModel.self))
+            .subscribe(onNext: { [weak self] indexPath, model in
+                print(indexPath,model)
+            }).disposed(by:disposeBag)
     }
-    //MARK: - selector
+    
+    //MARK: - Selector
     @objc func handleSearch() {
         let vc = SearchController(viewModel: SearchViewModel(userService: UserService(), categoryService: CategoryService()))
         navigationController?.pushViewController(vc, animated: true)
@@ -144,14 +144,16 @@ final class CalendarViewController: UIViewController {
     }
     
     @objc func didDismissDetailNotification(_ notification: Notification) {
-        let date = notification.object as! String
-        
-        if viewModel.selectedDate == date {
-            viewModel.currentDate.onNext(date)
-            viewModel.eventDate.onNext(date)
-        } else {
-            viewModel.eventDate.onNext(date)
+        if let date = notification.object as? String {
+            if viewModel.selectedDate == date {
+                viewModel.currentDate.onNext(date)
+                viewModel.eventDate.onNext(date)
+            } else {
+                viewModel.eventDate.onNext(date)
+            }
         }
+        
+        
     }
 }
 
@@ -212,6 +214,7 @@ extension CalendarViewController {
         }
     }
 }
+
 //MARK: - CollectionViewLayout
 extension CalendarViewController {
     func generateLayout(state:Bool) -> UICollectionViewLayout {
@@ -319,9 +322,5 @@ extension CalendarViewController: ScheduleCellDelegate {
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
         
         present(alertController, animated: true)
-        
-        
     }
-    
-    
 }
