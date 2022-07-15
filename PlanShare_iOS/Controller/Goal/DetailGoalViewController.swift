@@ -28,7 +28,6 @@ final class DetailGoalViewController: UIViewController {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
-            
         }
     }
     

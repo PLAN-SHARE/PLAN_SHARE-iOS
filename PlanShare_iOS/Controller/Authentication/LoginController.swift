@@ -103,7 +103,7 @@ extension LoginController {
             guard let email = jsonData["email"] as? String, let id = jsonData["userId"] as? Int else {
                 return
             }
-            print(id)
+            
             KeychainWrapper.standard.set(jwt, forKey: "AccessToken")
             KeychainWrapper.standard.set(String(id), forKey: "id")
             KeychainWrapper.standard.set(email, forKey: "email")
@@ -115,6 +115,7 @@ extension LoginController {
             guard let email = jsonData["email"] as? String, let id = jsonData["id"] as? Int else {
                 return
             }
+            
             KeychainWrapper.standard.set(String(id), forKey: "id")
             KeychainWrapper.standard.set(email, forKey: "email")
             print("DEBUG : 회원가입이 필요한 회원입니다.")

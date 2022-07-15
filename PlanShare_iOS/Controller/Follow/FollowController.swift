@@ -28,7 +28,6 @@ final class FollowController: UIViewController {
     init(viewModel:FollowViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-
     }
     
     required init?(coder: NSCoder) {
