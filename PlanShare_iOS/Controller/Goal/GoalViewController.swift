@@ -16,18 +16,9 @@ final class GoalViewController: UIViewController {
     
     //MARK: - Properties
     
-    let viewModel = GoalViewModel(categoryService: CategoryService(), scheduleService: ScheduleService())
-    
+    let viewModel: GoalViewModel!
     private var disposBag = DisposeBag()
-    
     private var collectionView: UICollectionView!
-    
-    private var titleLabel = UILabel().then {
-        $0.textColor = .black
-        $0.font = .noto(size: 20, family: .Bold)
-        $0.textAlignment = .center
-    }
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +31,18 @@ final class GoalViewController: UIViewController {
         )
         
         configureNavigation()
-        
         configureCollectionView()
         configureUI()
         bind()
+    }
+    
+    init(viewModel: GoalViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - Configure
@@ -60,7 +59,6 @@ final class GoalViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        
     }
     
     func configureCollectionView(){
@@ -74,15 +72,25 @@ final class GoalViewController: UIViewController {
         collectionView.register(GoalViewCell.self, forCellWithReuseIdentifier: GoalViewCell.reuseIdentifier)
         collectionView.delegate = nil
         collectionView.dataSource = nil
-//        setupLongGestureRecognizerOnCollection()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.endRefreshing()
+        collectionView.refreshControl = refreshControl
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .bind(onNext: { [weak self] _ in
+                self?.viewModel.fetchCategory()
+                refreshControl.endRefreshing()
+            }).disposed(by: disposBag)
     }
     
     func bind() {
+        guard let viewModel = viewModel else { return }
         
-        viewModel.fetchCategory()
-            .bind(to: collectionView.rx.items(cellIdentifier: GoalViewCell.reuseIdentifier, cellType: GoalViewCell.self)) { row, element, cell in
-                cell.goal = element
-            }.disposed(by: disposBag)
+        viewModel.goalsSubject.bind(to: collectionView.rx.items(cellIdentifier: GoalViewCell.reuseIdentifier, cellType: GoalViewCell.self)) { row, element, cell in
+            cell.goal = element
+        }.disposed(by: disposBag)
+
         
         collectionView.rx.modelSelected(Goal.self)
             .subscribe(onNext: { [weak self] product in
@@ -93,39 +101,21 @@ final class GoalViewController: UIViewController {
             }).disposed(by: disposBag)
     }
     
-    //    func setupLongGestureRecognizerOnCollection() {
-    //        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
-    //        longPressedGesture.minimumPressDuration = 0.5
-    //        longPressedGesture.delegate = self
-    //        longPressedGesture.delaysTouchesBegan = true
-    //        collectionView?.addGestureRecognizer(longPressedGesture)
-    //    }
-    //
-    //    @objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-    //
-    //        let location = gestureRecognizer.location(in: collectionView)
-    //
-    //        if gestureRecognizer.state == .began {
-    //
-    //            if let indexPath = collectionView.indexPathForItem(at: location) {
-    //                print("Long press at item began: \(indexPath.row)")
-    //
-    //                // animation
-    //                UIView.animate(withDuration: 0.2) {
-    //                    if let cell = self.collectionView.cellForItem(at: indexPath) as? GoalViewCell {
-    //                        self.currentLongPressedCell = cell
-    //                        cell.transform = .init(scaleX: 0.95, y: 0.95)
-    //                    }
-    //                }
-    //            }
-    //        }
-    //
-    //        let p = gestureRecognizer.location(in: collectionView)
-    //
-    //        if let indexPath = collectionView?.indexPathForItem(at: p) {
-    //            print("Long press at item: \(indexPath.row)")
-    //        }
-    //    }
+    @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        
+        if gesture.state != .ended {
+            return
+        }
+        
+        let location = gesture.location(in: self.collectionView)
+        
+        if let indexPath = collectionView.indexPathForItem(at: location) {
+            let cell = collectionView.cellForItem(at: indexPath)
+            print("DEBUG :\(indexPath)")
+        } else {
+            print("couldn't find index path")
+        }
+    }
     
     @objc func addGoal(){
         let vc = CreateCategoryController(viewModel: CreateViewModel(categoryService: CategoryService(), scheduleService: ScheduleService()))
@@ -140,12 +130,11 @@ final class GoalViewController: UIViewController {
 }
 
 extension GoalViewController: UIGestureRecognizerDelegate {
-//    private func setupLongGestureRecognizerOnCollection() {
-//
-//        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
-//        longPressedGesture.minimumPressDuration = 0.5
-//        longPressedGesture.delegate = self
-//        longPressedGesture.delaysTouchesBegan = true
-//        collectionView.addGestureRecognizer(longPressedGesture)
-//    }
+    private func setupLongGestureRecognizerOnCollection() {
+        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gesture:)))
+        longPressedGesture.minimumPressDuration = 0.5
+        longPressedGesture.delegate = self
+        longPressedGesture.delaysTouchesBegan = true
+        collectionView?.addGestureRecognizer(longPressedGesture)
+    }
 }

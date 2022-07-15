@@ -58,6 +58,7 @@
 		E484EDBB27DDF06E00513BA7 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDBA27DDF06E00513BA7 /* MainViewModel.swift */; };
 		E484EDBE27DDF0F200513BA7 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */; };
 		E48B65E427EC94C3002A6410 /* GoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48B65E327EC94C3002A6410 /* GoalViewController.swift */; };
+		E49A5EA428813D1200F7EB9E /* FollowMembersCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49A5EA328813D1200F7EB9E /* FollowMembersCalendarViewController.swift */; };
 		E49C683F27DF79E900B050E3 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49C683E27DF79E900B050E3 /* UserService.swift */; };
 		E4ECE8E228178CCA00893069 /* NotoSansKR-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DB28178CC900893069 /* NotoSansKR-Black.otf */; };
 		E4ECE8E328178CCA00893069 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4ECE8DC28178CC900893069 /* NotoSansKR-Regular.otf */; };
@@ -123,6 +124,7 @@
 		E484EDBA27DDF06E00513BA7 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewModel.swift; path = ../Repository/MainViewModel.swift; sourceTree = "<group>"; };
 		E484EDBD27DDF0F200513BA7 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		E48B65E327EC94C3002A6410 /* GoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalViewController.swift; sourceTree = "<group>"; };
+		E49A5EA328813D1200F7EB9E /* FollowMembersCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowMembersCalendarViewController.swift; sourceTree = "<group>"; };
 		E49C683E27DF79E900B050E3 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4ECE8DB28178CC900893069 /* NotoSansKR-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.otf"; sourceTree = "<group>"; };
 		E4ECE8DC28178CC900893069 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			children = (
 				780796BA27C27C6F00C0BF12 /* CalendarViewController.swift */,
 				E456B02827E38D74009CC2AC /* SearchController.swift */,
+				E49A5EA328813D1200F7EB9E /* FollowMembersCalendarViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7822317A27CA8C7200FB5826 /* LoginController.swift in Sources */,
+				E49A5EA428813D1200F7EB9E /* FollowMembersCalendarViewController.swift in Sources */,
 				E470A76027F32E91001D2F5A /* SearchViewModel.swift in Sources */,
 				E42DEAC328195FA400DF9F77 /* GoalViewCell.swift in Sources */,
 				780796CD27C37FA500C0BF12 /* CalendarView.swift in Sources */,
