@@ -27,9 +27,6 @@ class CreateViewModel {
         bind()
     }
     
-//    func fetchCategories()-> Observable<[Category]> {
-//        categoryService.fetchCategory()
-//    }
     func bind(){
         fetchCategoryModels().subscribe(onNext: { [weak self] goal in
             self?.goalSubject.onNext(goal)

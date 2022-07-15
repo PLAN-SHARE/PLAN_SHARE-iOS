@@ -141,4 +141,3 @@ class MainViewModel {
     }
     
 }
-//jeong eun jjang do yun j.e ddaggari na neun gong ju ya

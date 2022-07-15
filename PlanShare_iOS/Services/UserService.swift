@@ -20,7 +20,7 @@ class UserService : UserSerivceProtocol{
     func fetchUser() -> Observable<[Member]> {
         
         return Observable.create { observer in
-
+    
             var memberInfo = [Member(id: 0, email: "doyun@gmail.com", kakaoId: 2, nickName: "doyun")]
             
             self.fetchFollowingMember(option: .following) { error, members in
@@ -38,31 +38,7 @@ class UserService : UserSerivceProtocol{
             }
             return Disposables.create()
         }
-        
     }
-//    func fetchUser() -> Observable<[Member]> {
-//
-//        return Observable.create { observer in
-//
-//            var memberInfo = [Member(id: 0, email: "doyun@gmail.com", kakaoId: 2, nickName: "doyun")]
-//
-//            self.fetchFollowingMember(option: .following) { error, members in
-//                if let error = error {
-//                    observer.onError(error)
-//                }
-//
-//                if let members = members {
-//                    members.forEach {
-//                        memberInfo.append($0)
-//                    }
-//                }
-//                memberInfo.append(Member(id: -1, email: "plus", kakaoId: 0, nickName: "+"))
-//                observer.onNext(memberInfo)
-//            }
-//            return Disposables.create()
-//        }
-//
-//    }
     
 //following/Follower 멤버들 조회
     func fetchFollow(option:FollowFilterOptions) -> Observable<[Member]> {
