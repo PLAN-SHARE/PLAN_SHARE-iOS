@@ -14,16 +14,20 @@ class GoalViewModel {
     private let categoryService: CategoryServiceProtocol
     private let scheduleService: ScheduleService
     
+    let reloadTrigger = PublishRelay<Void>()
+    var goalsSubject = PublishSubject<[Goal]>()
     var disposBag = DisposeBag()
     
     init(categoryService: CategoryServiceProtocol,scheduleService: ScheduleService) {
         self.categoryService = categoryService
         self.scheduleService = scheduleService
+        
+        fetchCategory()
     }
     
-    func fetchCategory() -> Observable<[Goal]> {
+    func fetchCategory() {
         categoryService.fetchCategory()
-            .map { categories in
+            .map { categories -> [Goal] in
                 var goals = [Goal]()
                 
                 for category in categories {
@@ -35,9 +39,10 @@ class GoalViewModel {
                     
                     goals.append(Goal(id: category.id, title: category.title, icon: category.icon, color: category.color, visibility: category.visibility, user: category.user,schedules: schedule, doneSchedule: done))
                 }
-                
-                print(goals)
                 return goals
             }
+            .subscribe(onNext: { [weak self] goals in
+                self?.goalsSubject.onNext(goals)
+            }).disposed(by: disposBag)
     }
 }
